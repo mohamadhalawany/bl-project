@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<f:view locale="ar">
+	<ui:composition template="/template/template.xhtml">
+		<ui:define name="title">${dto.itemName} | #{msg.MY_ORDERS}</ui:define>
+		
+		<ui:define name="content">
+			<div class="main">
+		      <div class="container">
+		        
+		        <div class="row margin-bottom-40">
+			          
+			          <div class="col-md-12 col-sm-12">
+			            <h1>#{msg.MY_ORDERS}</h1>
+			            
+			            <h:panelGroup rendered="${list ne null}">
+			            
+			            <div class="goods-page">
+			              <div class="goods-data clearfix">
+			                <div class="table-wrapper-responsive">
+			                
+			                
+			                
+			                <table summary="Shopping cart">
+			                  <tr>
+			                  	<th style="width: 50% !important; text-align: center !important; color: #fb4e1c !important;">
+			                  		<strong>#{msg.ITEMS}</strong>
+			                  	</th>
+			                    
+			                    <th style="width: 10% !important; text-align: center !important; color: #fb4e1c !important; vertical-align:middle !important;">
+			                    	<strong>#{msg.ORDER_NUMBER}</strong>
+			                    </th>
+			                    
+			                    <th style="width: 13% !important; text-align: center !important; color: #fb4e1c !important; vertical-align:middle !important;">
+			                    	<strong>#{msg.ORDER_DATE}</strong>
+			                    </th>			                    
+			                    
+			                    <th style="width: 13% !important; text-align: center !important; color: #fb4e1c !important; vertical-align:middle !important;">
+			                    	<strong>#{msg.LAST_STATUS}</strong>
+			                    </th>
+			                    
+			                    <th style="width: 14% !important; text-align: center !important; color: #fb4e1c !important; vertical-align:middle !important;">
+			                    	<strong>#{msg.PAYMENT_METHOD}</strong>
+			                    </th>
+			                    
+			                    <th style="width: 14% !important; text-align: center !important; color: #fb4e1c !important; vertical-align:middle !important;"></th>
+			                  </tr>
+			                  
+			                  <c:forEach items="${list}" var="ord" varStatus="vs">
+			                  <tr>
+			                    <td class="goods-page-image" style="text-align: center !important;">
+			                    	
+			                    	<TABLE width="100%">
+			                    		<th class="goods-page-ref-no" style="text-align: center !important; color: #fb4e1c !important;">#{msg.ITEM_NAME}</th>
+			                    		<th class="goods-page-ref-no" style="text-align: center !important; color: #fb4e1c !important;">#{msg.ITEM_PRICE}</th>
+			                    		<th class="goods-page-ref-no" style="text-align: center !important; color: #fb4e1c !important;">#{msg.QUANTITY}</th>
+			                    		<c:forEach items="#{ord.items}" var="item" varStatus="vsi">
+			                    		<tr>
+				                    		<td>#{item.itemName}</td>
+				                    		<td>#{item.itemPrice}</td>
+				                    		<td>#{item.quantity}</td>
+			                    		</tr>
+			                    	</c:forEach>
+			                    	</TABLE>
+			                    </td>
+			                    
+			                    <td class="goods-page-description" style="text-align: center !important;">
+			                      <h3><strong>#{ord.orderNumber}</strong></h3>
+			                    </td>
+			                    
+			                    <td class="goods-page-ref-no" style="text-align: center !important;">
+			                      #{ord.orderDate}
+			                    </td>
+			                    
+			                    <td class="goods-page-quantity" style="text-align: center !important;">			                      
+			                      	  <h:selectOneMenu value="#{ord.orderStatusId}" disabled="true">
+			                      	  	<f:selectItem itemValue="2" itemLabel="#{msg.ORDERED}"/>
+			                      	  	<f:selectItem itemValue="3" itemLabel="#{msg.ACCEPTED}"/>	
+			                      	  	<f:selectItem itemValue="4" itemLabel="#{msg.IN_THE_WAY}"/>	
+			                      	  	<f:selectItem itemValue="5" itemLabel="#{msg.DELIVERED}"/>	
+			                      	  	<f:selectItem itemValue="6" itemLabel="#{msg.REJECTED_ADMIN}"/>	
+			                      	  	<f:selectItem itemValue="7" itemLabel="#{msg.REFUESED_BY_CUSTOMER}"/>	
+			                      	  	<f:selectItem itemValue="8" itemLabel="#{msg.CANCELLED}"/>		
+			                      	  </h:selectOneMenu>	
+			                    </td>
+			                    
+			                    <td class="goods-page-quantity" style="text-align: center !important;">
+			                      	<h:selectOneMenu value="#{ord.paymentMethod}" disabled="true">
+			                      	  	<f:selectItem itemValue="2" itemLabel="#{msg.CHECK}"/>
+			                      	  	<f:selectItem itemValue="2" itemLabel="#{msg.CASH}"/>	
+			                      	</h:selectOneMenu>  	
+			                    </td>
+			                    
+			                    <td>
+			                    	<a class="btnc btnc-primary" id="myOrders" name="myOrders" href="tracking?id=#{ord.id}">#{msg.TRACKING}</a>
+			                    </td>
+			                    
+			                  </tr>
+			                </c:forEach>
+			                  
+			                </table>
+			                
+			                
+			                </div>
+			
+			                <div class="shopping-total">
+			                  <ul>
+			                    <li>
+			                      <em>Sub total</em>
+			                      <strong class="price"><span>$</span>47.00</strong>
+			                    </li>
+			                    <li>
+			                      <em>Shipping cost</em>
+			                      <strong class="price"><span>$</span>3.00</strong>
+			                    </li>
+			                    <li class="shopping-total-price">
+			                      <em>Total</em>
+			                      <strong class="price"><span>$</span>50.00</strong>
+			                    </li>
+			                  </ul>
+			                </div>
+			              </div>
+			              <button class="btn btn-default" type="submit">Continue shopping <i class="fa fa-shopping-cart"></i></button>
+			              <button class="btn btn-primary" type="submit">Checkout <i class="fa fa-check"></i></button>
+			            </div>
+			            </h:panelGroup>
+			            
+			            <h:panelGroup rendered="${list eq null}">
+			            	<h1 style="color:red"></h1>
+			            </h:panelGroup>
+			          </div>
+			        </div>
+		        
+		      </div>
+		    </div>
+		</ui:define>
+	</ui:composition>
+	</f:view>
+</html>

@@ -1,0 +1,287 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<f:view locale="ar">
+	<ui:composition template="/template/template.xhtml">
+		<ui:define name="title">${dto.itemName} | #{msg.VIEW_CART}</ui:define>
+
+		<ui:define name="content">
+			<div class="main">
+				<div class="container">
+					<div class="row margin-bottom-40">
+						
+						<!-- BEGIN CONTENT -->
+						<form action="confirm" method="post" id="myForm" name="myForm">
+						<div class="col-md-12 col-sm-12">
+												
+							<h1>#{msg.CHECKOUT}</h1>
+							
+							
+							<div class="panel-group checkout-page accordion scrollable" id="checkout-page">
+								<!-- BEGIN CONTENT -->
+
+								<!-- BEGIN DELIVERY DETAILS -->
+								<div id="shipping-address" class="panel panel-default">
+									<div class="panel-heading">
+										<h2 class="panel-title">
+											<a data-toggle="collapse" data-parent="#checkout-page" href="#shipping-address-content" class="accordion-toggle">
+												#{msg.STEP} 1 : #{msg.CONFIRM_ADDRESS} 
+											</a>
+										</h2>
+									</div>
+									<div id="shipping-address-content"
+										class="panel-collapse collapse">
+										<div class="panel-body row">
+											<div class="col-md-6 col-sm-6">
+												<div class="form-group">
+													<label for="fullName">#{msg.CUSTOMER_NAME}<span class="require">*</span></label> 
+													<input type="text" id="fullName" name="fullName" class="form-control" value="#{sessionScope.customer.fullName}" disabled="disabled"/>
+												</div>
+												
+												<div class="form-group">
+													<label for="email">#{msg.EMAIL}<span class="require">*</span></label> 
+													<input type="text" id="email" name="email" class="form-control" value="#{sessionScope.customer.email}" disabled="disabled"/>
+												</div>
+												
+												<div class="form-group">
+													<label for="phone">#{msg.PHONE}<span class="require">*</span></label>
+													<input type="text" id="phone" name="phone" class="form-control" value="#{sessionScope.customer.phone}" disabled="disabled"/>
+												</div>
+												
+												<div class="form-group">
+													<label for="mobile">#{msg.MOBILE}<span class="require">*</span></label> 
+													<input type="text" id="mobile" name="mobile" class="form-control" value="#{sessionScope.customer.mobile}" disabled="disabled"/>
+												</div>
+												
+												<!-- <div class="form-group">
+													<label for="fax-dd">Fax</label> <input type="text"
+														id="fax-dd" class="form-control" />
+												</div>
+												<div class="form-group">
+													<label for="company-dd">Company</label> <input type="text"
+														id="company-dd" class="form-control" />
+												</div> -->
+											</div>
+											
+											
+											<div class="col-md-6 col-sm-6">
+												<div class="form-group">
+													<label for="address">#{msg.ADDRESS}</label> 
+													<input type="text" id="address" name="address" value="#{sessionScope.customer.address}" class="form-control" />
+												</div>
+												
+												<div class="form-group">
+													<label for="countryName">#{msg.COUNTRY}<span class="require">*</span></label> 
+													<input type="hidden" id="countryId" name="countryId" value="#{sessionScope.customer.countryId}" class="form-control" />
+													<input type="text" id="countryName" name="countryName" class="form-control"
+																value="#{sessionScope.language eq null ? sessionScope.customer.countryNameEn : sessionScope.customer.countryNameAr}"/>
+												</div>
+												
+												<div class="form-group">
+													<label for="governorateName">#{msg.GOVERNERATE}</label> 
+													<input type="hidden" id="governorateId" name="governorateId" value="#{sessionScope.customer.governorateId}" class="form-control" />
+													<input type="text" id="governorateName" name="governorateName" class="form-control"
+																value="#{sessionScope.language eq null ? sessionScope.customer.governorateNameEn : sessionScope.customer.governorateNameAr}"/>
+												</div>
+												
+												<div class="form-group">
+													<label for="cityDistrictId">#{msg.CITY_DISTRICT} <span class="require">*</span></label>
+													<input type="hidden" id="cityDistrictId" name="cityDistrictId" value="#{sessionScope.customer.cityDistrictId}" class="form-control" />
+													<input type="text" id="governorateName" name="governorateName" class="form-control"
+																value="#{sessionScope.language eq null ? sessionScope.customer.cityDistrictNameEn : sessionScope.customer.cityDistrictNameAr}"/>
+												</div>
+												
+												
+											</div>
+											<div class="col-md-12">
+												<a class="btni btni-primary  pull-right" type="submit" id="button-shipping-address" data-toggle="collapse" data-parent="#checkout-page"
+															  data-target="#checkout-content">
+													#{msg.CONTINUE}
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- END DELIVERY DETAILS -->
+
+
+								<!-- BEGIN PAYMENT METHOD -->
+								<div id="checkout" class="panel panel-default">
+									<div class="panel-heading">
+										<h2 class="panel-title">
+											<a data-toggle="collapse" data-parent="#checkout-page" href="#checkout-content" class="accordion-toggle"> 
+												#{msg.STEP} 2: #{msg.CONFIRM_PAYMENT_METHOD}
+											</a>
+										</h2>
+									</div>
+									<div id="checkout-content" class="panel-collapse collapse in">
+										<div class="panel-body row">
+										
+											<div class="col-md-6 col-sm-6">
+												<h3>#{msg.PAYMENT_METHOD}</h3>
+												<div class="form-group">
+												<h:selectOneMenu class="form-control" style="color: black !important;" id="paymentMethod">
+													<f:selectItem itemValue="1" itemLabel="#{msg.CASH}"/>
+													<f:selectItem itemValue="2" itemLabel="#{msg.CHECK}"/>
+												</h:selectOneMenu>
+												</div>
+												
+												<div class="col-md-6 col-sm-6">
+												<a class="btni btni-primary" data-toggle="collapse" data-parent="#checkout-page" data-target="#confirm-content">
+													#{msg.CONTINUE}
+												</a>
+											</div>
+												
+											</div>
+
+										</div>
+									</div>
+								</div>
+								<!-- END PAYMENT METHOD -->
+
+
+
+
+
+								<!-- BEGIN CONFIRM ORDER -->
+								<div id="confirm" class="panel panel-default">
+									<div class="panel-heading">
+										<h2 class="panel-title">
+											<a data-toggle="collapse" data-parent="#checkout-page" href="#confirm-content" class="accordion-toggle"> 
+												#{msg.STEP} 3: #{msg.CONFIRM_ORDER} 
+											</a>
+										</h2>
+									</div>
+									<div id="confirm-content" class="panel-collapse collapse">
+										<div class="panel-body row">
+											<div class="col-md-12 clearfix">
+												<div class="table-wrapper-responsive">
+													<strong class="price" style="font-size: 11pt;">#{msg.SHIPPING_COST}</strong> 
+													<strong class="price" style="color: #cc3304 !important;"><span>#{sessionScope.currencyCode}</span>3.00</strong>
+													
+													<strong class="price" style="font-size: 11pt;">#{msg.TOTAL_PRICE}</strong>											
+													<strong class="price" style="color: #cc3304 !important;"><span>#{sessionScope.currencyCode}</span>#{sessionScope.totalPrice}</strong>
+													
+													<HR />
+													
+													<table>
+														<tr>
+															<th class="checkout-image">#{msg.ITEM_IMAGE}</th>
+															<th class="checkout-description">#{msg.DESCRIPTION}</th>
+															<th class="checkout-quantity">#{msg.QUANTITY}</th>
+															<th class="checkout-price">#{msg.ITEM_PRICE}</th>
+															<!-- <th class="checkout-total">#{msg.TOTAL}</th> -->
+														</tr>
+														
+														<c:forEach items="${list}" var="var" varStatus="vs">
+														<tr>
+															<td class="checkout-image">
+																<a href="javascript:;"><img src="UPLOADS/ITEM_LOGO/#{var.itemLogo}" alt="#{var.itemName}"/></a>
+															</td>
+															
+															<td class="checkout-description">
+																<h3>
+																	<a href="javascript:;"></a>
+																</h3>
+																<p>
+																	<strong>#{msg.ITEM}:- #{vs.count} &nbsp;&nbsp;</strong> #{var.itemName}
+																</p> 
+															</td>
+															
+															<td class="checkout-quantity">#{var.quantity}</td>
+															<td class="checkout-price"><strong><span>#{sessionScope.currencyCode}</span>#{var.itemPrice}</strong>
+															<INPUT type="text" value="#{var.orderId}" id="orderId" name="orderId"/>
+															<INPUT type="text" value="#{sessionScope.customer.id}" id="customerId" name="customerId"/></td>
+														</tr>
+														</c:forEach>
+														
+														<TR>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td width="100%">
+															<div class="clearfix"></div>
+                      <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" type="button">Confirm Order</button>
+                      <button class="btnc btnc-primary" data-toggle="modal" data-target="#cancelModal" type="button">Cancel</button>
+															</td>
+														</TR>
+													</table>
+													
+													
+												
+												</div>
+												
+												
+												
+												
+												
+											</div>										
+										</div>										
+									</div>
+								</div>
+
+
+								<!-- END CONFIRM ORDER -->
+								
+										<!-- Confirm Message -->
+												<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+												  <div class="modal-dialog" role="document">
+												    <div class="modal-content">
+												      <div class="modal-header">
+												        <h5 id="exampleModalLabel" style="color: olive; !important; font-size:large;">#{msg.CONFIRM_ORDER}</h5>
+												      </div>
+												      <div class="modal-body">
+												        <p style="color: red !important; font-size:large;">#{msg.SAVED_ORDER} : #{sessionScope.orderNumber}</p>
+												      </div>
+												     
+												      <div class="modal-footer">
+												      	<button type="submit" class="btn btn-primary" id="confirm" name="confirm">#{msg.CONFIRM_ORDER}</button>
+												        <button type="button" class="btn btn-secondary" data-dismiss="modal">#{msg.CLOSE}</button>
+												      </div>
+												    </div>
+												  </div>
+												</div>
+										<!-- End Confirm Message -->		
+												
+												
+												<!-- Cancel Message -->
+												<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel" aria-hidden="true">
+												  <div class="modal-dialog" role="document">
+												    <div class="modal-content">
+												    
+												      <div class="modal-header">
+												        <h5 id="cancelModalLabel" style="color: olive; !important; font-size:large;">#{msg.CANCEL_ORDER}</h5>
+												      </div>
+												     
+												     <div class="modal-body">
+												        <p style="color: red !important; font-size:large;">#{msg.CONFIRM_CANCEL_ORDER}</p>
+												      </div>
+												      
+												      <div class="modal-footer">
+												      	<button type="submit" class="btnc btnc-primary" id="cancel" name="cancel">#{msg.CANCEL_ORDER}</button>
+												        <button type="button" class="btn btn-secondary" data-dismiss="modal">#{msg.CLOSE}</button>
+												      </div>
+												    </div>
+												  </div>
+												</div>
+											<!-- End Cancel Message -->	
+							</div>
+						</div>
+					</form>
+					</div>
+					
+					<!-- END CONTENT -->
+				</div>
+			</div>
+		</ui:define>
+	</ui:composition>
+</f:view>
+</html>

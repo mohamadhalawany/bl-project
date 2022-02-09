@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:sf="http://www.springframework.org/tags/form"
+	xmlns:p="http://primefaces.org/ui">
+<head>
+	<style>
+.error {
+	color: #ff0000;
+	font-style: italic;
+	font-weight: bold;
+	font-size: 14pt;
+}
+		
+.btn-primary{
+	color:#FFFFFF;
+	background-color: #994c00;
+	border-color:#663300;
+	width: 200px;
+	font-size:1rem;
+	font-weight:400;
+	line-height:1.5;
+	border-radius: 5px;
+	box-shadow: inset 0 0 0 0 #202C45;
+    transition: ease-out 0.5s;
+    -webkit-transition: ease-out 0.5s;
+    -moz-transition: ease-out 0.5s;
+}
+
+.btn-primary:hover{
+	color:#fff;
+	background-color:#cc6600;
+	border-color:#0a58ca;
+	box-shadow: inset 0 0 0 0 #202C45;
+    transition: ease-out 0.5s;
+    -webkit-transition: ease-out 0.5s;
+    -moz-transition: ease-out 0.5s;
+}
+
+.form-control{
+	display:block;
+	width:100%;
+	padding:.375rem .75rem;
+	font-size:1rem;
+	font-weight:300;
+	line-height:1.0;
+	color:#212529;
+	background-color:#e6ecff;
+	background-clip:padding-box;
+	border:1px solid #ced4da;
+	-webkit-appearance:none;
+	-moz-appearance:none;
+	appearance:none;
+	border-radius: 10px;
+	transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out}
+	</style>
+
+<meta charset="UTF-8"/>
+<title>#{msg.LOGIN}</title>
+</head>
+<body dir="rtl">
+	<p align="center" class="error">
+		<h:outputText value="#{msg.REQUIRED_LOGIN}" rendered="#{request.getParameter('error') == null}"></h:outputText>
+		<h:outputText value="#{msg.INVALID_LOGIN}" rendered="#{request.getParameter('error') != null}"></h:outputText>	
+    </p>
+    
+    <form action="doLogin" method="POST">
+    	<div align="center">
+		<table>
+			<tr>
+				<td><H3><font color="#3973ac">#{msg.USER_NAME}</font><font color="red">*</font></H3></td>
+				<td><input type="text" class="form-control" name="userName"/></td>
+				<td></td>
+			</tr>
+			
+			<tr>
+				<td><H3><font color="#3973ac">#{msg.PASSWORD}</font><font color="red">*</font></H3></td>
+				<td><input type="password" class="form-control" name="password"/></td>
+				<td></td>
+			</tr>
+		</table>	
+		<table>	
+			<tr>
+				<td></td>
+				<td><INPUT type="submit" value="Login in" class="btn-primary"/></td>
+				<td></td>
+			</tr>
+		</table>
+	</div>
+    </form>
+		
+	
+</body>
+</html>

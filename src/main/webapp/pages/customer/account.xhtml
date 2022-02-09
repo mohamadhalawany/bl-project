@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+	<ui:composition template="/template/template.xhtml">
+		<ui:define name="title">${sessionScope.customer eq null ? msg.REGISTER : sessionScope.customer.fullName}</ui:define>
+		<ui:define name="content">
+			<div class="row margin-bottom-40">
+			<div class="col-md-9 col-sm-7">
+            <h1>${sessionScope.customer eq null ? msg.REGISTER : msg.PERSONAL_DATA}</h1>
+            <div class="content-form-page">
+            
+              <form role="form" class="form-horizontal form-without-legend" action="reg" method="post" onsubmit="return validateRequired()">
+              	<H2><h:outputLabel rendered="${saved ne null}" value="#{msg.SAVE_MSG}" style="color:red"/></H2>
+              	<H2><h:outputLabel rendered="${count ne null}" value="#{msg.CUSTOMER_EXISTS}" style="color:red"/></H2>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label" for="first-name">#{msg.FULL_NAME}<span class="require">*</span></label>
+                  <div class="col-lg-8">
+                    <input type="text" id="fullName" name="fullName" class="form-control" value="${dto.fullName}"/>
+                    <div id="fullNameDiv">
+					  <h:outputLabel value="#{msg.REQUIRED_FULL_NAME}" style="color:red;"/>
+					</div>			
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label class="col-lg-2 control-label" for="last-name">#{msg.EMAIL}<span class="require">*</span></label>
+                  <div class="col-lg-8">
+                    <input type="text" id="email" name="email" class="form-control" value="${dto.email}" onblur="validateEmail(this)"/>
+                    <div id="emailDiv">
+					  <h:outputLabel value="#{msg.NOT_VALID_EMAIL}" style="color:red;"/>
+					</div>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label class="col-lg-2 control-label" for="fax">#{msg.PASSWORD} <span class="require">*</span></label>
+                  <div class="col-lg-8">
+                    <input type="text" id="password" name="password" class="form-control"/>
+                    <div id="passwordDiv">
+					  <h:outputLabel value="#{msg.REQUIRED_PASSWORD}" style="color:red;"/>
+					</div>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label class="col-lg-2 control-label" for="email">#{msg.PHONE}</label>
+                  <div class="col-lg-8">
+                    <input type="text" id="phone" name="phone" class="form-control" value="${dto.phone}"/>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label" for="telephone">#{msg.MOBILE}</label>
+                  <div class="col-lg-8">
+                    <input type="text" id="mobile" name="mobile" class="form-control" value="${dto.mobile}"/>
+                  </div>
+                </div>                
+                
+                <div class="form-group">
+                  <label class="col-md-2 control-label">#{msg.CUSTOMER_TYPE}</label>
+                  <div class="col-md-8">
+                    <h:selectOneMenu class="form-control" value="${dto.customerType}" id="customerType">
+	                      <f:selectItem itemValue="1" itemLabel="#{msg.PERSON}"/>
+	                      <f:selectItem itemValue="2" itemLabel="#{msg.COMPANY}"/>
+                    </h:selectOneMenu>
+                  </div>
+                </div>                
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">#{msg.COUNTRY}</label>
+                  <div class="col-lg-8">
+                    <h:selectOneMenu class="form-control" value="#{dto.countryId}" id="countryId" onchange="govs()">
+	                      <f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
+	                      <f:selectItems value="${countryList}" var="cnt" itemLabel="#{sessionScope.language eq null ? cnt.valueEn : cnt.valueAr}" itemValue="${cnt.key}"/>
+                    </h:selectOneMenu>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label" for="message">#{msg.GOVERNERATE}</label>
+                  <div class="col-lg-8">
+                    <h:selectOneMenu class="form-control" value="#{dto.governorateId}" id="governorateId" onchange="cityDist()">
+	                      <f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
+	                      <f:selectItems value="${governorateList}" var="gov" itemLabel="#{sessionScope.language eq null ? gov.valueEn : gov.valueAr}" itemValue="${gov.key}"/>
+                    </h:selectOneMenu>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label" for="message">#{msg.CITY_DISTRICT}</label>
+                  <div class="col-lg-8">
+                  	<SELECT class="form-control" id="cityDistrictId" name="cityDistrictId" required="true">
+                  		<OPTION value="0" label="#{msg.CHOOSE}"/>
+                  		<c:forEach items="${cityDistrictList}" var="cd">
+                  			<OPTION value="${cd.key}" label="#{sessionScope.language eq null ? cd.valueEn : cd.valueAr}"/>
+                  		</c:forEach>
+                  	</SELECT>
+                    <!-- <h:selectOneMenu class="form-control" value="#{dto.cityDistrictId}" id="cityDistrictId" required="true">
+	                      <f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
+	                      <f:selectItems value="${cityDistrictList}" var="cd" itemLabel="#{sessionScope.language eq null ? cd.valueEn : cd.valueAr}" itemValue="${cd.key}"/>
+                    </h:selectOneMenu> -->
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label" for="message">#{msg.ADDRESS}</label>
+                  <div class="col-lg-8">
+                    <h:inputTextarea value="${dto.address}" cols="25" rows="5" class="form-control"/>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">#{msg.IS_TAX}</label>
+                  <div class="col-lg-8 checkbox-list">
+                    <label>
+                      <input type="checkbox" value="${dto.isTax}" name="isTax" id="isTax"/> 
+                    </label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-8 col-md-offset-2 padding-left-0 padding-top-20">
+                    <button class="btn btn-primary" type="submit" id="save">#{msg.SAVE}</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          </div>
+		</ui:define>
+	</ui:composition>	
+</html>

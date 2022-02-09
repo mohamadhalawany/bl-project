@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<f:view
+	locale="#{sessionScope.language eq null ? 'En' : sessionScope.language}">
+	<head>
+<!-- Required meta tags -->
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<title>Company Name | <ui:insert name="title" /></title>
+<!-- base:css -->
+<link rel="stylesheet"
+	href="../resources/cms/vendors/typicons/typicons.css" />
+<link rel="stylesheet"
+	href="../resources/cms/vendors/css/vendor.bundle.base.css" />
+<!-- endinject -->
+<!-- plugin css for this page -->
+<!-- End plugin css for this page -->
+<!-- inject:css -->
+<link rel="stylesheet"
+	href="../resources/cms/css/vertical-layout-light/style.css" />
+<!-- endinject -->
+<link rel="shortcut icon" href="../resources/cms/images/logo1.png" />
+
+
+<SCRIPT type="text/javascript">
+	function displayToday() {
+		const d = new Date();
+		var today = ("0" + d.getDate()).slice(-2) + "-"
+				+ ("0" + (d.getMonth() + 1)).slice(-2) + "-" + d.getFullYear()
+				+ " " + ("0" + d.getHours()).slice(-2) + ":"
+				+ ("0" + d.getMinutes()).slice(-2);
+		document.getElementById("todaya").innerHTML = today;
+	}
+	
+	
+	
+	function validateUserForm(){
+		var fullName = document.getElementById("fullName").value; 
+		var username = document.getElementById("username").value; 
+		var password = document.getElementById("password").value; 
+		var confirmPassword = document.getElementById("confirmPassword").value; 
+		
+		if(fullName == "") {
+			document.getElementById("fullNameMessage").innerHTML = "**Fill the Full Name please!";  
+		    document.getElementById("fullName").focus() ;
+		     return false;  
+		}else if(username == ""){
+			document.getElementById("usernameMessage").innerHTML = "**Fill the Username please!";  
+		    document.getElementById("username").focus() ;
+		     return false;
+		}else if(password == ""){
+			document.getElementById("passwordMessage").innerHTML = "**Fill the Password please!";  
+		    document.getElementById("password").focus() ;
+		     return false;
+		}    
+		
+		if(password != confirmPassword){
+			document.getElementById("confirmPasswordMessage").innerHTML = "**Password does not match!";  
+		    document.getElementById("confirmPassword").focus() ;
+		     return false;
+		}
+	}
+</SCRIPT>
+
+
+	</head>
+
+	<body onload="displayToday()">
+
+
+		<div class="container-scroller">
+			<ui:insert name="header">
+				<ui:include src="cms_header.xhtml"></ui:include>
+			</ui:insert>
+
+
+			<div class="container-fluid page-body-wrapper">
+				<ui:insert name="menu">
+					<ui:include src="cms_menu.xhtml"></ui:include>
+				</ui:insert>
+
+
+				
+
+
+						<div class="main-panel">
+	<div class="content-wrapper">
+					
+		<div class="row">
+							<ui:insert name="content">
+
+
+							</ui:insert>
+						</div>
+						</div>
+						</div>
+					</div>
+				</div>
+			
+
+		<script src="../resources/cms/vendors/js/vendor.bundle.base.js"></script>
+		<script src="../resources/cms/js/off-canvas.js"></script>
+		<script src="../resources/cms/js/hoverable-collapse.js"></script>
+		<script src="../resources/cms/js/template.js"></script>
+		<script src="../resources/cms/js/settings.js"></script>
+		<script src="../resources/cms/js/todolist.js"></script>
+		<script
+			src="../resources/cms/vendors/typeahead.js/typeahead.bundle.min.js"></script>
+		<script src="../resources/cms/vendors/select2/select2.min.js"></script>
+		<script src="../resources/cms/file-upload.js"></script>
+		<script src="../resources/cms/js/typeahead.js"></script>
+		<script src="../resources/cms/js/select2.js"></script>
+
+	</body>
+</f:view>
+</html>

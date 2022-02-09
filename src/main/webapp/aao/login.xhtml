@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <title>#{msg.CMS_LOGIN}</title>
+  <!-- base:css -->
+  <link rel="stylesheet" href="../resources/cms/vendors/typicons/typicons.css"/>
+  <link rel="stylesheet" href="../resources/cms/vendors/css/vendor.bundle.base.css"/>
+  <link rel="stylesheet" href="../resources/cms/css/vertical-layout-light/style.css"/>
+  <link rel="shortcut icon" href="../resources/cms/images/logo1.png" />
+</head>
+
+<body>
+  <div class="container-scroller">
+    <div class="container-fluid page-body-wrapper full-page-wrapper">
+      <div class="content-wrapper d-flex align-items-center auth px-0">
+        <div class="row w-100 mx-0">
+          <div class="col-lg-4 mx-auto">
+            <div class="auth-form-light text-left py-5 px-4 px-sm-5">
+              
+              <div class="brand-logo">
+                <img src="../resources/cms/images/logo1.png" alt="logo" height="30" width="50"/>
+              </div>
+              
+              <h4 style="color: #844fc1; font-size: 24pt !important;" class="font-weight-light">#{msg.LOGIN}</h4>
+              
+              <h6 class="font-weight-light">#{msg.ENTER}  #{msg.USERNAME}  #{msg.AND}  #{msg.PASSWORD}</h6>
+              
+              <h:panelGroup rendered="${invalidUser ne null}">
+              	<h6 class="font-weight-light" style="color: red !important;">#{msg.INVALID_LOGIN}</h6>
+              </h:panelGroup>
+              
+              <form class="pt-3" method="post" action="login">
+                
+                <div class="form-group">
+                  <input type="text" class="form-control form-control-lg" id="username" name="username" placeholder="Username"/>
+                </div>
+                
+                <div class="form-group">
+                  <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="Password"/>
+                </div>
+                
+                <div class="mt-3">
+                  <input type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" value="#{msg.LOGIN}" style="font-size: 16pt !important;"></input>
+                </div>
+                
+                <div class="my-2 d-flex justify-content-between align-items-center">
+                  <a href="#" class="auth-link text-black">#{msg.FORGOT_PASSWORD}</a>
+                </div>
+                
+              </form>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- content-wrapper ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+  <!-- base:js -->
+  <script src="../resources/cms/vendors/js/vendor.bundle.base.js"></script>
+  <!-- endinject -->
+  <!-- inject:js -->
+  <script src="../resources/cms/js/off-canvas.js"></script>
+  <script src="../resources/cms/js/hoverable-collapse.js"></script>
+  <script src="../resources/cms/js/template.js"></script>
+  <script src="../resources/cms/js/settings.js"></script>
+  <script src="../resources/cms/js/todolist.js"></script>
+  <!-- endinject -->
+</body>
+
+</html>

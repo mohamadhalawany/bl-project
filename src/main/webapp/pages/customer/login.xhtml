@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<HEAD>
+	<TITLE>#{msg.LOGIN}</TITLE>
+</HEAD>
+	<ui:composition template="/template/login_template.xhtml">
+		<ui:define name="title">#{msg.LOGIN}</ui:define>
+		<ui:define name="content">
+			<div class="main">
+				<div class="container">
+					<div class="row margin-bottom-40">
+						<div class="col-md-6 col-sm-6">
+				          	<h3>#{msg.MY_ACCOUNT}</h3>
+				            <form role="form" action="customerLogin" method="post">
+				            <h:outputText style="color: red; font-size: 16px;" value="#{msg.INVALID_CUSTOMER}" rendered="#{sessionScope.customerLoginFaildMsg eq '1'}"/>
+				            	<div class="form-group">
+					                <label for="email-login">#{msg.E_MAIL}</label>
+					                <input type="text" id="email" class="form-control" name="email"/>
+				                </div>
+				                
+				                <div class="form-group">
+				                	<label for="password-login">#{msg.PASSWORD}</label>
+				                    <input type="password" id="password" class="form-control" name="password"/>
+				                </div>
+				                
+				                <a href="javascript:;">#{msg.FORGOTTEN_PASSWORD}</a>
+				                <div class="padding-top-20">                  
+				                	<button class="btn btn-primary" type="submit">#{msg.LOGIN}</button>
+				                </div>
+				                <hr/>
+				            </form>
+				          </div>
+					</div>
+				</div>
+			</div>
+		</ui:define>
+	</ui:composition>	
+</html>

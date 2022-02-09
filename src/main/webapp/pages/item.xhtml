@@ -1,0 +1,238 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<f:view locale="ar">
+	<ui:composition template="/template/template.xhtml">
+		<ui:define name="title">${dto.itemName}</ui:define>
+		<ui:define name="content">
+			
+			<div class="main">
+      <div class="container">
+        <!-- <ul class="breadcrumb">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="">Store</a></li>
+            <li class="active">Cool green dress with red bell</li>
+        </ul> -->
+        <!-- BEGIN SIDEBAR & CONTENT -->
+        <div class="row margin-bottom-40">
+          <!-- BEGIN SIDEBAR -->
+          
+          <!-- END SIDEBAR -->
+
+          <!-- BEGIN CONTENT -->
+          <div class="col-md-9 col-sm-7">
+            <div class="product-page">
+              <div class="row">
+                <div class="col-md-6 col-sm-6">
+                  <div class="product-main-image">
+                  	<h:graphicImage url="UPLOADS/ITEM_LOGO/${dto.itemLogo}"  height="180" width="180" class="img-responsive"/>
+                  </div>
+                  <!-- <div class="product-other-images">
+                    <a href="resources/assets/pages/img/products/model3.jpg" class="fancybox-button" rel="photos-lib"><img alt="Berry Lace Dress" src="assets/pages/img/products/model3.jpg"/></a>
+                    <a href="resources/assets/pages/img/products/model4.jpg" class="fancybox-button" rel="photos-lib"><img alt="Berry Lace Dress" src="assets/pages/img/products/model4.jpg"/></a>
+                    <a href="resources/assets/pages/img/products/model5.jpg" class="fancybox-button" rel="photos-lib"><img alt="Berry Lace Dress" src="assets/pages/img/products/model5.jpg"/></a>
+                  </div> -->
+                </div>
+                
+                <FORM action="addToCart">
+                	<INPUT type="hidden" value="${dto.itemPrice}" id="itemPrice" name="itemPrice"/>
+                	<INPUT type="hidden" value="${dto.id}" id="itemId" name="itemId"/>
+                	<INPUT type="hidden" value="${dto.currencyId}" id="currencyId" name="currencyId"/><br/>
+	                <div class="col-md-6 col-sm-6">
+	                  <h1>${dto.itemName}</h1>
+	                  <div class="price-availability-block clearfix">
+	                    <div class="price">
+	                      <strong><span></span>${dto.itemPrice} ${dto.internationalCode}</strong>
+	                      <em>#{sessionScope.language eq null ? dto.currencyName : dto.currencyNameAr}<span></span></em>
+	                    </div>
+	                    
+	                  </div>
+	                  <div class="description">
+	                    <p>${dto.description}</p>
+	                  </div>
+                                    
+	                  <div class="product-page-cart">
+	                    <div class="product-quantity">
+	                         #{msg.QUANTITY}
+	                        <input id="quantity" type="text" value="#{param['quantity'] eq null ? '1' : param['quantity']}" readonly="readonly" class="form-control input-sm" name="quantity"/>
+	                    </div>
+	                    <button class="btn btn-primary" type="submit">#{msg.ADD_TO_CART}</button> 
+	                    <H3><h:outputLabel value="#{msg.SAVE_MSG}" rendered="${saved eq '1'}" style="color:red"/></H3>
+	                  </div>
+                  
+                </div>
+                </FORM>
+
+                <div class="product-page-content">
+                  <ul id="myTab" class="nav nav-tabs"><!-- CLASS ACTIVE WHEN CLICKS ON THE LINK -->
+                    <li><a href="#Description" data-toggle="tab" class="active">#{msg.OVERVIEW}</a></li>
+                    <li><a href="#Information" data-toggle="tab" class="active">#{msg.SPECIFICATION}</a></li>
+                    <li><a href="#installationGuide" data-toggle="tab" class="active">#{msg.INISTALLATION_GUIDE}</a></li>
+                    <li><a href="#shipping" data-toggle="tab" class="active">#{msg.SHIPPING}</a></li>
+                    <li><a href="#Reviews" data-toggle="tab" class="active">#{msg.REVIEWS} (${countReviews})</a></li>
+                  </ul>
+                  
+                  <!-- TABS -->
+                  <div id="myTabContent" class="tab-content">
+                    
+                    <!-- OVERVIEW TAB -->
+                    <div class="tab-pane fade" id="Description">
+                      <p>${dto.overview}</p>
+                    </div>
+                    
+                    <!-- SPECIFICATION TAB -->
+                    <div class="tab-pane fade" id="Information">
+                      <table class="datasheet">
+                        <tr>
+                          <th colspan="2"><h:outputText style="color: red;" value="#{msg.FEATURES}"/> </th>
+                        </tr>
+                        <tr>
+                          <td class="datasheet-features-type">#{msg.DEPTH}</td>
+                          <td>${itemSpecificationDTO.depth} </td>
+                        </tr>
+                        <tr>
+                          <td class="datasheet-features-type">#{msg.HEIGHT}</td>
+                          <td>${itemSpecificationDTO.height}</td>
+                        </tr>
+                        <tr>
+                          <td class="datasheet-features-type">#{msg.WIDTH}</td>
+                          <td>${itemSpecificationDTO.width}</td>
+                        </tr>
+                        <tr>
+                          <td class="datasheet-features-type">#{msg.WARRANTY}</td>
+                          <td>${itemSpecificationDTO.warranty}</td>
+                        </tr>
+                        <tr>
+                          <td class="datasheet-features-type">#{msg.COLOR}</td>
+                          <td>
+                          	<h:outputText value="#{sessionScope.language eq '1'  ? itemSpecificationDTO.colorNameEn : itemSpecificationDTO.colorNameAr}" />                          	
+						</td>
+                        </tr>
+                        <tr>
+                          <td class="datasheet-features-type">#{msg.INCLUDED}</td>
+                          <td>${itemSpecificationDTO.included}</td>
+                        </tr>
+                        <tr>
+                          <td class="datasheet-features-type">#{msg.MANUFACTURING_TIME}</td>
+                          <td>${itemSpecificationDTO.manufacturingTime}</td>
+                        </tr>
+                        <tr>
+                          <td class="datasheet-features-type">#{msg.MATERIAL}</td>
+                          <td>${itemSpecificationDTO.material}</td>
+                        </tr>
+                      </table>
+                    </div>
+                    
+                    <!-- INISTALLATION_GUIDE TAB -->
+                    <div class="tab-pane fade" id="installationGuide">
+                      <p>${dto.overview}</p>
+                    </div>
+                    
+                    <!-- SHIPPING TAB -->
+                    <div class="tab-pane fade" id="shipping">
+                      <p>${dto.overview}</p>
+                    </div>
+                    
+                    <!-- REVIEWS TAB -->
+                    <div class="tab-pane fade in active" id="Reviews">
+                      <c:forEach items="${reviewsList}" var="review">
+	                      <div class="review-item clearfix">
+	                        <div class="review-item-submitted">
+	                          <strong>#{review.customerName}</strong>
+	                          <em>#{review.createdDate}</em>
+	                          <div class="rateit" data-rateit-value="5" data-rateit-ispreset="true" data-rateit-readonly="true"></div>
+	                        </div>                                              
+	                        <div class="review-item-content">
+	                            <p>#{review.customerComment}</p>
+	                        </div>
+	                      </div>
+                      </c:forEach>
+                      <h:panelGrid >
+				<h:panelGroup>
+					<h:panelGroup>
+						<h:panelGroup rendered="${isLast eq true}"><a href="#"><p:outputLabel value="#{msg.NEXT}"/> </a></h:panelGroup>
+						<h:panelGroup rendered="${isLast eq false}"><a href="nextReview?id=${dto.id}"><p:outputLabel value="#{msg.NEXT}"/> </a></h:panelGroup>
+						     
+						<h:panelGroup rendered="${isFirst eq true}"><a href="#" ><p:outputLabel value="#{msg.PREVIOUS}"/></a></h:panelGroup> 
+						<h:panelGroup rendered="${isFirst eq false}"><a href="previousReview?id=${dto.id}" ><p:outputLabel value="#{msg.PREVIOUS}"/></a></h:panelGroup>
+					</h:panelGroup>
+				</h:panelGroup>
+			</h:panelGrid>
+
+                      <!-- BEGIN FORM-->
+                      <form action="saveReview" class="reviews-form" role="form">
+                      	<INPUT type="text" value="#{param['id']}" name="id"/>
+                      	<h:outputText style="color: red; font-size: 16px;" value="#{msg.REQUIRED_REVIEW_DATA}" rendered="#{param['requiredReviewData'] eq '1'}"/>
+                      	<h:outputText style="color: red; font-size: 16px;" value="#{msg.SAVE_MSG}" rendered="#{param['savedReview'] eq '1'}"/>
+                        <h2>#{msg.WRITE_REVIEW}</h2>
+                        <div class="form-group">
+                          <label for="name">#{msg.CUSTOMER_NAME} <span class="require">*</span></label>
+                          <input type="text" class="form-control" id="customerName" name="customerName"/>
+                        </div>
+                        <div class="form-group">
+                          <label for="email">#{msg.EMAIL}</label>
+                          <input type="text" class="form-control" id="customerEmail" name="customerEmail" onblur="validatEmail(this)"/>
+                        </div>
+                        <div class="form-group">
+                          <label for="review">#{msg.REVIEWS} <span class="require">*</span></label>
+                          <textarea class="form-control" rows="8" id="review" name="customerComment"></textarea>
+                        </div>
+                        <div class="padding-top-20">                  
+                          <button type="submit" class="btn btn-primary">#{msg.SEND}</button>
+                        </div>
+                      </form>
+                      <h:panelGrid style="width:100% !important; background-color:#a9bcd0" width="100%" columns="14">
+				
+			</h:panelGrid>
+                      <!-- END FORM--> 
+                    </div>                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- END CONTENT -->
+        </div>
+        <!-- END SIDEBAR & CONTENT -->
+
+        <!-- BEGIN SIMILAR PRODUCTS -->
+        <div class="row margin-bottom-40">
+          <div class="col-md-12 col-sm-12">
+            <h2>#{msg.RELATED_PRODUCTS}</h2>
+            <div class="owl-carousel owl-carousel4">
+            
+            <c:forEach items="${relatedItems}" var="item">
+              <div>
+                <div class="product-item">
+                  <div class="pi-img-wrapper">
+                    <img src="UPLOADS/ITEM_LOGO/${item.itemLogo}" class="img-responsive" alt="Berry Lace Dress"/>
+                    <div>
+                      <a href="UPLOADS/ITEM_LOGO/${item.itemLogo}" class="btn btn-default fancybox-button">#{msg.VIEW}</a>                      
+                    </div>
+                  </div>
+                  <h3><a href="shop-item.html">#{item.itemName}</a></h3>
+                  <div class="pi-price">#{item.itemPrice}</div>
+                  <a href="javascript:;" class="btn btn-default add2cart">#{msg.ADD_TO_CART}</a>
+                  <div class="sticker sticker-new"></div>
+                </div>
+              </div>              
+              </c:forEach>
+              
+            </div>
+          </div>
+        </div>
+        <!-- END SIMILAR PRODUCTS -->
+      </div>
+    </div>
+			
+		</ui:define>
+	</ui:composition>
+</f:view>
+</html>
