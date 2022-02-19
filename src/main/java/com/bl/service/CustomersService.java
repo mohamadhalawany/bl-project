@@ -1,5 +1,8 @@
 package com.bl.service;
 
+import java.util.List;
+import java.util.Map;
+
 import com.bl.dto.CustomersDTO;
 import com.bl.dto.OrderDTO;
 import com.bl.dto.OrderItemDTO;
@@ -12,4 +15,9 @@ public interface CustomersService {
 	public Long save(CustomersDTO dto) ;
 	public Long countByEmail(String email) ;
 	public Long saveOrder(OrderDTO order , OrderItemDTO orderItem , OrderStatusDTO orderStatus) ;
+	public List<CustomersDTO>  findAll() ;
+	public List<CustomersDTO> next() ;
+	public List<CustomersDTO> previous() ;
+	public List<CustomersDTO> search(CustomersDTO dto , int language) ;
+	public Map<String, Object> metaData() ;
 }

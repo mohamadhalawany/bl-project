@@ -198,6 +198,7 @@ public class CustomersController extends BaseController{
 		ModelAndView mv = new ModelAndView() ;
 		HttpSession session = request.getSession() ;
 		session.setAttribute("company" , new CompanyProfile());
+		
 		String address = request.getParameter("address") ;
 		Long cityDistrictId = Long.parseLong(request.getParameter("cityDistrictId")) ;
 		Integer customerType = Integer.parseInt(request.getParameter("customerType")) ;

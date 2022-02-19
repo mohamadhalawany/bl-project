@@ -74,7 +74,7 @@ public class LoginUserServiceImpl implements LoginUserService {
 	@Override
 	public List<LoginUserDTO> findAll() {
 		List<LoginUserDTO> list = null ;
-		userPage = repo.findAll(PageRequest.of(0 , 10)) ;
+		userPage = repo.findAll(PageRequest.of(0 , 3)) ;
 		userList = userPage.getContent() ;
 		if(userList != null && !userList.isEmpty()) {
 			list = new ArrayList<LoginUserDTO>() ;
@@ -108,7 +108,7 @@ public class LoginUserServiceImpl implements LoginUserService {
 	@Override
 	public List<LoginUserDTO> previousPage() {
 		List<LoginUserDTO> list = new ArrayList<LoginUserDTO>() ;
-		if(userPage.hasNext()) {
+		if(userPage.hasPrevious()) {
 			userPage = repo.findAll(userPage.previousPageable()) ;
 			userList = userPage.getContent() ;
 			for(LoginUserEntity entity : userList) {
@@ -164,9 +164,9 @@ public class LoginUserServiceImpl implements LoginUserService {
 
 
 	@Override
-	public List<LoginUserDTO> searchByUsernameOrFullName(String username, String fullName) {
+	public List<LoginUserDTO> searchByUsernameOrFullName(String username , String fullName) {
 		List<LoginUserDTO> list = null ;
-		List<LoginUserEntity> entityList = repo.searchByUsernameOrFullName(username, fullName) ;
+		List<LoginUserEntity> entityList = repo.searchByUsernameOrFullName(username , fullName) ;
 		if(entityList != null && !entityList.isEmpty()) {
 			list = new ArrayList<LoginUserDTO>() ;
 			for(LoginUserEntity entity : entityList) {
@@ -177,6 +177,14 @@ public class LoginUserServiceImpl implements LoginUserService {
 		return list ;
 	}
 
+	
+	
+	
+	@Override
+	public void delete(LoginUserDTO dto) {
+		LoginUserEntity entity = HelperUtils.convertDtoToEntity(dto, LoginUserEntity.class) ;
+		repo.delete(entity) ;
+	}
 
 	public Page<LoginUserEntity> getUserPage() {
 		return userPage;
@@ -195,10 +203,5 @@ public class LoginUserServiceImpl implements LoginUserService {
 
 	public void setUserList(List<LoginUserEntity> userList) {
 		this.userList = userList;
-	}
-
-
-	
-
-	
+	}	
 }

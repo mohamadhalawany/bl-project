@@ -1,9 +1,14 @@
 package com.bl.service.impl; 
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.bl.DomainValues;
@@ -34,6 +39,11 @@ public class CustomersServiceImpl implements CustomersService {
 	
 	@Autowired
 	private OrderService orderService ;
+	
+	private Page<CustomersEntity> page ;
+	private List<CustomersEntity> entityList ;
+	
+	
 	
 	@Override
 	public CustomersDTO findByEmailAndPassword(String email, String password) {
@@ -103,12 +113,126 @@ public class CustomersServiceImpl implements CustomersService {
 		orderRequestService.saveOrderStatus(orderStatus) ;// save order status 
 		
 		OrderDTO newOrder = orderService.findById(orderId) ;
-		System.err.println(orderId + " nnnnnnnnnneeeeeeeeeeeeeewwwwwwwwwwwwww");
+
 		Long orderNumber = 0L ;
 		if(newOrder != null) {
 			orderNumber = newOrder.getOrderNumber() ;
 		}
 		return orderNumber ;
 	}
+
+	@Override
+	public List<CustomersDTO> findAll() {
+		List<CustomersDTO> list = null ;
+		page = repo.findAll(PageRequest.of(0 , 5)) ;
+		entityList = page.getContent() ;
+		
+		if(entityList != null && !entityList.isEmpty()) {
+			list = new ArrayList<CustomersDTO>() ;
+			for(CustomersEntity entity : entityList) {
+				CustomersDTO dto = HelperUtils.convertEntityToDto(entity , CustomersDTO.class) ;
+				list.add(dto) ;
+			}
+		}
+		return list ;
+	}
+	
+	
+
+	@Override
+	public List<CustomersDTO> next() {
+		List<CustomersDTO> list = null ;
+		
+		if(page.hasNext()) {
+			list = new ArrayList<CustomersDTO>() ;
+			page = repo.findAll(page.nextPageable()) ;
+			entityList = page.getContent() ;
+			
+			for(CustomersEntity entity : entityList) {
+				CustomersDTO dto = HelperUtils.convertEntityToDto(entity , CustomersDTO.class) ;
+				list.add(dto) ;
+			}
+		}
+		return list ;
+	}
+
+	@Override
+	public List<CustomersDTO> previous() {
+		List<CustomersDTO> list = null ;
+		
+		if(page.hasNext()) {
+			list = new ArrayList<CustomersDTO>() ;
+			page = repo.findAll(page.previousPageable()) ;
+			entityList = page.getContent() ;
+			
+			for(CustomersEntity entity : entityList) {
+				CustomersDTO dto = HelperUtils.convertEntityToDto(entity , CustomersDTO.class) ;
+				list.add(dto) ;
+			}
+		}
+		return list ;
+	}
+
+	@Override
+	public Map<String, Object> metaData() {
+		Map<String, Object> metaData = new HashMap<String, Object>() ;
+		if(page != null) {
+		    metaData.put("currentPage", page.getNumber() + 1);
+		    metaData.put("total", page.getTotalElements());
+		    metaData.put("totalPages", page.getTotalPages());
+		    metaData.put("isFirst", page.isFirst());
+		     metaData.put("isLast", page.isLast());
+		}		
+		return metaData;
+	}
+
+
+
+	@Override
+	public List<CustomersDTO> search(CustomersDTO dto , int language) {
+		List<CustomersDTO> list = null ;
+		page = repo.search(dto.getEmail() , dto.getFullName() , dto.getCustomerType() , dto.getCityDistrictId() , dto.getGovernorateId() , dto.getCountryId() , 
+				PageRequest.of(0 , 5)) ;
+		
+		List<CustomersEntity> entityList = page.getContent() ;
+		
+		if(entityList != null && !entityList.isEmpty()) {
+			list = new ArrayList<CustomersDTO>() ;
+			
+			for(CustomersEntity entity : entityList) {				
+				CustomersDTO customer = HelperUtils.convertEntityToDto(entity , CustomersDTO.class) ;
+				if(customer.getCustomerType() == 1) {
+					customer.setCustomerTypeValue(HelperUtils.getValueFromBundle("PERSON" , language));
+				}else {
+					customer.setCustomerTypeValue(HelperUtils.getValueFromBundle("COMPANY" , language));
+				}
+				list.add(customer) ;
+			}
+		}			
+		return list ;
+	}
+	
+	
+	
+
+	public Page<CustomersEntity> getPage() {
+		return page;
+	}
+
+	public void setPage(Page<CustomersEntity> page) {
+		this.page = page;
+	}
+
+	public List<CustomersEntity> getEntityList() {
+		return entityList;
+	}
+
+	public void setEntityList(List<CustomersEntity> entityList) {
+		this.entityList = entityList;
+	}
+	
+	
+	
+	
 
 }

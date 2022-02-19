@@ -6,38 +6,29 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
-<f:view
-	locale="#{sessionScope.language eq null ? 'En' : sessionScope.language}">
+<f:view 	locale="#{sessionScope.language eq null ? 'En' : sessionScope.language}">
 	<head>
-<!-- Required meta tags -->
+
 <meta charset="utf-8" />
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
 <title>Company Name | <ui:insert name="title" /></title>
-<!-- base:css -->
-<link rel="stylesheet"
-	href="../resources/cms/vendors/typicons/typicons.css" />
-<link rel="stylesheet"
-	href="../resources/cms/vendors/css/vendor.bundle.base.css" />
-<!-- endinject -->
-<!-- plugin css for this page -->
-<!-- End plugin css for this page -->
-<!-- inject:css -->
-<link rel="stylesheet"
-	href="../resources/cms/css/vertical-layout-light/style.css" />
-<!-- endinject -->
+
+<link rel="stylesheet" href="../resources/cms/vendors/typicons/typicons.css" />
+<link rel="stylesheet" href="../resources/cms/vendors/css/vendor.bundle.base.css" />
+<link rel="stylesheet" href="../resources/cms/css/vertical-layout-light/style.css" />
 <link rel="shortcut icon" href="../resources/cms/images/logo1.png" />
 
 
 <SCRIPT type="text/javascript">
-	function displayToday() {
+	/* function displayToday() {
 		const d = new Date();
 		var today = ("0" + d.getDate()).slice(-2) + "-"
 				+ ("0" + (d.getMonth() + 1)).slice(-2) + "-" + d.getFullYear()
 				+ " " + ("0" + d.getHours()).slice(-2) + ":"
 				+ ("0" + d.getMinutes()).slice(-2);
 		document.getElementById("todaya").innerHTML = today;
-	}
+	} */
 	
 	
 	
@@ -46,7 +37,7 @@
 		var username = document.getElementById("username").value; 
 		var password = document.getElementById("password").value; 
 		var confirmPassword = document.getElementById("confirmPassword").value; 
-		
+				
 		if(fullName == "") {
 			document.getElementById("fullNameMessage").innerHTML = "**Fill the Full Name please!";  
 		    document.getElementById("fullName").focus() ;
@@ -67,12 +58,81 @@
 		     return false;
 		}
 	}
+	
+	
+	function validatEmail(email){
+	   	 var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+	   	 if(email.value.match(mailformat)){
+	   		document.getElementById("emailMessage").innerHTML = "";  
+	       	 return true;
+	   	 }else {
+	       	document.getElementById("emailMessage").innerHTML = "**You have entered an invalid email address!";  
+		    document.getElementById("email").focus() ;
+	       	 return false;
+	   	 }
+    }
+	
+	
+	function govs(){
+   	 	 var id = document.getElementById("countryId").value ;
+		 document.location.href="/bl/aao/govs?countryId=" + id ; 
+		 document.getElementById("countryId").value = id ;
+    }
+    
+    function cityDist(){
+   	 	 var id = document.getElementById("governorateId").value ;
+		 document.location.href="/bl/aao/cityDist?governorateId=" + id ;
+		 document.getElementById("governorateId").value = id ;
+    }
+    
+    
+    
+    
+    function govsSearch(){
+  	 	 var id = document.getElementById("countryId").value ;
+		 document.location.href="/bl/aao/govsSearch?countryId=" + id ; 
+		 document.getElementById("countryId").value = id ;
+   }
+   
+   function cityDistSearch(){
+  	 	 var id = document.getElementById("governorateId").value ;
+		 document.location.href="/bl/aao/cityDistSearch?governorateId=" + id ;
+		 document.getElementById("governorateId").value = id ;
+   }
+    
+    
+    function validateCustomerForm(){
+		var fullName = document.getElementById("fullName").value; 
+		var email = document.getElementById("email").value; 		
+		var password = document.getElementById("password").value; 
+		var confirmPassword = document.getElementById("confirmPassword").value; 
+				
+		if(fullName == "") {
+			document.getElementById("fullNameMessage").innerHTML = "**Fill the Full Name please!";  
+		    document.getElementById("fullName").focus() ;
+		     return false;  
+		}else if(email == ""){
+			document.getElementById("emailMessage").innerHTML = "**Fill the Email please!";  
+		    document.getElementById("email").focus() ;
+		     return false;
+		}else if(password == ""){
+			document.getElementById("passwordMessage").innerHTML = "**Fill the Password please!";  
+		    document.getElementById("password").focus() ;
+		     return false;
+		}    
+		
+		if(password != confirmPassword){
+			document.getElementById("confirmPasswordMessage").innerHTML = "**Password does not match!";  
+		    document.getElementById("confirmPassword").focus() ;
+		     return false;
+		} 
+	}
 </SCRIPT>
 
 
 	</head>
 
-	<body onload="displayToday()">
+	<body>
 
 
 		<div class="container-scroller">
@@ -111,8 +171,7 @@
 		<script src="../resources/cms/js/template.js"></script>
 		<script src="../resources/cms/js/settings.js"></script>
 		<script src="../resources/cms/js/todolist.js"></script>
-		<script
-			src="../resources/cms/vendors/typeahead.js/typeahead.bundle.min.js"></script>
+		<script src="../resources/cms/vendors/typeahead.js/typeahead.bundle.min.js"></script>
 		<script src="../resources/cms/vendors/select2/select2.min.js"></script>
 		<script src="../resources/cms/file-upload.js"></script>
 		<script src="../resources/cms/js/typeahead.js"></script>

@@ -76,7 +76,7 @@
                   <div class="col-lg-8">
                     <h:selectOneMenu class="form-control" value="#{dto.countryId}" id="countryId" onchange="govs()">
 	                      <f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
-	                      <f:selectItems value="${countryList}" var="cnt" itemLabel="#{sessionScope.language eq null ? cnt.valueEn : cnt.valueAr}" itemValue="${cnt.key}"/>
+	                      <f:selectItems value="${countryList}" var="cnt" itemLabel="#{sessionScope.language eq null ? cnt.valueEn : cnt.valueAr}" itemValue="#{cnt.key}"/>
                     </h:selectOneMenu>
                   </div>
                 </div>

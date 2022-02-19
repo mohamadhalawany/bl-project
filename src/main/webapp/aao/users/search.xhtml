@@ -97,7 +97,7 @@
                           </td>
                           
                           <td>
-                            <IMG alt="" src="../resources/cms/images/delete.png" />
+                            <a href="delete?id=#{user.id}"><IMG alt="" src="../resources/cms/images/delete.png" style="height: 25px !important;"/></a>
                           </td>
                         
                         </tr>        
@@ -105,6 +105,28 @@
                                         
                       </tbody>
                     </table>
+                    <br/>
+                    <p class="card-description">
+                    #{msg.FOUND} <code>${totalIUsers} #{msg.USERS}</code>
+                    #{msg.PAGES} <code>${currentPage}</code> #{msg.OF} <code>${totalPages}</code> 
+                  	</p>
+                  	
+                  	<br/>
+                  	
+                  	<h:panelGroup rendered="${isFirst eq false}">
+                    	<a href="previous" class="previous">&laquo; Previous</a> 
+                    </h:panelGroup>
+                    <h:panelGroup rendered="${isFirst eq true}">
+                    	<a href="#" class="previous">Previous</a> 
+                    </h:panelGroup>
+                    
+                    <h:panelGroup rendered="${isLast eq false}">
+						<a href="next" class="next" style="width: 120px !important;">Next &raquo;</a>
+					</h:panelGroup>
+					<h:panelGroup rendered="${isLast eq true}">
+						<a href="#" class="next" style="width: 120px !important;">Next</a>
+					</h:panelGroup>
+                    
                   </div>
                 </div>
               </div>

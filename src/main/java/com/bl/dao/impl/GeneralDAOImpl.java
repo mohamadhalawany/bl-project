@@ -19,6 +19,7 @@ public class GeneralDAOImpl implements GeneralDAO {
 	
 	private JdbcTemplate temp ;
 	
+	
 	public GeneralDAOImpl(DataSource ds) {
 		temp = new JdbcTemplate(ds) ;
 	}

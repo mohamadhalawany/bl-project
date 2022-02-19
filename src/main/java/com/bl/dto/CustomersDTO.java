@@ -7,6 +7,7 @@ public class CustomersDTO {
 	
 	private Long id;
 	private String address;
+	private Integer isBlocked ;
 	private Long cityDistrictId;
 	private Integer createdBy;
 	private Date createdDate;
@@ -23,8 +24,14 @@ public class CustomersDTO {
 	private Long countryId ;
 	private Long governorateId ;
 	
-	private String countryNameAr , countryNameEn , iso , governorateNameAr , governorateNameEn , cityDistrictNameAr , cityDistrictNameEn ;
-	
+	private String countryNameAr ; 
+	private String countryNameEn ;
+	private String iso ;
+	private String governorateNameAr ;
+	private String governorateNameEn ;
+	private String cityDistrictNameAr ;
+	private String cityDistrictNameEn ;
+	private String customerTypeValue ;
 	
 	
 	public Long getId() {
@@ -165,4 +172,17 @@ public class CustomersDTO {
 	public void setCityDistrictNameEn(String cityDistrictNameEn) {
 		this.cityDistrictNameEn = cityDistrictNameEn;
 	}
+	public Integer getIsBlocked() {
+		return isBlocked;
+	}
+	public void setIsBlocked(Integer isBlocked) {
+		this.isBlocked = isBlocked;
+	}
+	public String getCustomerTypeValue() {
+		return customerTypeValue;
+	}
+	public void setCustomerTypeValue(String customerTypeValue) {
+		this.customerTypeValue = customerTypeValue;
+	}
+
 }

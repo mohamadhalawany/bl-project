@@ -22,6 +22,9 @@ public class CustomersEntity implements Serializable {
 
 	@Column(name="ADDRESS")
 	private String address;
+	
+	@Column(name="IS_BLOCKED")
+	private Integer isBlocked ;
 
 	@Column(name="CITY_DISTRICT_ID")
 	private Long cityDistrictId;
@@ -77,6 +80,14 @@ public class CustomersEntity implements Serializable {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	
+	public Integer getIsBlocked() {
+		return isBlocked;
+	}
+
+	public void setIsBlocked(Integer isBlocked) {
+		this.isBlocked = isBlocked;
 	}
 
 	public Long getCityDistrictId() {

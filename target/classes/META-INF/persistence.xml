@@ -17,7 +17,11 @@
 		<class>com.bl.entity.OrderStatusEntity</class>
 		<class>com.bl.entity.OrderEntity</class>
 		<class>com.bl.entity.cms.LoginUserEntity</class>
-		
+		<class>com.bl.entity.CitiesDistrictEntity</class>
+		<class>com.bl.entity.CountryEntity</class>
+		<class>com.bl.entity.CurrencyEntity</class> 
+		<class>com.bl.entity.GovernorateEntity</class>
+		 
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/stock"/>
 			<property name="javax.persistence.jdbc.user" value="root"/>

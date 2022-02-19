@@ -18,6 +18,7 @@ public interface LoginUserService {
 	public int saveUser(LoginUserDTO dto) ;
 	public int countByUsername(String username) ;
 	public void updateActiveAndInactive(Integer id , Integer flag) ;
+	public void delete(LoginUserDTO dto) ;
 	
 	public Map<String, Object> metaData() ;
 	

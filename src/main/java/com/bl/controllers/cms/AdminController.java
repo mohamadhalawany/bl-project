@@ -1,5 +1,6 @@
 package com.bl.controllers.cms;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +25,8 @@ public class AdminController {
 	private String usersPage = "users/users" ;
 	private String searchPage = "users/search" ;
 	
+	List<LoginUserDTO> list = new ArrayList<LoginUserDTO>() ;
+	
 	@Autowired
 	private LoginUserService service ;
 	
@@ -38,6 +42,30 @@ public class AdminController {
 			mv.setViewName(loginPage) ;
 		}
 		
+		return mv ;
+	}
+	
+	
+	
+	
+	@RequestMapping("aao/search")
+	public ModelAndView search(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView() ;
+		HttpSession session = request.getSession() ;
+		if(session.getAttribute("user") != null) {
+			list = service.findAll() ;
+			Map<String , Object> metaData = service.metaData() ;
+			
+			mv.addObject("list" , list) ;		
+			mv.addObject("currentPage" , metaData.get("currentPage")) ;
+			mv.addObject("totalIUsers" , list.size()) ;
+			mv.addObject("totalPages" , metaData.get("totalPages")) ;
+			mv.addObject("isFirst" , metaData.get("isFirst")) ;
+			mv.addObject("isLast" , metaData.get("isLast")) ;
+			mv.setViewName(searchPage) ;
+		}else {
+			mv.setViewName(loginPage) ;
+		}		
 		return mv ;
 	}
 	
@@ -78,12 +106,13 @@ public class AdminController {
 	
 	
 	
-	@RequestMapping("aao/search")
-	public ModelAndView search(HttpServletRequest request) {
+	
+	@RequestMapping("aao/next")
+	public ModelAndView next(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView() ;
 		HttpSession session = request.getSession() ;
 		if(session.getAttribute("user") != null) {
-			List<LoginUserDTO> list = service.findAll() ;
+			list = service.nextPage() ;
 			Map<String , Object> metaData = service.metaData() ;
 			
 			mv.addObject("list" , list) ;		
@@ -99,6 +128,30 @@ public class AdminController {
 		return mv ;
 	}
 	
+	
+	
+	
+	
+	@RequestMapping("aao/previous")
+	public ModelAndView previous(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView() ;
+		HttpSession session = request.getSession() ;
+		if(session.getAttribute("user") != null) {
+			list = service.previousPage() ;
+			Map<String , Object> metaData = service.metaData() ;
+			
+			mv.addObject("list" , list) ;		
+			mv.addObject("currentPage" , metaData.get("currentPage")) ;
+			mv.addObject("totalIUsers" , list.size()) ;
+			mv.addObject("totalPages" , metaData.get("totalPages")) ;
+			mv.addObject("isFirst" , metaData.get("isFirst")) ;
+			mv.addObject("isLast" , metaData.get("isLast")) ;
+			mv.setViewName(searchPage) ;
+		}else {
+			mv.setViewName(loginPage) ;
+		}		
+		return mv ;
+	}
 	
 	
 	
@@ -138,7 +191,7 @@ public class AdminController {
 	
 	
 	
-	@RequestMapping("aao/doSearch")
+	@RequestMapping(value = "aao/doSearch" , method = RequestMethod.POST , params = "save")
 	public ModelAndView doSearch(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView() ;
 		HttpSession session = request.getSession() ;
@@ -146,16 +199,14 @@ public class AdminController {
 			String username = null ;
 			String fullName = null ;
 			
-			if(request.getParameter("username") != null && request.getParameter("username").equals("")) {
+			if(request.getParameter("username") != null && !request.getParameter("username").equals("")) {
 				username = request.getParameter("username") ;
 			}
 			
-			if(request.getParameter("fullName") != null && request.getParameter("fullName").equals("")) {
+			if(request.getParameter("fullName") != null && !request.getParameter("fullName").equals("")) {
 				fullName = request.getParameter("fullName") ;
 			}
 			
-			System.err.println(username + " ================= username");
-			System.err.println(fullName + " ================= fullName");
 			LoginUserDTO dto = new LoginUserDTO() ;
 			dto.setFullName(fullName) ;
 			dto.setUsername(username) ;
@@ -168,6 +219,67 @@ public class AdminController {
 		}
 		
 		return mv ;
+	}
+	
+	
+	
+	
+	
+	
+	@RequestMapping(value = "aao/doSearch" , method = RequestMethod.POST , params = "reset")
+	public ModelAndView reset(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView() ;
+		HttpSession session = request.getSession() ;
+		
+		if(session.getAttribute("user") != null) {
+			List<LoginUserDTO> list = service.findAll() ;
+			Map<String , Object> metaData = service.metaData() ;
+			
+			mv.addObject("list" , list) ;		
+			mv.addObject("currentPage" , metaData.get("currentPage")) ;
+			mv.addObject("totalIUsers" , list.size()) ;
+			mv.addObject("totalPages" , metaData.get("totalPages")) ;
+			mv.addObject("isFirst" , metaData.get("isFirst")) ;
+			mv.addObject("isLast" , metaData.get("isLast")) ;
+			mv.addObject("dto" , new LoginUserDTO()) ;			
+			mv.setViewName(searchPage) ;
+		}else {
+			mv.setViewName(loginPage) ;
+		}		
+		return mv ;
+	}
+
+	
+	
+	
+	@RequestMapping("aao/delete")
+	public ModelAndView delete(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView() ;
+		HttpSession session = request.getSession() ;
+		if(session.getAttribute("user") != null) {
+			if(request.getParameter("id") != null) {
+				Integer id = Integer.parseInt(request.getParameter("id")) ;
+				LoginUserDTO dto = service.findById(id) ;
+				service.delete(dto) ;
+				mv.setViewName("redirect: " + request.getHeader(HttpHeaders.REFERER)) ;
+			}
+		}else {
+			mv.setViewName(loginPage) ;
+		}
+		return mv ;
+	}
+
+
+
+	public List<LoginUserDTO> getList() {
+		return list;
+	}
+
+
+
+
+	public void setList(List<LoginUserDTO> list) {
+		this.list = list;
 	}
 
 }

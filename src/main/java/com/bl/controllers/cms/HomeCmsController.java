@@ -101,6 +101,8 @@ public class HomeCmsController {
 		if(dto != null) {
 			session.setAttribute("user" , dto) ;
 			session.setMaxInactiveInterval(600) ;
+			session.setAttribute("language" , "En") ;
+			
 			mv.addObject("invalidUser" , null) ;
 			mv.setViewName(homePage) ;
 		}else {	
