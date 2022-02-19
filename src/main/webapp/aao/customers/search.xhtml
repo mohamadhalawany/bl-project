@@ -1,0 +1,227 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+
+<ui:composition template="/template/cms_template.xhtml">
+	<ui:define name="title">#{msg.SEARCH_CUSTOMER}</ui:define>
+	<ui:define name="content">
+	
+			<div class="col-12 grid-margin">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">#{msg.SEARCH_CUSTOMER}</h4>
+                    
+                  <form class="form-sample" action="doSearchCustomers" method="post">
+                    
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.FULL_NAME}</label>
+                          <div class="col-sm-9">
+                            <input type="text" id="fullName" name="fullName" class="form_customer" value="${dto.fullName}"/>
+                            <span id = "fullNameMessage" style="color:red"> </span> <br/><br/> 
+                          </div>
+                        </div>
+                      </div>
+                     
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.EMAIL}</label>
+                          <div class="col-sm-9">
+                            <input type="text" id="email" name="email" class="form_customer" value="${dto.email}"/>
+                            <span id = "emailMessage" style="color:red"></span> <br/><br/> 
+                          </div>
+                        </div>
+                      </div>
+                    </div>                    
+                    
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.CUSTOMER_TYPE}</label>
+                          <div class="col-sm-9">
+                            <h:selectOneMenu class="form_customer" id="customerType" value="${dto.customerType}">
+                            	<f:selectItem itemValue="0" itemLabel="#{msg.ALL}"/>
+			                    <f:selectItem itemValue="1" itemLabel="#{msg.PERSON}"/>
+			                    <f:selectItem itemValue="2" itemLabel="#{msg.COMPANY}"/>
+		                    </h:selectOneMenu>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.COUNTRY} xx #{sessionScope.language}</label>
+                          <div class="col-sm-9">
+                            <h:selectOneMenu class="form_customer" id="countryId" onchange="govsSearch()" value="${countryId}">
+			                      <f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
+			                      <f:selectItems value="${countryList}" var="cnt" itemLabel="#{sessionScope.language eq 'En' ? cnt.valueEn : cnt.valueAr}" itemValue="${cnt.key}"/>
+		                    </h:selectOneMenu>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.GOVERNERATE}</label>
+                          <div class="col-sm-9">
+                            <h:selectOneMenu class="form_customer"  id="governorateId" onchange="cityDistSearch()" value="${governorateId}">
+			                      <f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
+			                      <f:selectItems value="${governorateList}" var="gov" itemLabel="#{sessionScope.language eq 'En' ? gov.valueEn : gov.valueAr}" itemValue="#{gov.key}"/>
+		                    </h:selectOneMenu>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.CITY_DISTRICT}</label>
+                          <div class="col-sm-9">
+                            <h:selectOneMenu class="form_customer" id="cityDistrictId" value="${dto.cityDistrictId}" required="true">
+		                  		<f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
+		                  		<f:selectItems value="${cityDistrictList}" var="cd" itemValue="#{cd.key}" itemLabel="#{sessionScope.language eq 'En' ? cd.valueEn : cd.valueAr}"/>
+		                  	</h:selectOneMenu>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    
+                    
+                    <button type="submit" class="btn btn-primary mr-2" name="search">#{msg.SEARCH}</button>
+                    <button type="submit" class="btn btn-primary mr-2" name="reset">#{msg.RESET}</button>
+                    
+                  </form>
+                </div>
+                
+                <div class="col-lg-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">#{msg.RESULT}</h4>
+                  <p class="card-description">
+                    #{msg.FOUND} <code>${total} #{msg.CUSTOMERS}</code>
+                  </p>
+                  <div class="table-responsive pt-3">
+                  
+                    <table class="table table-bordered table-hover table-striped">
+                      <thead style="background-color: #666666; color: yellow;">
+                        <tr style="border-color: gray !important; ">
+                          <th style="align-content: center!important;">#</th>
+                          <th style="align-content: center!important;">#{msg.FULL_NAME}</th>
+                          <th>#{msg.EMAIL}</th>
+                          <th>#{msg.CUSTOMER_TYPE}</th>
+                          <th>#{msg.CITY_DISTRICT}</th>
+                          <th>#{msg.GOVERNERATE}</th>
+                          <th>#{msg.COUNTRY}</th>                          
+                          <th>#{msg.DELETE}</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      
+                      <c:forEach items="${list}" var="var" varStatus="vs">
+                        <tr>
+                          <td style="align-content: center !important;">#{vs.count}</td>
+                          
+                          <td>#{var.fullName}</td>
+                          
+                          <td>#{var.email}</td>
+                          
+                          <td>#{var.customerTypeValue}</td>
+                                               
+                          <td>
+                          	#{var.cityDistrictId}
+                          </td>
+                          <td>
+                          	#{var.countryId}
+                          </td>
+                          <td>
+                          	#{var.governorateId}
+                          </td>
+                                                    
+                          <td>
+                            <a href="delete?id=#{var.id}"><IMG alt="" src="../resources/cms/images/delete.png" style="height: 25px !important;"/></a>
+                          </td>
+                          
+                          <td>
+                            <button class="more_btn" data-toggle="modal" data-target="#exampleModal" type="button">#{msg.MORE}</button>
+                          </td>
+                        
+                        </tr>     
+                        
+                        <!-- Confirm Message -->
+												<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+												  <div class="modal-dialog" role="document">
+												    <div class="modal-content">
+												      <div class="modal-header">
+												        <h5 id="exampleModalLabel" style="color: olive; !important; font-size:large;">#{msg.MORE}</h5>
+												      </div>
+												      <div class="modal-body">
+												        <p style="color: red !important; font-size:large;">#{msg.ADDRESS} : #{var.address}</p>
+												      </div>
+												      
+												      <div class="modal-body">
+												        <p style="color: red !important; font-size:large;">#{msg.PHONE} : #{var.phone}</p>
+												      </div>
+												      
+												      <div class="modal-body">
+												        <p style="color: red !important; font-size:large;">#{msg.MOBILE} : #{var.mobile}</p>
+												      </div>
+												     
+												      <div class="modal-footer">
+												        <button type="button" class="btn btn-secondary" data-dismiss="modal">#{msg.CLOSE}</button>
+												      </div>
+												    </div>
+												  </div>
+												</div>
+										<!-- End Confirm Message -->		
+                    
+                        </c:forEach>
+                                        
+                      </tbody>
+                    </table>
+                    <br/>
+                    <p class="card-description">
+                    #{msg.FOUND} <code>${total} #{msg.CUSTOMERS}</code>
+                    #{msg.PAGES} <code>${currentPage}</code> #{msg.OF} <code>${totalPages}</code> 
+                  	</p>
+                  	
+                  	<br/>
+                  	
+                  	<h:panelGroup rendered="${isFirst eq false}">
+                    	<a href="previous" class="previous">&laquo; Previous</a> 
+                    </h:panelGroup>
+                    <h:panelGroup rendered="${isFirst eq true}">
+                    	<a href="#" class="previous">Previous</a> 
+                    </h:panelGroup>
+                    
+                    <h:panelGroup rendered="${isLast eq false}">
+						<a href="next" class="next" style="width: 120px !important;">Next &raquo;</a>
+					</h:panelGroup>
+					<h:panelGroup rendered="${isLast eq true}">
+						<a href="#" class="next" style="width: 120px !important;">Next</a>
+					</h:panelGroup>
+                    
+                    
+                    
+                    
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+              </div>
+            </div>
+
+	</ui:define>
+</ui:composition>
+</html>

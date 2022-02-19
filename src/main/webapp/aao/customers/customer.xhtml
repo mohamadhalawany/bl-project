@@ -1,0 +1,174 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+
+<ui:composition template="/template/cms_template.xhtml">
+	<ui:define name="title">#{msg.NEW_CUSTOMER}</ui:define>
+	<ui:define name="content">
+	
+			<div class="col-12 grid-margin">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">#{msg.NEW_CUSTOMER}</h4>
+                  
+                  <p class="card-description">
+                      <h:outputLabel value="#{msg.SAVE_MSG}" rendered="#{param['saved'] eq 1}" style="color: red;"/>
+                      <h:outputLabel value="#{msg.EXIST_CUSTOMER}" rendered="#{param['count'] eq 1}" style="color: red;"/>
+                    </p>
+                    
+                  <form class="form-sample" action="save" method="post" onsubmit ="return validateCustomerForm()">
+                    
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.FULL_NAME}</label>
+                          <div class="col-sm-9">
+                            <input type="text" id="fullName" name="fullName" class="form_customer" value="${dto.fullName}"/>
+                            <span id = "fullNameMessage" style="color:red"> </span> <br/><br/> 
+                          </div>
+                        </div>
+                      </div>
+                     
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.EMAIL}</label>
+                          <div class="col-sm-9">
+                            <input type="text" id="email" name="email" class="form_customer" onblur="validatEmail(this)" value="${dto.email}"/>
+                            <span id = "emailMessage" style="color:red"></span> <br/><br/> 
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.PASSWORD}</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form_customer" id="password" name="password"/>
+                            <span id = "passwordMessage" style="color:red"></span> <br/><br/> 
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.CONFIRM_PASSWORD}</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form_customer" id="confirmPassword" name="confirmPassword"/>
+                            <span id = "confirmPasswordMessage" style="color:red"></span> <br/><br/> 
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.PHONE}</label>
+                          <div class="col-sm-9">
+                            <input type="text" id="phone" name="phone" class="form_customer" value="${dto.phone}"/>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.MOBILE}</label>
+                          <div class="col-sm-9">
+                            <input type="text" id="mobile" name="mobile" class="form_customer" value="${dto.mobile}"/>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.CUSTOMER_TYPE}</label>
+                          <div class="col-sm-9">
+                            <h:selectOneMenu class="form_customer" id="customerType" value="${dto.customerType}">
+			                      <f:selectItem itemValue="1" itemLabel="#{msg.PERSON}"/>
+			                      <f:selectItem itemValue="2" itemLabel="#{msg.COMPANY}"/>
+		                    </h:selectOneMenu>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.COUNTRY}</label>
+                          <div class="col-sm-9">
+                            <h:selectOneMenu class="form_customer" id="countryId" onchange="govs()" value="${dto.countryId}">
+			                      <f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
+			                      <f:selectItems value="${countryList}" var="cnt" itemLabel="#{sessionScope.language eq null ? cnt.valueEn : cnt.valueAr}" itemValue="${cnt.key}"/>
+		                    </h:selectOneMenu>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.GOVERNERATE}</label>
+                          <div class="col-sm-9">
+                            <h:selectOneMenu class="form_customer"  id="governorateId" onchange="cityDist()" value="${governorateId}">
+			                      <f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
+			                      <f:selectItems value="${governorateList}" var="gov" itemLabel="#{sessionScope.language eq null ? gov.valueEn : gov.valueAr}" itemValue="#{gov.key}"/>
+		                    </h:selectOneMenu>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.CITY_DISTRICT}</label>
+                          <div class="col-sm-9">
+                            <h:selectOneMenu class="form_customer" id="cityDistrictId" value="${dto.cityDistrictId}" required="true">
+		                  		<f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
+		                  		<f:selectItems value="${cityDistrictList}" var="cd" itemValue="#{cd.key}" itemLabel="#{sessionScope.language eq null ? cd.valueEn : cd.valueAr}"/>
+		                  	</h:selectOneMenu>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.ADDRESS}</label>
+                          <div class="col-lg-8">
+                          	<TEXTAREA rows="5" cols="25" class="form_textarea" id="address" name="address"/>
+                            <!-- <h:inputTextarea cols="25" rows="5" class="form_customer"/> -->
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.IS_TAX}</label>
+                          <div class="col-lg-8">
+                            <input type="checkbox" class="form_form" name="isTax" id="isTax"/> 
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary mr-2" name="save">#{msg.SAVE}</button>
+                    
+                  </form>
+                </div>
+              </div>
+            </div>
+
+	</ui:define>
+</ui:composition>
+</html>
