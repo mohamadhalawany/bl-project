@@ -139,13 +139,13 @@
                           <td>#{var.customerTypeValue}</td>
                                                
                           <td>
-                          	#{var.cityDistrictId}
+                          	#{sessionScope.language eq 'En' ? var.cityDistrictNameEn : var.cityDistrictNameAr}
                           </td>
                           <td>
-                          	#{var.countryId}
+                          	#{sessionScope.language eq 'En' ? var.governorateNameEn : var.governorateNameAr}
                           </td>
                           <td>
-                          	#{var.governorateId}
+                          	#{sessionScope.language eq 'En' ? var.countryNameEn : var.countryNameAr}
                           </td>
                                                     
                           <td>

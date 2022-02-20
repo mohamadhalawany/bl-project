@@ -71,7 +71,7 @@ public class CMSCustomerControllers extends BaseController {
 		HttpSession session = request.getSession() ;
 		
 		if(session.getAttribute("user") != null) {
-			Long countryId = Long.parseLong(request.getParameter("countryId")) ;
+			Integer countryId = Integer.parseInt(request.getParameter("countryId")) ;
 			session.setAttribute("countryId" , countryId) ;
 
 			governorateList = generalService.governorateList(countryId) ;
@@ -98,8 +98,8 @@ public class CMSCustomerControllers extends BaseController {
 		HttpSession session = request.getSession() ;
 		
 		if(session.getAttribute("user") != null) {
-			Long countryId = Long.parseLong(session.getAttribute("countryId") == null ? "60" : session.getAttribute("countryId").toString()) ;
-			Long governorateId = Long.parseLong(request.getParameter("governorateId")) ;
+			Integer countryId = Integer.parseInt(session.getAttribute("countryId") == null ? "60" : session.getAttribute("countryId").toString()) ;
+			Integer governorateId = Integer.parseInt(request.getParameter("governorateId")) ;
 			
 			cityDistrictList = generalService.cityDistrictList(governorateId) ;
 			
@@ -124,7 +124,7 @@ public class CMSCustomerControllers extends BaseController {
 		HttpSession session = request.getSession() ;
 		if(session.getAttribute("user") != null) {
 			String address = request.getParameter("address") ;
-			Long cityDistrictId = Long.parseLong(request.getParameter("cityDistrictId")) ;
+			Integer cityDistrictId = Integer.parseInt(request.getParameter("cityDistrictId")) ;
 			Integer customerType = Integer.parseInt(request.getParameter("customerType")) ;
 			String email = request.getParameter("email") ;
 			String fullName = request.getParameter("fullName") ;
@@ -210,7 +210,7 @@ public class CMSCustomerControllers extends BaseController {
 		HttpSession session = request.getSession() ;
 		
 		if(session.getAttribute("user") != null) {
-			Long countryId = Long.parseLong(request.getParameter("countryId")) ;
+			Integer countryId = Integer.parseInt(request.getParameter("countryId")) ;
 			session.setAttribute("countryId" , countryId) ;
 
 			governorateList = generalService.governorateList(countryId) ;
@@ -246,8 +246,8 @@ public class CMSCustomerControllers extends BaseController {
 		HttpSession session = request.getSession() ;
 		
 		if(session.getAttribute("user") != null) {
-			Long countryId = Long.parseLong(session.getAttribute("countryId") == null ? "60" : session.getAttribute("countryId").toString()) ;
-			Long governorateId = Long.parseLong(request.getParameter("governorateId")) ;
+			Integer countryId = Integer.parseInt(session.getAttribute("countryId") == null ? "60" : session.getAttribute("countryId").toString()) ;
+			Integer governorateId = Integer.parseInt(request.getParameter("governorateId")) ;
 			
 			cityDistrictList = generalService.cityDistrictList(governorateId) ;
 			list = service.findAll() ;
@@ -288,20 +288,19 @@ public class CMSCustomerControllers extends BaseController {
 			String email = null ;
 			String fullName = null ;
 			Integer customerType = null ;
-			Long cityDistrictId = null ;
-			Long governorateId = null ;
-			Long countryId = null ;
+			Integer cityDistrictId = null ;
+			Integer governorateId = null ;
+			Integer countryId = null ;
 			int language = 1 ;
-			System.err.println(session.getAttribute("language"));
+
 			if(session.getAttribute("language") != null) {
 				if(session.getAttribute("language").equals("En")) {
-					System.err.println(language + " =================== language");
-					language = 1 ;
-				}else {
 					language = 2 ;
+				}else {
+					language = 1 ;
 				}
 			}
-			
+			System.err.println(language + " =================== language");
 			if(request.getParameter("fullName") != null && !request.getParameter("fullName").equals("")) {
 				fullName = request.getParameter("fullName") ;
 			}
@@ -317,19 +316,19 @@ public class CMSCustomerControllers extends BaseController {
 			}
 			
 			if(request.getParameter("cityDistrictId") != null && !request.getParameter("cityDistrictId").equals("0")) {
-				cityDistrictId = Long.parseLong(request.getParameter("cityDistrictId")) ;
+				cityDistrictId = Integer.parseInt(request.getParameter("cityDistrictId")) ;
 			}else {
 				cityDistrictId = null ;
 			}
 			
 			if(request.getParameter("governorateId") != null && !request.getParameter("governorateId").equals("0")) {
-				governorateId = Long.parseLong(request.getParameter("governorateId")) ;
+				governorateId = Integer.parseInt(request.getParameter("governorateId")) ;
 			}else {
 				governorateId = null ;
 			}
 			
 			if(request.getParameter("countryId") != null && !request.getParameter("countryId").equals("0")) {
-				countryId = Long.parseLong(request.getParameter("countryId")) ;
+				countryId = Integer.parseInt(request.getParameter("countryId")) ;
 			}else {
 				countryId = null ;
 			}

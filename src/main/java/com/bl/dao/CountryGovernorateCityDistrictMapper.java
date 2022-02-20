@@ -12,9 +12,9 @@ public class CountryGovernorateCityDistrictMapper implements RowMapper<CountryGo
 	@Override
 	public CountryGovernorateCityDistrictDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
 		CountryGovernorateCityDistrictDTO dto = new CountryGovernorateCityDistrictDTO() ;
-		dto.setCityDistrictId(rs.getLong(1)) ;
-		dto.setGovernorateId(rs.getLong(2)) ;
-		dto.setCountryId(rs.getLong(3)) ;
+		dto.setCityDistrictId(rs.getInt(1)) ;
+		dto.setGovernorateId(rs.getInt(2)) ;
+		dto.setCountryId(rs.getInt(3)) ;
 		dto.setCityDistrictNameEn(rs.getString(4)) ;
 		dto.setCityDistrictNameAr(rs.getString(5)) ;
 		dto.setGovernorateNameEn(rs.getString(6)) ;

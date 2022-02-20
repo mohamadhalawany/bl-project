@@ -31,15 +31,15 @@ public class GeneralServiceImpl implements GeneralService {
 		return dao.countryList() ;
 	}
 	@Override
-	public List<GeneralDTO> governorateList(Long countryId) {
+	public List<GeneralDTO> governorateList(Integer countryId) {
 		return dao.governorateList(countryId) ;
 	}
 	@Override
-	public List<GeneralDTO> cityDistrictList(Long governorateId) {
+	public List<GeneralDTO> cityDistrictList(Integer governorateId) {
 		return dao.cityDistrictList(governorateId) ;
 	}
 	@Override
-	public List<CountryGovernorateCityDistrictDTO> findGovernorateIdAndCountryIdByCityDistrictId(Long cityDistrictId) {
+	public List<CountryGovernorateCityDistrictDTO> findGovernorateIdAndCountryIdByCityDistrictId(Integer cityDistrictId) {
 		return dao.findGovernorateIdAndCountryIdByCityDistrictId(cityDistrictId) ;
 	}
 	@Override

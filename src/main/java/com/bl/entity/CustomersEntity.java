@@ -27,7 +27,7 @@ public class CustomersEntity implements Serializable {
 	private Integer isBlocked ;
 
 	@Column(name="CITY_DISTRICT_ID")
-	private Long cityDistrictId;
+	private Integer cityDistrictId;
 
 	@Column(name="CREATED_BY")
 	private Integer createdBy;
@@ -90,11 +90,11 @@ public class CustomersEntity implements Serializable {
 		this.isBlocked = isBlocked;
 	}
 
-	public Long getCityDistrictId() {
+	public Integer getCityDistrictId() {
 		return this.cityDistrictId;
 	}
 
-	public void setCityDistrictId(Long cityDistrictId) {
+	public void setCityDistrictId(Integer cityDistrictId) {
 		this.cityDistrictId = cityDistrictId;
 	}
 

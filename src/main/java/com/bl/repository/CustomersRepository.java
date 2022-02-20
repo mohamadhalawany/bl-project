@@ -23,5 +23,6 @@ public interface CustomersRepository extends JpaRepository<CustomersEntity , Lon
 			+ " AND (?5 IS NULL OR c.cityDistrictId IN (SELECT cd.id FROM CitiesDistrictEntity cd WHERE cd.governorateId = ?5)) "
 			+ " AND (?6 IS NULL OR c.cityDistrictId IN (SELECT cd.id FROM CitiesDistrictEntity cd WHERE cd.governorateId IN "
 			+ " 		   (SELECT gov.id FROM GovernorateEntity gov WHERE gov.countryId = ?6))) ")
-	public Page<CustomersEntity> search(String email , String fullName , Integer customerType , Long cityDistrictId , Long governorateId , Long countryId , Pageable page) ;
+	public Page<CustomersEntity> search(String email , String fullName , Integer customerType , Integer cityDistrictId , Integer governorateId , Integer countryId , 
+			Pageable page) ;
 }

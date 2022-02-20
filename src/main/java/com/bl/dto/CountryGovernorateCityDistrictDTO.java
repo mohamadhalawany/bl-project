@@ -1,27 +1,28 @@
 package com.bl.dto;
 
 public class CountryGovernorateCityDistrictDTO {
-	private Long countryId , governorateId , cityDistrictId ;
+	private Integer countryId , governorateId , cityDistrictId ;
 	private String countryNameAr , countryNameEn , iso , governorateNameAr , governorateNameEn , cityDistrictNameAr , cityDistrictNameEn ;
 	
 	
 	
-	public Long getCountryId() {
+	
+	public Integer getCountryId() {
 		return countryId;
 	}
-	public void setCountryId(Long countryId) {
+	public void setCountryId(Integer countryId) {
 		this.countryId = countryId;
 	}
-	public Long getGovernorateId() {
+	public Integer getGovernorateId() {
 		return governorateId;
 	}
-	public void setGovernorateId(Long governorateId) {
+	public void setGovernorateId(Integer governorateId) {
 		this.governorateId = governorateId;
 	}
-	public Long getCityDistrictId() {
+	public Integer getCityDistrictId() {
 		return cityDistrictId;
 	}
-	public void setCityDistrictId(Long cityDistrictId) {
+	public void setCityDistrictId(Integer cityDistrictId) {
 		this.cityDistrictId = cityDistrictId;
 	}
 	public String getCountryNameAr() {

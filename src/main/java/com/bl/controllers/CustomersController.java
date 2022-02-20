@@ -119,7 +119,7 @@ public class CustomersController extends BaseController{
 		init(mv) ;
 		
 		if(request.getParameter("countryId") != null) {
-			Long countryId = Long.parseLong(request.getParameter("countryId")) ;
+			Integer countryId = Integer.parseInt(request.getParameter("countryId")) ;
 			session.setAttribute("countryId" , countryId) ;
 			
 			mv.addObject("governorateList" , generalService.governorateList(countryId)) ;
@@ -150,8 +150,8 @@ public class CustomersController extends BaseController{
 		init(mv) ;
 		
 		if(request.getParameter("governorateId") != null) {
-			Long countryId = Long.parseLong(session.getAttribute("countryId") == null ? "60" : session.getAttribute("countryId").toString()) ;
-			Long governorateId = Long.parseLong(request.getParameter("governorateId")) ;
+			Integer countryId = Integer.parseInt(session.getAttribute("countryId") == null ? "60" : session.getAttribute("countryId").toString()) ;
+			Integer governorateId = Integer.parseInt(request.getParameter("governorateId")) ;
 			
 			mv.addObject("governorateList" , generalService.governorateList(countryId)) ;
 			mv.addObject("cityDistrictList" , generalService.cityDistrictList(governorateId)) ;
@@ -200,7 +200,7 @@ public class CustomersController extends BaseController{
 		session.setAttribute("company" , new CompanyProfile());
 		
 		String address = request.getParameter("address") ;
-		Long cityDistrictId = Long.parseLong(request.getParameter("cityDistrictId")) ;
+		Integer cityDistrictId = Integer.parseInt(request.getParameter("cityDistrictId")) ;
 		Integer customerType = Integer.parseInt(request.getParameter("customerType")) ;
 		String email = request.getParameter("email") ;
 		String fullName = request.getParameter("fullName") ;

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.bl.DomainValues;
 import com.bl.HelperUtils;
+import com.bl.dto.AddressDTO;
 import com.bl.dto.CountryGovernorateCityDistrictDTO;
 import com.bl.dto.CustomersDTO;
 import com.bl.dto.OrderDTO;
@@ -20,6 +21,7 @@ import com.bl.dto.OrderItemDTO;
 import com.bl.dto.OrderStatusDTO;
 import com.bl.entity.CustomersEntity;
 import com.bl.repository.CustomersRepository;
+import com.bl.service.AddressService;
 import com.bl.service.CustomersService;
 import com.bl.service.GeneralService;
 import com.bl.service.OrderRequestService;
@@ -39,6 +41,9 @@ public class CustomersServiceImpl implements CustomersService {
 	
 	@Autowired
 	private OrderService orderService ;
+	
+	@Autowired
+	private AddressService addressService ;
 	
 	private Page<CustomersEntity> page ;
 	private List<CustomersEntity> entityList ;
@@ -206,6 +211,17 @@ public class CustomersServiceImpl implements CustomersService {
 				}else {
 					customer.setCustomerTypeValue(HelperUtils.getValueFromBundle("COMPANY" , language));
 				}
+				AddressDTO cityDistrict = addressService.findCitiesDistrictById(customer.getCityDistrictId()) ;
+				customer.setCityDistrictNameAr(cityDistrict.getCitiesDistrictNameAr()) ;
+				customer.setCityDistrictNameEn(cityDistrict.getCitiesDistrictName()) ;
+				
+				AddressDTO governorate = addressService.findGovernorateById(cityDistrict.getGovernorateId()) ;
+				customer.setGovernorateNameAr(governorate.getGovernorateNameAr()) ;
+				customer.setGovernorateNameEn(governorate.getGovernorateNameEn()) ;
+				
+				AddressDTO country = addressService.findCountryById(governorate.getCountryId()) ;
+				customer.setCountryNameAr(country.getCountryNameAr()) ;
+				customer.setCountryNameEn(country.getCountryName()) ;
 				list.add(customer) ;
 			}
 		}			

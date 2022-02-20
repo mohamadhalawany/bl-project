@@ -8,7 +8,7 @@ public class CustomersDTO {
 	private Long id;
 	private String address;
 	private Integer isBlocked ;
-	private Long cityDistrictId;
+	private Integer cityDistrictId;
 	private Integer createdBy;
 	private Date createdDate;
 	private Integer customerType;
@@ -21,8 +21,8 @@ public class CustomersDTO {
 	private Integer updatedBy;
 	private Date updatedDate;
 	
-	private Long countryId ;
-	private Long governorateId ;
+	private Integer countryId ;
+	private Integer governorateId ;
 	
 	private String countryNameAr ; 
 	private String countryNameEn ;
@@ -46,10 +46,10 @@ public class CustomersDTO {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public Long getCityDistrictId() {
+	public Integer getCityDistrictId() {
 		return cityDistrictId;
 	}
-	public void setCityDistrictId(Long cityDistrictId) {
+	public void setCityDistrictId(Integer cityDistrictId) {
 		this.cityDistrictId = cityDistrictId;
 	}
 	public Integer getCreatedBy() {
@@ -118,16 +118,16 @@ public class CustomersDTO {
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
 	}
-	public Long getCountryId() {
+	public Integer getCountryId() {
 		return countryId;
 	}
-	public void setCountryId(Long countryId) {
+	public void setCountryId(Integer countryId) {
 		this.countryId = countryId;
 	}
-	public Long getGovernorateId() {
+	public Integer getGovernorateId() {
 		return governorateId;
 	}
-	public void setGovernorateId(Long governorateId) {
+	public void setGovernorateId(Integer governorateId) {
 		this.governorateId = governorateId;
 	}
 	public String getCountryNameAr() {

@@ -48,7 +48,7 @@ public class GeneralDAOImpl implements GeneralDAO {
 	}
 
 	@Override
-	public List<GeneralDTO> governorateList(Long countryId) {
+	public List<GeneralDTO> governorateList(Integer countryId) {
 		String sql = "SELECT ID , GOVERNORATE_NAME_EN , GOVERNORATE_NAME_AR , NULL "
 				+ " FROM GOVERNORATES "
 				+ " WHERE COUNTRY_ID = ? " ;
@@ -56,7 +56,7 @@ public class GeneralDAOImpl implements GeneralDAO {
 	}
 
 	@Override
-	public List<GeneralDTO> cityDistrictList(Long governorateId) {
+	public List<GeneralDTO> cityDistrictList(Integer governorateId) {
 		String sql = "SELECT ID , name_en , name_ar , governorate_id "
 				+ " FROM cities_districts "
 				+ " WHERE governorate_id = ? " ;
@@ -64,7 +64,7 @@ public class GeneralDAOImpl implements GeneralDAO {
 	}
 
 	@Override
-	public List<CountryGovernorateCityDistrictDTO> findGovernorateIdAndCountryIdByCityDistrictId(Long cityDistrictId) {
+	public List<CountryGovernorateCityDistrictDTO> findGovernorateIdAndCountryIdByCityDistrictId(Integer cityDistrictId) {
 		String sql = "SELECT d.id , g.ID , c.ID , "
 				+ " d.name_en cities_districts_name_en , d.name_ar cities_districts_name_ar , "
 				+ " g.GOVERNORATE_NAME_EN , g.GOVERNORATE_NAME_AR , "
