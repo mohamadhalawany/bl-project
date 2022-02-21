@@ -127,7 +127,7 @@ public class CustomersServiceImpl implements CustomersService {
 	}
 
 	@Override
-	public List<CustomersDTO> findAll() {
+	public List<CustomersDTO> findAll(int language) {
 		List<CustomersDTO> list = null ;
 		page = repo.findAll(PageRequest.of(0 , 5)) ;
 		entityList = page.getContent() ;
@@ -136,6 +136,24 @@ public class CustomersServiceImpl implements CustomersService {
 			list = new ArrayList<CustomersDTO>() ;
 			for(CustomersEntity entity : entityList) {
 				CustomersDTO dto = HelperUtils.convertEntityToDto(entity , CustomersDTO.class) ;
+				
+				if(dto.getCustomerType() == 1) {
+					dto.setCustomerTypeValue(HelperUtils.getValueFromBundle("PERSON" , language));
+				}else {
+					dto.setCustomerTypeValue(HelperUtils.getValueFromBundle("COMPANY" , language));
+				}
+				AddressDTO cityDistrict = addressService.findCitiesDistrictById(dto.getCityDistrictId()) ;
+				dto.setCityDistrictNameAr(cityDistrict.getCitiesDistrictNameAr()) ;
+				dto.setCityDistrictNameEn(cityDistrict.getCitiesDistrictName()) ;
+				
+				AddressDTO governorate = addressService.findGovernorateById(cityDistrict.getGovernorateId()) ;
+				dto.setGovernorateNameAr(governorate.getGovernorateNameAr()) ;
+				dto.setGovernorateNameEn(governorate.getGovernorateNameEn()) ;
+				
+				AddressDTO country = addressService.findCountryById(governorate.getCountryId()) ;
+				dto.setCountryNameAr(country.getCountryNameAr()) ;
+				dto.setCountryNameEn(country.getCountryName()) ;
+				
 				list.add(dto) ;
 			}
 		}
@@ -222,6 +240,7 @@ public class CustomersServiceImpl implements CustomersService {
 				AddressDTO country = addressService.findCountryById(governorate.getCountryId()) ;
 				customer.setCountryNameAr(country.getCountryNameAr()) ;
 				customer.setCountryNameEn(country.getCountryName()) ;
+				
 				list.add(customer) ;
 			}
 		}			

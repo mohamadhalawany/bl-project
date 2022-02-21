@@ -74,7 +74,7 @@
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">#{msg.GOVERNERATE}</label>
                           <div class="col-sm-9">
-                            <h:selectOneMenu class="form_customer"  id="governorateId" onchange="cityDistSearch()" value="${governorateId}">
+                            <h:selectOneMenu class="form_customer"  id="governorateId" onchange="cityDistSearch()" value="${dto.governorateId}">
 			                      <f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
 			                      <f:selectItems value="${governorateList}" var="gov" itemLabel="#{sessionScope.language eq 'En' ? gov.valueEn : gov.valueAr}" itemValue="#{gov.key}"/>
 		                    </h:selectOneMenu>

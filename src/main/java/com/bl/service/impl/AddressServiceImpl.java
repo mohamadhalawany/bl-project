@@ -43,10 +43,9 @@ public class AddressServiceImpl implements AddressService {
 		GovernorateEntity entity = governorateRepo.findById(id).get() ;
 		if(entity != null) {
 			dto = new AddressDTO() ;
-			dto.setGovernorateId(id) ;
 			dto.setCountryId(entity.getCountryId()) ;
-			dto.setCountryName(entity.getGovernorateNameAr()) ;
-			dto.setCountryNameAr(entity.getGovernorateNameEn()) ;
+			dto.setGovernorateNameEn(entity.getGovernorateNameAr()) ;
+			dto.setGovernorateNameAr(entity.getGovernorateNameEn()) ;
 		}
 		return dto ;
 	}
@@ -57,10 +56,9 @@ public class AddressServiceImpl implements AddressService {
 		CitiesDistrictEntity entity = cityDistrictRepo.findById(id).get() ;
 		if(entity != null) {
 			dto = new AddressDTO() ;
-			dto.setCitiesDistrictId(id) ;
 			dto.setGovernorateId(entity.getGovernorateId()) ;
-			dto.setCountryName(entity.getNameEn()) ;
-			dto.setCountryNameAr(entity.getNameAr()) ;
+			dto.setCitiesDistrictName(entity.getNameEn()) ;
+			dto.setCitiesDistrictNameAr(entity.getNameAr()) ;
 		}
 		return dto ;
 	}

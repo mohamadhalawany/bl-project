@@ -176,14 +176,24 @@ public class CMSCustomerControllers extends BaseController {
 		session.setAttribute("countryId" , null) ;
 		
 		if(session.getAttribute("user") != null) {
+			int language = 1 ;
+
+			if(session.getAttribute("language") != null) {
+				if(session.getAttribute("language").equals("En")) {
+					language = 2 ;
+				}else {
+					language = 1 ;
+				}
+			}
+			
 			countryList = generalService.countryList() ;
 			governorateList = new ArrayList<GeneralDTO>() ;
 			cityDistrictList = new ArrayList<GeneralDTO>() ;
-			list = service.findAll() ;
+			list = service.findAll(language) ;
 			
 			Map<String , Object> metaData = service.metaData() ;
 						
-			mv.addObject("list" , service.findAll()) ;
+			mv.addObject("list" , list) ;
 			mv.addObject("countryList" , countryList) ;
 			mv.addObject("governorateList" , governorateList) ;
 			mv.addObject("cityDistrictList" , cityDistrictList) ;
@@ -213,9 +223,19 @@ public class CMSCustomerControllers extends BaseController {
 			Integer countryId = Integer.parseInt(request.getParameter("countryId")) ;
 			session.setAttribute("countryId" , countryId) ;
 
+			int language = 1 ;
+
+			if(session.getAttribute("language") != null) {
+				if(session.getAttribute("language").equals("En")) {
+					language = 2 ;
+				}else {
+					language = 1 ;
+				}
+			}
+			
 			governorateList = generalService.governorateList(countryId) ;
 			cityDistrictList = new ArrayList<GeneralDTO>() ;
-			list = service.findAll() ;
+			list = service.findAll(language) ;
 			
 			Map<String , Object> metaData = service.metaData() ;
 			
@@ -248,9 +268,18 @@ public class CMSCustomerControllers extends BaseController {
 		if(session.getAttribute("user") != null) {
 			Integer countryId = Integer.parseInt(session.getAttribute("countryId") == null ? "60" : session.getAttribute("countryId").toString()) ;
 			Integer governorateId = Integer.parseInt(request.getParameter("governorateId")) ;
+			int language = 1 ;
+
+			if(session.getAttribute("language") != null) {
+				if(session.getAttribute("language").equals("En")) {
+					language = 2 ;
+				}else {
+					language = 1 ;
+				}
+			}
 			
 			cityDistrictList = generalService.cityDistrictList(governorateId) ;
-			list = service.findAll() ;
+			list = service.findAll(language) ;
 			
 			Map<String , Object> metaData = service.metaData() ;
 			
@@ -281,9 +310,9 @@ public class CMSCustomerControllers extends BaseController {
 		ModelAndView mv = new ModelAndView() ;
 		HttpSession session = request.getSession() ;
 		if(session.getAttribute("user") != null) {
-			countryList = generalService.countryList() ;
-			governorateList = new ArrayList<GeneralDTO>() ;
-			cityDistrictList = new ArrayList<GeneralDTO>() ;
+//			countryList = generalService.countryList() ;
+//			governorateList = new ArrayList<GeneralDTO>() ;
+//			cityDistrictList = new ArrayList<GeneralDTO>() ;
 			
 			String email = null ;
 			String fullName = null ;
@@ -300,7 +329,7 @@ public class CMSCustomerControllers extends BaseController {
 					language = 1 ;
 				}
 			}
-			System.err.println(language + " =================== language");
+
 			if(request.getParameter("fullName") != null && !request.getParameter("fullName").equals("")) {
 				fullName = request.getParameter("fullName") ;
 			}
@@ -372,10 +401,20 @@ public class CMSCustomerControllers extends BaseController {
 		session.setAttribute("countryId" , null) ;
 		
 		if(session.getAttribute("user") != null) {
+			int language = 1 ;
+
+			if(session.getAttribute("language") != null) {
+				if(session.getAttribute("language").equals("En")) {
+					language = 2 ;
+				}else {
+					language = 1 ;
+				}
+			}
+			
 			countryList = generalService.countryList() ;
 			governorateList = new ArrayList<GeneralDTO>() ;
 			cityDistrictList = new ArrayList<GeneralDTO>() ;
-			list = service.findAll() ;
+			list = service.findAll(language) ;
 			
 			Map<String , Object> metaData = service.metaData() ;
 			

@@ -15,7 +15,7 @@ public interface CustomersService {
 	public Long save(CustomersDTO dto) ;
 	public Long countByEmail(String email) ;
 	public Long saveOrder(OrderDTO order , OrderItemDTO orderItem , OrderStatusDTO orderStatus) ;
-	public List<CustomersDTO>  findAll() ;
+	public List<CustomersDTO>  findAll(int language) ;
 	public List<CustomersDTO> next() ;
 	public List<CustomersDTO> previous() ;
 	public List<CustomersDTO> search(CustomersDTO dto , int language) ;
