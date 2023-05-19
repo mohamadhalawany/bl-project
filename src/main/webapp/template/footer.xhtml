@@ -16,63 +16,64 @@
           <div class="col-md-3 col-sm-6 pre-footer-col">
             <h2>#{msg.CUSTOMER_SERVICE}</h2>
             <ul class="list-unstyled">
-              <li><i class="fa fa-angle-right"></i> <a href="javascript:;">#{msg.CONTACT}</a></li>
-              <li><i class="fa fa-angle-right"></i> <a href="javascript:;">#{msg.FAQ}</a></li>
-              <li><i class="fa fa-angle-right"></i> <a href="javascript:;">#{msg.TERMS_CONDITIONS}</a></li>
-              <li><i class="fa fa-angle-right"></i> <a href="contacts.html">#{msg.INSTALLATION_GUIDES}</a></li>
-              <li><i class="fa fa-angle-right"></i> <a href="javascript:;">#{msg.FINANCE_OPTIONS}</a></li>
-              <li><i class="fa fa-angle-right"></i> <a href="javascript:;">#{msg.CAREERS}</a></li>              
-               <li><i class="fa fa-angle-right"></i> <a href="javascript:;">#{msg.BLK_BOX_POINTS}</a></li>
-              <li><i class="fa fa-angle-right"></i> <a href="javascript:;">#{msg.BLK_BOX_AMBASSADOR}</a></li>
-              <li><i class="fa fa-angle-right"></i> <a href="contacts.html">#{msg.TRACK_ORDER}</a></li>
-              <li><i class="fa fa-angle-right"></i> <a href="javascript:;" title="#{msg.RETURNS_SHIPPING_POLICY}">#{msg.RETURNS}</a></li>
+              <li><i class="fa fa-angle-right"></i> <a href="contact">#{msg.CONTACT}</a></li>
+              <li><i class="fa fa-angle-right"></i> <a href="faq">#{msg.FAQ}</a></li>
+              <li><i class="fa fa-angle-right"></i> <a href="termsCondition">#{msg.TERMS_CONDITIONS}</a></li>
+              <li><i class="fa fa-angle-right"></i> <a href="aboutUs">#{msg.ABOUT_US}</a></li>
+              <li><i class="fa fa-angle-right"></i> <a href="career"> #{msg.CAREERS}</a></li>	
             </ul>
           </div>
           <!-- END INFO BLOCK -->
 		  
 		  <!-- LOGIN TO ACCOUNT -->
 		  <h:panelGroup rendered="#{sessionScope.customerLoginForm eq null}">		  
-		  <div class="col-md-6 col-sm-6">
-          	<h3>#{msg.MY_ACCOUNT}</h3>
-            <form role="form" action="customerLogin" method="post">
-            <h:outputText style="color: red; font-size: 16px;" value="#{msg.INVALID_CUSTOMER}" rendered="#{sessionScope.customerLoginFaildMsg eq '1'}"/>
-            	<div class="form-group">
-	                <label for="email-login">#{msg.E_MAIL}</label>
-	                <input type="text" id="email" class="form-control" name="email"/>
-                </div>
-                
-                <div class="form-group">
-                	<label for="password-login">#{msg.PASSWORD}</label>
-                    <input type="password" id="password" class="form-control" name="password"/>
-                </div>
-                
-                <a href="javascript:;">#{msg.FORGOTTEN_PASSWORD}</a>
-                <div class="padding-top-20">                  
-                	<button class="btn btn-primary" type="submit">#{msg.LOGIN}</button>
-                </div>
-                <hr/>
-            </form>
-          </div>
+			  <div class="col-md-6 col-sm-6">
+	          	<h3>#{msg.MY_ACCOUNT}</h3>
+	            <form role="form" action="customerLogin" method="post">
+	            <h:outputText style="color: red; font-size: 16px;" value="#{msg.INVALID_CUSTOMER}" rendered="#{sessionScope.customerLoginFaildMsg eq '1'}"/>
+	            	<div class="form-group">
+		                <label for="email-login">#{msg.E_MAIL}</label>
+		                <input type="text" id="email" class="form-control" name="email"/>
+	                </div>
+	                
+	                <div class="form-group">
+	                	<label for="password-login">#{msg.PASSWORD}</label>
+	                    <input type="password" id="password" class="form-control" name="password"/>
+	                </div>
+	                
+	                <a href="javascript:;">#{msg.FORGOTTEN_PASSWORD}</a>
+	                <div class="padding-top-20">                  
+	                	<button class="btn btn-primary" type="submit">#{msg.LOGIN}</button>
+	                </div>
+	                <hr/>
+	            </form>
+	          </div>
           </h:panelGroup>
 		  <!-- END LOGIN TO ACCOUNT -->
 		  	
           <!-- BEGIN TWITTER BLOCK --> 
           <!-- <div class="col-md-3 col-sm-6 pre-footer-col">
             <h2 class="margin-bottom-0">Latest Tweets</h2>
-            <a class="twitter-timeline" href="https://twitter.com/twitterapi" data-tweet-limit="2" data-theme="dark" data-link-color="#57C8EB" data-widget-id="0242801524" data-chrome="noheader nofooter noscrollbar noborders transparent">Loading tweets by @egyptat...</a>      
+            <a class="twitter-timeline" href="https://twitter.com/twitterapi" data-tweet-limit="2" data-theme="dark" data-link-color="#57C8EB" data-widget-id="0242801524" 
+            	data-chrome="noheader nofooter noscrollbar noborders transparent">Loading tweets by @egyptat...</a>      
           </div> -->
           <!-- END TWITTER BLOCK -->
 
           <!-- BEGIN BOTTOM CONTACTS -->
-          <div class="col-md-3 col-sm-6 pre-footer-col">
-            <h2>#{msg.OUR_CONTACTS}</h2>
-            <address class="margin-bottom-40">
-              #{msg.ADDRESS}: #{sessionScope.company.address} . <br/>
-              #{msg.PHONE}: #{sessionScope.company.phone} , <br/>
-              #{msg.MOBILE}: #{sessionScope.company.mobile} , <br/>
-              #{msg.E_MAIL}: <a href="mailto:mohamad.alhalawany@gmail.com"> #{sessionScope.company.email} </a><br/>
-            </address>
-          </div>
+          <h:panelGroup rendered="#{sessionScope.customerLoginForm ne null || sessionScope.company eq '1'}">		
+	          <div class="col-md-3 col-sm-6 pre-footer-col">
+	            <h2>#{msg.OUR_CONTACTS}</h2>
+	            <address class="margin-bottom-40">
+	              #{msg.ADDRESS}: #{menuBean.company.address} , #{sessionScope.language eq 'Ar' ? menuBean.company.cityNameAr : menuBean.company.cityName} 
+	              , #{sessionScope.language eq 'Ar' ? menuBean.company.governorateNameAr : menuBean.company.governorateName} 
+	              , #{sessionScope.language eq 'Ar' ? menuBean.company.countryNameAr : menuBean.company.countryName}<br/>
+	              
+	              #{msg.PHONE}: #{menuBean.company.phone} , <br/>
+	              #{msg.MOBILE}: #{menuBean.company.mobile} , <br/>
+	              #{msg.E_MAIL}: <a href="#{menuBean.company.email}"> #{menuBean.company.email} </a><br/>
+	            </address>
+	          </div>
+          </h:panelGroup>
           <!-- END BOTTOM CONTACTS -->
         </div>
         <hr/>
@@ -80,12 +81,12 @@
           <!-- BEGIN SOCIAL ICONS -->
           <div class="col-md-6 col-sm-6">
             <ul class="social-icons">
-              <li><a class="facebook" data-original-title="facebook" href="javascript:;"></a></li>
-              <li><a class="twitter" data-original-title="twitter" href="javascript:;"></a></li>
-              <li><a class="googleplus" data-original-title="googleplus" href="javascript:;"></a></li>
-              <li><a class="linkedin" data-original-title="linkedin" href="javascript:;"></a></li>
-              <li><a class="youtube" data-original-title="youtube" href="javascript:;"></a></li>
-              <li><a class="vimeo" data-original-title="vimeo" href="javascript:;"></a></li>
+              <li><a class="facebook" data-original-title="facebook" href="#{menuBean.company.facebookAccount}"></a></li>
+              <li><a class="twitter" data-original-title="twitter" href="#{menuBean.company.twitterAccount}"></a></li>
+              <li><a class="googleplus" data-original-title="googleplus" href="#{menuBean.company.googleplusAccount}"></a></li>
+              <li><a class="linkedin" data-original-title="linkedin" href="#{menuBean.company.linkedinAccount}"></a></li>
+              <li><a class="youtube" data-original-title="youtube" href="#{menuBean.company.youtubeAccount}"></a></li>
+              <li><a class="vimeo" data-original-title="vimeo" href="#{menuBean.company.vimeoAccount}"></a></li>
             </ul>
           </div>
           <!-- END SOCIAL ICONS -->
@@ -102,7 +103,7 @@
         <div class="row">
           <!-- BEGIN COPYRIGHT -->
           <div class="col-md-4 col-sm-4 padding-top-10">
-            #{sessionScope.company.copyright}
+            <!-- #{menuBean.company.companyName} -->
           </div>
           <!-- END COPYRIGHT -->
           <!-- BEGIN PAYMENTS -->
@@ -118,7 +119,7 @@
           <!-- END PAYMENTS -->
           <!-- BEGIN POWERED -->
           <div class="col-md-4 col-sm-4 text-right">
-            <p class="powered">Powered by: <a href="#">#{sessionScope.company.companyName}</a></p>
+            <p class="powered">Powered by: <a href="#">#{menuBean.company.companyName}</a></p>
           </div>
           <!-- END POWERED -->
         </div>

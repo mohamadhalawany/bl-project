@@ -11,7 +11,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name="orders")
-@NamedQuery(name="OrderEntity.findAll", query="SELECT o FROM OrderEntity o")
+@NamedQuery(name="OrderEntity.findById", query="SELECT o FROM OrderEntity o where o.id = :id")
 public class OrderEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -47,7 +47,7 @@ public class OrderEntity implements Serializable {
 	private Date updatedDate;
 
 	
-
+	
 	public Long getId() {
 		return this.id;
 	}
@@ -119,6 +119,4 @@ public class OrderEntity implements Serializable {
 	public void setPaymentMethod(Integer paymentMethod) {
 		this.paymentMethod = paymentMethod;
 	}
-
-
 }

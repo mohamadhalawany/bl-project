@@ -20,6 +20,8 @@ public class CustomersDTO {
 	private String phone ;
 	private Integer updatedBy;
 	private Date updatedDate;
+	private Integer blockReasonId ;
+	private Integer registerMethod ;
 	
 	private Integer countryId ;
 	private Integer governorateId ;
@@ -32,7 +34,8 @@ public class CustomersDTO {
 	private String cityDistrictNameAr ;
 	private String cityDistrictNameEn ;
 	private String customerTypeValue ;
-	
+	private String registerMethodValue ;
+	private String blockReasonValue ;
 	
 	public Long getId() {
 		return id;
@@ -183,6 +186,30 @@ public class CustomersDTO {
 	}
 	public void setCustomerTypeValue(String customerTypeValue) {
 		this.customerTypeValue = customerTypeValue;
+	}
+	public Integer getBlockReasonId() {
+		return blockReasonId;
+	}
+	public void setBlockReasonId(Integer blockReasonId) {
+		this.blockReasonId = blockReasonId;
+	}
+	public Integer getRegisterMethod() {
+		return registerMethod;
+	}
+	public void setRegisterMethod(Integer registerMethod) {
+		this.registerMethod = registerMethod;
+	}
+	public String getRegisterMethodValue() {
+		return registerMethodValue;
+	}
+	public void setRegisterMethodValue(String registerMethodValue) {
+		this.registerMethodValue = registerMethodValue;
+	}
+	public String getBlockReasonValue() {
+		return blockReasonValue;
+	}
+	public void setBlockReasonValue(String blockReasonValue) {
+		this.blockReasonValue = blockReasonValue;
 	}
 
 }

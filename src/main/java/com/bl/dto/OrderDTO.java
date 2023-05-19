@@ -17,7 +17,8 @@ public class OrderDTO {
 	private Date updatedDate;
 	
 	private List<OrderItemDTO> items ;
-	private String paymentMethodName , orderStatusName ;
+	private String paymentMethodName , orderStatusName , customerFullName , orderNumberLong , internationalCode , currencyName , currencyNameAr ;
+	private Integer customerType ;
 	
 	public Long getId() {
 		return id;
@@ -90,5 +91,41 @@ public class OrderDTO {
 	}
 	public void setOrderStatusName(String orderStatusName) {
 		this.orderStatusName = orderStatusName;
+	}
+	public String getCustomerFullName() {
+		return customerFullName;
+	}
+	public void setCustomerFullName(String customerFullName) {
+		this.customerFullName = customerFullName;
+	}
+	public Integer getCustomerType() {
+		return customerType;
+	}
+	public void setCustomerType(Integer customerType) {
+		this.customerType = customerType;
+	}
+	public String getInternationalCode() {
+		return internationalCode;
+	}
+	public void setInternationalCode(String internationalCode) {
+		this.internationalCode = internationalCode;
+	}
+	public String getOrderNumberLong() {
+		return orderNumberLong;
+	}
+	public void setOrderNumberLong(String orderNumberLong) {
+		this.orderNumberLong = orderNumberLong;
+	}
+	public String getCurrencyName() {
+		return currencyName;
+	}
+	public void setCurrencyName(String currencyName) {
+		this.currencyName = currencyName;
+	}
+	public String getCurrencyNameAr() {
+		return currencyNameAr;
+	}
+	public void setCurrencyNameAr(String currencyNameAr) {
+		this.currencyNameAr = currencyNameAr;
 	}
 }

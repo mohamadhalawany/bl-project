@@ -46,4 +46,12 @@ public class GeneralServiceImpl implements GeneralService {
 	public GeneralDTO currencyById(Integer id) {
 		return dao.currencyById(id) ;
 	}
+	@Override
+	public List<GeneralDTO> currencyList() {
+		return dao.currencyList() ;
+	}
+	@Override
+	public Integer orderExpireDays() {
+		return dao.orderExpireDays() ;
+	}
 }

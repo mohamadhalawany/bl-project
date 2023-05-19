@@ -16,15 +16,16 @@
             <h1>${sessionScope.customer eq null ? msg.REGISTER : msg.PERSONAL_DATA}</h1>
             <div class="content-form-page">
             
-              <form role="form" class="form-horizontal form-without-legend" action="reg" method="post" onsubmit="return validateRequired()">
-              	<H2><h:outputLabel rendered="${saved ne null}" value="#{msg.SAVE_MSG}" style="color:red"/></H2>
-              	<H2><h:outputLabel rendered="${count ne null}" value="#{msg.CUSTOMER_EXISTS}" style="color:red"/></H2>
+              <form role="form" class="form-horizontal form-without-legend" action="reg" method="post" onsubmit="return validateCustomerForm()">
+              	<h:outputLabel rendered="${saved ne null}" value="#{msg.SAVE_MSG}" style="color:red"/>
+              	<h:outputLabel rendered="${count ne null}" value="#{msg.CUSTOMER_EXISTS}" style="color:red"/>
+              	
                 <div class="form-group">
                   <label class="col-lg-2 control-label" for="first-name">#{msg.FULL_NAME}<span class="require">*</span></label>
                   <div class="col-lg-8">
-                    <input type="text" id="fullName" name="fullName" class="form-control" value="${dto.fullName}"/>
-                    <div id="fullNameDiv">
-					  <h:outputLabel value="#{msg.REQUIRED_FULL_NAME}" style="color:red;"/>
+                    <input type="text" id="fullName" name="fullName" class="form-control" value="${customer.fullName}"/>
+                    <div id="fullNameMessageDiv">
+                    	<span id = "fullNameMessage" style="color:red"> </span> 
 					</div>			
                   </div>
                 </div>
@@ -32,9 +33,9 @@
                 <div class="form-group">
                   <label class="col-lg-2 control-label" for="last-name">#{msg.EMAIL}<span class="require">*</span></label>
                   <div class="col-lg-8">
-                    <input type="text" id="email" name="email" class="form-control" value="${dto.email}" onblur="validateEmail(this)"/>
+                    <input type="text" id="email" name="email" class="form-control" value="${customer.email}" onblur="validateEmail(this)"/>
                     <div id="emailDiv">
-					  <h:outputLabel value="#{msg.NOT_VALID_EMAIL}" style="color:red;"/>
+                    	<span id = "emailMessage" style="color:red"> </span> 
 					</div>
                   </div>
                 </div>
@@ -44,7 +45,17 @@
                   <div class="col-lg-8">
                     <input type="text" id="password" name="password" class="form-control"/>
                     <div id="passwordDiv">
-					  <h:outputLabel value="#{msg.REQUIRED_PASSWORD}" style="color:red;"/>
+					  <span id = "passwordMessage" style="color:red"> </span> 
+					</div>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label class="col-lg-2 control-label" for="fax">#{msg.CONFIRM_PASSWORD} <span class="require">*</span></label>
+                  <div class="col-lg-8">
+                    <input type="text" id="passwordConfirm" name="passwordConfirm" class="form-control"/>
+                    <div id="passwordConfirmDiv">
+					  <span id = "passwordConfirmMessage" style="color:red"> </span> 
 					</div>
                   </div>
                 </div>
@@ -52,43 +63,47 @@
                 <div class="form-group">
                   <label class="col-lg-2 control-label" for="email">#{msg.PHONE}</label>
                   <div class="col-lg-8">
-                    <input type="text" id="phone" name="phone" class="form-control" value="${dto.phone}"/>
+                    <input type="text" id="phone" name="phone" class="form-control" value="${customer.phone}"/>
                   </div>
+                  
                 </div>
                 <div class="form-group">
                   <label class="col-lg-2 control-label" for="telephone">#{msg.MOBILE}</label>
                   <div class="col-lg-8">
-                    <input type="text" id="mobile" name="mobile" class="form-control" value="${dto.mobile}"/>
+                    <input type="text" id="mobile" name="mobile" class="form-control" value="${customer.mobile}"/>
                   </div>
                 </div>                
                 
                 <div class="form-group">
                   <label class="col-md-2 control-label">#{msg.CUSTOMER_TYPE}</label>
                   <div class="col-md-8">
-                    <h:selectOneMenu class="form-control" value="${dto.customerType}" id="customerType">
+                    <h:selectOneMenu class="form-control" value="${customer.customerType}" id="customerType">
 	                      <f:selectItem itemValue="1" itemLabel="#{msg.PERSON}"/>
 	                      <f:selectItem itemValue="2" itemLabel="#{msg.COMPANY}"/>
                     </h:selectOneMenu>
                   </div>
-                </div>                
+                </div>   
+                             
                 <div class="form-group">
                   <label class="col-lg-2 control-label">#{msg.COUNTRY}</label>
                   <div class="col-lg-8">
-                    <h:selectOneMenu class="form-control" value="#{dto.countryId}" id="countryId" onchange="govs()">
+                    <h:selectOneMenu class="form-control" value="#{customer.countryId}" id="countryId" onchange="govs()">
 	                      <f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
 	                      <f:selectItems value="${countryList}" var="cnt" itemLabel="#{sessionScope.language eq null ? cnt.valueEn : cnt.valueAr}" itemValue="#{cnt.key}"/>
                     </h:selectOneMenu>
                   </div>
                 </div>
+                
                 <div class="form-group">
                   <label class="col-lg-2 control-label" for="message">#{msg.GOVERNERATE}</label>
                   <div class="col-lg-8">
-                    <h:selectOneMenu class="form-control" value="#{dto.governorateId}" id="governorateId" onchange="cityDist()">
+                    <h:selectOneMenu class="form-control" value="#{customer.governorateId}" id="governorateId" onchange="cityDist()">
 	                      <f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
 	                      <f:selectItems value="${governorateList}" var="gov" itemLabel="#{sessionScope.language eq null ? gov.valueEn : gov.valueAr}" itemValue="${gov.key}"/>
                     </h:selectOneMenu>
                   </div>
                 </div>
+                
                 <div class="form-group">
                   <label class="col-lg-2 control-label" for="message">#{msg.CITY_DISTRICT}</label>
                   <div class="col-lg-8">
@@ -98,26 +113,25 @@
                   			<OPTION value="${cd.key}" label="#{sessionScope.language eq null ? cd.valueEn : cd.valueAr}"/>
                   		</c:forEach>
                   	</SELECT>
-                    <!-- <h:selectOneMenu class="form-control" value="#{dto.cityDistrictId}" id="cityDistrictId" required="true">
-	                      <f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
-	                      <f:selectItems value="${cityDistrictList}" var="cd" itemLabel="#{sessionScope.language eq null ? cd.valueEn : cd.valueAr}" itemValue="${cd.key}"/>
-                    </h:selectOneMenu> -->
                   </div>
                 </div>
+                
                 <div class="form-group">
                   <label class="col-lg-2 control-label" for="message">#{msg.ADDRESS}</label>
                   <div class="col-lg-8">
-                    <h:inputTextarea value="${dto.address}" cols="25" rows="5" class="form-control"/>
+                    <h:inputTextarea value="${customer.address}" cols="25" rows="5" class="form-control"/>
                   </div>
                 </div>
+                
                 <div class="form-group">
                   <label class="col-lg-2 control-label">#{msg.IS_TAX}</label>
                   <div class="col-lg-8 checkbox-list">
                     <label>
-                      <input type="checkbox" value="${dto.isTax}" name="isTax" id="isTax"/> 
+                      <input type="checkbox" value="${customer.isTax}" name="isTax" id="isTax"/> 
                     </label>
                   </div>
                 </div>
+                
                 <div class="row">
                   <div class="col-lg-8 col-md-offset-2 padding-left-0 padding-top-20">
                     <button class="btn btn-primary" type="submit" id="save">#{msg.SAVE}</button>

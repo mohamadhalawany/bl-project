@@ -24,20 +24,35 @@ public class CategoryEntity implements Serializable {
 	private String categoryName;
 
 	@Column(name="CREATED_BY")
-	private String createdBy;
+	private Integer createdBy;
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="CREATED_DATE")
 	private Date createdDate;
 
 	@Column(name="UPDATED_BY")
-	private String updatedBy;
+	private Integer updatedBy;
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="UPDATED_DATE")
-	private Date updatedDate;
+	private Date updatedDate; 
 
-	public CategoryEntity() {
+	@Column(name="IS_ACTIVE")
+	private Integer isActive ;
+	
+	@Column(name="PARENT_CATEGORY_ID") 
+	private Long parentCategoryId ;
+	
+	@Column(name="MENU_ID") 
+	private Integer menuId ;
+	
+
+	public Long getParentCategoryId() {
+		return parentCategoryId;
+	}
+
+	public void setParentCategoryId(Long parentCategoryId) {
+		this.parentCategoryId = parentCategoryId;
 	}
 
 	public Long getId() {
@@ -56,11 +71,11 @@ public class CategoryEntity implements Serializable {
 		this.categoryName = categoryName;
 	}
 
-	public String getCreatedBy() {
+	public Integer getCreatedBy() {
 		return this.createdBy;
 	}
 
-	public void setCreatedBy(String createdBy) {
+	public void setCreatedBy(Integer createdBy) {
 		this.createdBy = createdBy;
 	}
 
@@ -72,11 +87,11 @@ public class CategoryEntity implements Serializable {
 		this.createdDate = createdDate;
 	}
 
-	public String getUpdatedBy() {
+	public Integer getUpdatedBy() {
 		return this.updatedBy;
 	}
 
-	public void setUpdatedBy(String updatedBy) {
+	public void setUpdatedBy(Integer updatedBy) {
 		this.updatedBy = updatedBy;
 	}
 
@@ -86,6 +101,22 @@ public class CategoryEntity implements Serializable {
 
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
+	}
+
+	public Integer getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Integer isActive) {
+		this.isActive = isActive;
+	}
+
+	public Integer getMenuId() {
+		return menuId;
+	}
+
+	public void setMenuId(Integer menuId) {
+		this.menuId = menuId;
 	}
 
 }

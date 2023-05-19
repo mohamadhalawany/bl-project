@@ -16,8 +16,14 @@ public interface CustomersService {
 	public Long countByEmail(String email) ;
 	public Long saveOrder(OrderDTO order , OrderItemDTO orderItem , OrderStatusDTO orderStatus) ;
 	public List<CustomersDTO>  findAll(int language) ;
-	public List<CustomersDTO> next() ;
-	public List<CustomersDTO> previous() ;
+	public List<CustomersDTO> next(int language) ;
+	public List<CustomersDTO> previous(int language) ;
 	public List<CustomersDTO> search(CustomersDTO dto , int language) ;
+	
+	public List<CustomersDTO> blocked(int language) ;
+	public List<CustomersDTO> nextBlocked(int language) ;
+	public List<CustomersDTO> previousBlocked(int language) ;
+	
 	public Map<String, Object> metaData() ;
+	public Map<String, Object> metaDataBlocked() ;
 }

@@ -3,6 +3,7 @@ package com.bl.dto;
 public class GeneralDTO {
 	
 	private Long key ;
+	private Integer id ;
 	private String valueEn , valueAr , isoName ;
 	
 	
@@ -30,6 +31,12 @@ public class GeneralDTO {
 	}
 	public void setIsoName(String isoName) {
 		this.isoName = isoName;
+	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	
 }

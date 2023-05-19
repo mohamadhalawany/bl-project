@@ -25,4 +25,12 @@ public interface CustomersRepository extends JpaRepository<CustomersEntity , Lon
 			+ " 		   (SELECT gov.id FROM GovernorateEntity gov WHERE gov.countryId = ?6))) ")
 	public Page<CustomersEntity> search(String email , String fullName , Integer customerType , Integer cityDistrictId , Integer governorateId , Integer countryId , 
 			Pageable page) ;
+	
+	@Query("SELECT c FROM CustomersEntity c "
+			+ " WHERE c.isBlocked = 1") 
+	public Page<CustomersEntity> blockedCustomer(Pageable page) ;
+	
+	@Query("SELECT c FROM CustomersEntity c "
+			+ " WHERE c.isBlocked = 0") 
+	public Page<CustomersEntity> findAll(Pageable page) ;
 }

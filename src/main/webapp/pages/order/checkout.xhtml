@@ -164,26 +164,26 @@
 											<div class="col-md-12 clearfix">
 												<div class="table-wrapper-responsive">
 													<strong class="price" style="font-size: 11pt;">#{msg.SHIPPING_COST}</strong> 
-													<strong class="price" style="color: #cc3304 !important;"><span>#{sessionScope.currencyCode}</span>3.00</strong>
+													<strong class="price" style="color: #cc3304 !important;"><span>#{order.internationalCode}</span>3.00</strong>
 													
 													<strong class="price" style="font-size: 11pt;">#{msg.TOTAL_PRICE}</strong>											
-													<strong class="price" style="color: #cc3304 !important;"><span>#{sessionScope.currencyCode}</span>#{sessionScope.totalPrice}</strong>
+													<strong class="price" style="color: #cc3304 !important;"><span>#{order.internationalCode}</span>#{order.totalPrice}</strong>
 													
 													<HR />
 													
 													<table>
 														<tr>
 															<th class="checkout-image">#{msg.ITEM_IMAGE}</th>
-															<th class="checkout-description">#{msg.DESCRIPTION}</th>
+															<th class="checkout-description"></th>
 															<th class="checkout-quantity">#{msg.QUANTITY}</th>
-															<th class="checkout-price">#{msg.ITEM_PRICE}</th>
+															<th class="checkout-price"></th>
 															<!-- <th class="checkout-total">#{msg.TOTAL}</th> -->
 														</tr>
 														
 														<c:forEach items="${list}" var="var" varStatus="vs">
 														<tr>
 															<td class="checkout-image">
-																<a href="javascript:;"><img src="UPLOADS/ITEM_LOGO/#{var.itemLogo}" alt="#{var.itemName}"/></a>
+																<a href="javascript:;"><img src="UPLOADS/ITEMS_LOGO/#{var.itemLogo}" alt="#{var.itemName}"/></a>
 															</td>
 															
 															<td class="checkout-description">
@@ -195,10 +195,10 @@
 																</p> 
 															</td>
 															
-															<td class="checkout-quantity">#{var.quantity}</td>
-															<td class="checkout-price"><strong><span>#{sessionScope.currencyCode}</span>#{var.itemPrice}</strong>
-															<INPUT type="text" value="#{var.orderId}" id="orderId" name="orderId"/>
-															<INPUT type="text" value="#{sessionScope.customer.id}" id="customerId" name="customerId"/></td>
+															<td class="checkout-quantity">#{var.quantity} #{msg.PIECES}</td>
+															<td class="checkout-price"><strong>#{var.itemPrice} &nbsp;<span>#{order.internationalCode}</span></strong>
+															<INPUT type="hidden" value="#{var.orderId}" id="orderId" name="orderId"/>
+															<INPUT type="hidden" value="#{sessionScope.customer.id}" id="customerId" name="customerId"/></td>
 														</tr>
 														</c:forEach>
 														

@@ -19,6 +19,7 @@ import com.bl.HelperUtils;
 import com.bl.controllers.BaseController;
 import com.bl.dto.CustomersDTO;
 import com.bl.dto.GeneralDTO;
+import com.bl.dto.cms.LoginUserDTO;
 import com.bl.service.CustomersService;
 import com.bl.service.GeneralService;
 
@@ -29,11 +30,14 @@ public class CMSCustomerControllers extends BaseController {
 	private String loginPage = "login" ;
 	private String customerPage = "customers/customer" ;
 	private String searchPage = "customers/search" ;
+	private String blockedPage = "customers/blocked" ;
 	
 	private List<CustomersDTO> list = new ArrayList<CustomersDTO>() ;
 	private List<GeneralDTO> countryList = new ArrayList<GeneralDTO>() ;
 	private List<GeneralDTO> governorateList = new ArrayList<GeneralDTO>() ;
 	private List<GeneralDTO> cityDistrictList = new ArrayList<GeneralDTO>() ;
+	private List<CustomersDTO> blockedList = new ArrayList<CustomersDTO>() ;
+	
 	
 	@Autowired
 	private CustomersService service ;
@@ -123,6 +127,8 @@ public class CMSCustomerControllers extends BaseController {
 		ModelAndView mv = new ModelAndView() ;
 		HttpSession session = request.getSession() ;
 		if(session.getAttribute("user") != null) {
+			LoginUserDTO user = (LoginUserDTO) session.getAttribute("user") ;
+			
 			String address = request.getParameter("address") ;
 			Integer cityDistrictId = Integer.parseInt(request.getParameter("cityDistrictId")) ;
 			Integer customerType = Integer.parseInt(request.getParameter("customerType")) ;
@@ -150,9 +156,9 @@ public class CMSCustomerControllers extends BaseController {
 				mv.addObject("count" , 1) ;
 				mv.addObject("saved" , null) ;
 			}else {
-				dto.setUpdatedBy(0) ;
+				dto.setUpdatedBy(user.getId()) ;
 				dto.setUpdatedDate(new Date());
-				dto.setCreatedBy(0);
+				dto.setCreatedBy(user.getId());
 				dto.setCreatedDate(new Date());		
 				service.save(dto) ;
 				mv.addObject("saved" , 1) ;
@@ -209,6 +215,92 @@ public class CMSCustomerControllers extends BaseController {
 		return mv ;
 	}
 	
+	
+	
+	
+	@RequestMapping("aao/nextCustomer")
+	public ModelAndView nextCustomer(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView() ;
+		HttpSession session = request.getSession() ;
+		session.setAttribute("countryId" , null) ;
+		
+		if(session.getAttribute("user") != null) {
+			int language = 1 ;
+
+			if(session.getAttribute("language") != null) {
+				if(session.getAttribute("language").equals("En")) {
+					language = 2 ;
+				}else {
+					language = 1 ;
+				}
+			}
+			
+			countryList = generalService.countryList() ;
+			governorateList = new ArrayList<GeneralDTO>() ;
+			cityDistrictList = new ArrayList<GeneralDTO>() ;
+			list = service.next(language) ;
+			
+			Map<String , Object> metaData = service.metaData() ;
+						
+			mv.addObject("list" , list) ;
+			mv.addObject("countryList" , countryList) ;
+			mv.addObject("governorateList" , governorateList) ;
+			mv.addObject("cityDistrictList" , cityDistrictList) ;
+			mv.addObject("currentPage" , metaData.get("currentPage")) ;
+			mv.addObject("total" ,  metaData.get("total")) ;
+			mv.addObject("totalPages" , metaData.get("totalPages")) ;
+			mv.addObject("isFirst" , metaData.get("isFirst")) ;
+			mv.addObject("isLast" , metaData.get("isLast")) ;
+			mv.setViewName(searchPage) ;
+		}else {
+			mv.setViewName(loginPage) ;
+		}
+		return mv ;
+	}
+	
+	
+	
+	
+	
+	@RequestMapping("aao/previousCustomer")
+	public ModelAndView previousCustomer(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView() ;
+		HttpSession session = request.getSession() ;
+		session.setAttribute("countryId" , null) ;
+		
+		if(session.getAttribute("user") != null) {
+			int language = 1 ;
+
+			if(session.getAttribute("language") != null) {
+				if(session.getAttribute("language").equals("En")) {
+					language = 2 ;
+				}else {
+					language = 1 ;
+				}
+			}
+			
+			countryList = generalService.countryList() ;
+			governorateList = new ArrayList<GeneralDTO>() ;
+			cityDistrictList = new ArrayList<GeneralDTO>() ;
+			list = service.previous(language) ;
+			
+			Map<String , Object> metaData = service.metaData() ;
+						
+			mv.addObject("list" , list) ;
+			mv.addObject("countryList" , countryList) ;
+			mv.addObject("governorateList" , governorateList) ;
+			mv.addObject("cityDistrictList" , cityDistrictList) ;
+			mv.addObject("currentPage" , metaData.get("currentPage")) ;
+			mv.addObject("total" ,  metaData.get("total")) ;
+			mv.addObject("totalPages" , metaData.get("totalPages")) ;
+			mv.addObject("isFirst" , metaData.get("isFirst")) ;
+			mv.addObject("isLast" , metaData.get("isLast")) ;
+			mv.setViewName(searchPage) ;
+		}else {
+			mv.setViewName(loginPage) ;
+		}
+		return mv ;
+	}
 	
 	
 	
@@ -310,10 +402,6 @@ public class CMSCustomerControllers extends BaseController {
 		ModelAndView mv = new ModelAndView() ;
 		HttpSession session = request.getSession() ;
 		if(session.getAttribute("user") != null) {
-//			countryList = generalService.countryList() ;
-//			governorateList = new ArrayList<GeneralDTO>() ;
-//			cityDistrictList = new ArrayList<GeneralDTO>() ;
-			
 			String email = null ;
 			String fullName = null ;
 			Integer customerType = null ;
@@ -436,6 +524,143 @@ public class CMSCustomerControllers extends BaseController {
 	
 	
 	
+	
+	@RequestMapping("aao/blockedCustomers")
+	public ModelAndView blockedCustomers(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView() ;
+		HttpSession session = request.getSession() ;
+		if(session.getAttribute("user") != null) {
+			int language = 1 ;
+
+			if(session.getAttribute("language") != null) {
+				if(session.getAttribute("language").equals("En")) {
+					language = 2 ;
+				}else {
+					language = 1 ;
+				}
+			}
+			
+			blockedList = service.blocked(language) ;
+			Map<String , Object> metaData = service.metaDataBlocked() ;
+			
+			mv.addObject("list" , blockedList) ;
+			mv.addObject("currentPage" , metaData.get("currentPage")) ;
+			mv.addObject("total" ,  metaData.get("total")) ;
+			mv.addObject("totalPages" , metaData.get("totalPages")) ;
+			mv.addObject("isFirst" , metaData.get("isFirst")) ;
+			mv.addObject("isLast" , metaData.get("isLast")) ;
+			mv.setViewName(blockedPage) ;
+		}else {
+			mv.setViewName(loginPage) ;
+		}
+		return mv ;
+	}
+	
+	
+	
+	@RequestMapping("aao/nextBlocked")
+	public ModelAndView nextBlocked(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView() ;
+		HttpSession session = request.getSession() ;
+		if(session.getAttribute("user") != null) {
+			int language = 1 ;
+
+			if(session.getAttribute("language") != null) {
+				if(session.getAttribute("language").equals("En")) {
+					language = 2 ;
+				}else {
+					language = 1 ;
+				}
+			}
+			
+			blockedList = service.nextBlocked(language) ;
+			Map<String , Object> metaData = service.metaDataBlocked() ;
+			
+			mv.addObject("list" , blockedList) ;
+			mv.addObject("currentPage" , metaData.get("currentPage")) ;
+			mv.addObject("total" ,  metaData.get("total")) ;
+			mv.addObject("totalPages" , metaData.get("totalPages")) ;
+			mv.addObject("isFirst" , metaData.get("isFirst")) ;
+			mv.addObject("isLast" , metaData.get("isLast")) ;
+			mv.setViewName(blockedPage) ;
+		}else {
+			mv.setViewName(loginPage) ;
+		}
+		return mv ;
+	}
+	
+	
+	
+	
+	@RequestMapping("aao/previousBlocked")
+	public ModelAndView previousBlocked(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView() ;
+		HttpSession session = request.getSession() ;
+		if(session.getAttribute("user") != null) {
+			int language = 1 ;
+
+			if(session.getAttribute("language") != null) {
+				if(session.getAttribute("language").equals("En")) {
+					language = 2 ;
+				}else {
+					language = 1 ;
+				}
+			}
+			
+			blockedList = service.previousBlocked(language) ;
+			Map<String , Object> metaData = service.metaDataBlocked() ;
+			
+			mv.addObject("list" , blockedList) ;
+			mv.addObject("currentPage" , metaData.get("currentPage")) ;
+			mv.addObject("total" ,  metaData.get("total")) ;
+			mv.addObject("totalPages" , metaData.get("totalPages")) ;
+			mv.addObject("isFirst" , metaData.get("isFirst")) ;
+			mv.addObject("isLast" , metaData.get("isLast")) ;
+			mv.setViewName(blockedPage) ;
+		}else {
+			mv.setViewName(loginPage) ;
+		}
+		return mv ;
+	}
+	
+	
+	@RequestMapping("aao/block")
+	public ModelAndView blockUnblock(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView() ;
+		HttpSession session = request.getSession() ;
+				
+		if(session.getAttribute("user") != null) {
+			LoginUserDTO user = (LoginUserDTO) session.getAttribute("user") ;
+			int flag = 1 ;
+			Long id = 0L ;
+			
+			if(request.getParameter("flag") == null) {
+				flag = 1 ;
+			}else {
+				flag = Integer.parseInt(request.getParameter("flag")) ;
+			}
+			
+			if(request.getParameter("id") != null) {
+				id = Long.parseLong(request.getParameter("id")) ;
+			}
+			
+			CustomersDTO customer = service.findById(id) ;
+			if(customer != null) {
+				customer.setIsBlocked(flag) ;
+				customer.setUpdatedDate(new Date()) ;
+				customer.setUpdatedBy(user.getId()) ;
+				service.save(customer) ;
+			}
+			mv.setViewName("redirect: " + request.getHeader(HttpHeaders.REFERER)) ;
+		}else {
+			mv.setViewName(loginPage) ;
+		}		
+		return mv ;
+	}
+	
+	
+	
+	
 
 	public List<GeneralDTO> getCountryList() {
 		return countryList;
@@ -481,6 +706,18 @@ public class CMSCustomerControllers extends BaseController {
 
 	public void setList(List<CustomersDTO> list) {
 		this.list = list;
+	}
+
+
+
+	public List<CustomersDTO> getBlockedList() {
+		return blockedList;
+	}
+
+
+
+	public void setBlockedList(List<CustomersDTO> blockedList) {
+		this.blockedList = blockedList;
 	}
 	
 }

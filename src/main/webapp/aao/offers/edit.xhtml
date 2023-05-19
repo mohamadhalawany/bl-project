@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+
+<ui:composition template="/template/cms_template.xhtml">
+	<ui:define name="title">#{msg.OFFERS}</ui:define>
+	<ui:define name="content">
+	
+			<div class="col-12 grid-margin">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">
+                  	<h:outputLabel rendered="#{param['id'] eq null}" value="#{msg.NEW_OFFER}"/>
+                  	<h:outputLabel rendered="#{param['id'] ne null}" value="#{msg.EDIT_OFFER}"/>
+                  </h4>
+                  
+                  <p class="card-description">
+                     <h:outputLabel value="#{msg.SAVE_MSG}" rendered="${saved eq 1}" style="color: red;"/>
+                     
+                     <strong><h:outputLabel value="#{msg.VALID_FROM}" rendered="${invalidDate eq 1}" style="color: red;"/></strong>&nbsp;
+                     <h:outputLabel value="#{msg.DATE_BEFORE}" rendered="${invalidDate eq 1}" style="color: red;"/>
+                     <strong><h:outputLabel value="#{msg.VALID_TO}" rendered="${invalidDate eq 1}" style="color: red;"/></strong>
+                     
+                     <h:outputLabel value="#{msg.OFFER_VALUE_ZERRO}" rendered="${offerValueError eq 1}" style="color: red;"/>
+                     
+                     <h:outputLabel value="#{msg.OFFER_VALUE_IS_PERCENT_ERROR}" rendered="${offerValueIsPercentError eq 1}" style="color: red;"/>&nbsp;
+                     <strong><h:outputLabel value="#{msg.IS_PERCENT}" rendered="${offerValueIsPercentError eq 1}" style="color: red;"/>&nbsp;</strong>
+                     <h:outputLabel value="#{msg.EQUAL}" rendered="${offerValueIsPercentError eq 1}" style="color: red;"/>&nbsp;
+                     <strong><h:outputLabel value="#{msg.YES}" rendered="${offerValueIsPercentError eq 1}" style="color: red;"/>&nbsp;</strong>
+                  </p>
+                    
+                  <form class="form-sample" action="saveOffers" method="post" onsubmit ="return validateOfferForm()">
+                    <INPUT type="hidden" value="#{param['id']}" name="id" id="id"/>
+                    <div class="row">
+                    
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.OFFER_NAME} <FONT size="1.5" color="red">*</FONT></label>
+                          <div class="col-sm-9">
+                            <input type="text" id="offerName" name="offerName" class="form_customer" value="${dto.offerName}"/>
+                            <span id = "offerNameMessage" style="color:red"> </span> <br/><br/> 
+                          </div>
+                        </div>
+                      </div>
+                     
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.IS_ACTIVE}</label>
+                          <div class="col-sm-9">
+                          	<h:selectOneMenu class="form_customer" id="isActive" value="${dto.isActive}">
+			                      <f:selectItem itemValue="1" itemLabel="#{msg.YES}"/>
+			                      <f:selectItem itemValue="0" itemLabel="#{msg.NO}"/>
+		                    </h:selectOneMenu>
+                          </div>
+                        </div>
+                      </div>
+                      
+                    </div>                    
+                    
+                    <div class="row">
+                    
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.VALID_FROM}</label>
+                          <div class="col-sm-9">
+                            <input type="date" id="validFrom" name="validFrom" class="form_customer" value="${dto.from}"/>
+                            <span id = "validFromMessage" style="color:red"> </span> <br/><br/> 
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.VALID_TO}</label>
+                          <div class="col-sm-9">
+                            <input type="date" id="validTo" name="validTo" class="form_customer" value="${dto.to}"/>
+                            <span id = "validToMessage" style="color:red"> </span> <br/><br/> 
+                          </div>
+                        </div>
+                      </div>
+                      
+                    </div>
+                    
+                    
+                    
+                    <div class="row">
+                    
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.IS_PERCENT}</label>
+                          <div class="col-sm-9">
+                            <h:selectOneMenu class="form_customer" id="isPercent" value="${dto.isPercent}">
+                          		 <f:selectItem itemValue="3" itemLabel="#{msg.CHOOSE}"/>
+			                     <f:selectItem itemValue="1" itemLabel="#{msg.YES}"/>
+			                     <f:selectItem itemValue="0" itemLabel="#{msg.NO}"/>
+		                    </h:selectOneMenu>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.OFFER_VALUE}</label>
+                          <div class="col-sm-9">
+                            <input type="text" id="offerValue" name="offerValue" class="form_customer" value="${dto.offerValue}"/>
+                            <span id = "offerValueMessage" style="color:red"> </span> <br/><br/> 
+                          </div>
+                        </div>
+                      </div>
+                      
+                    </div>
+                    
+                    
+                                        
+                    <button type="submit" class="btn btn-primary mr-2" name="save">#{msg.SAVE}</button>
+                    <button type="submit" class="btn btn-light" name="cancel">#{msg.CANCEL}</button>
+                    
+                  </form>
+                </div>
+                
+                
+              </div>
+            </div>
+
+	</ui:define>
+</ui:composition>
+</html>

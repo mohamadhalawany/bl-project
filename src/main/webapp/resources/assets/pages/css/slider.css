@@ -96,7 +96,7 @@
 }
 
 /* Carousel Item Background Images */
-.carousel-slider .carousel-item-one {
+/* .carousel-slider .carousel-item-one {
     background: url(../../../assets/onepage/img/slider/slide1.jpg);
     background-size: cover;
     background-position: center center;
@@ -112,7 +112,7 @@
     background: url(../../../assets/onepage/img/slider/slide3.jpg);
     background-size: cover;
     background-position: center center;
-}
+} */
 
 .carousel-slider .carousel-item-four {
     background: url(../../../assets/pages/img/shop-slider/slide1/bg.jpg);

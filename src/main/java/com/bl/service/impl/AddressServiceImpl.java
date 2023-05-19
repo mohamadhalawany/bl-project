@@ -1,5 +1,7 @@
 package com.bl.service.impl;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,8 +46,8 @@ public class AddressServiceImpl implements AddressService {
 		if(entity != null) {
 			dto = new AddressDTO() ;
 			dto.setCountryId(entity.getCountryId()) ;
-			dto.setGovernorateNameEn(entity.getGovernorateNameAr()) ;
-			dto.setGovernorateNameAr(entity.getGovernorateNameEn()) ;
+			dto.setGovernorateNameEn(entity.getGovernorateNameEn()) ;
+			dto.setGovernorateNameAr(entity.getGovernorateNameAr()) ;
 		}
 		return dto ;
 	}
@@ -53,8 +55,9 @@ public class AddressServiceImpl implements AddressService {
 	@Override
 	public AddressDTO findCitiesDistrictById(Integer id) {
 		AddressDTO dto = null ;
-		CitiesDistrictEntity entity = cityDistrictRepo.findById(id).get() ;
-		if(entity != null) {
+		Optional<CitiesDistrictEntity> opt = cityDistrictRepo.findById(id) ; 		
+		if(opt != null && !opt.isEmpty()) {
+			CitiesDistrictEntity entity = opt.get() ;
 			dto = new AddressDTO() ;
 			dto.setGovernorateId(entity.getGovernorateId()) ;
 			dto.setCitiesDistrictName(entity.getNameEn()) ;

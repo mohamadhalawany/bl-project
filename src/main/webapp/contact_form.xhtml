@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+
+<ui:composition template="/template/template.xhtml">
+	<ui:define name="title">#{msg.CUSTOMER_CONTACT}</ui:define>
+	<ui:define name="content">
+	
+			<div class="row margin-bottom-40">
+			<div class="col-md-9 col-sm-7">
+            <h1>&nbsp;&nbsp;#{msg.CUSTOMER_CONTACT}</h1>
+            &nbsp;&nbsp;&nbsp;#{msg.CUSTOMER_CONTACT_TEXT} 
+            <div class="content-form-page">
+            
+              <form role="form" class="form-horizontal form-without-legend" action="saveContactForm" method="post" onsubmit="return validateContactForm()" id="form1">
+              	<h:outputLabel rendered="${save eq 1}" value="#{msg.CONTACT_FORM_CONFIRM}" style="color:red;font-size: medium !important;"/>
+
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">#{msg.CUSTOMER_NAME}<span class="require">*</span></label>
+                  <div class="col-lg-8">
+                    <input type="text" id="customerName" name="customerName" class="form-control" value="${contactDto.customerName}"/>
+                    <div id="customerNameMessageDiv">
+					  <span id = "customerNameMessage" style="color:red !important"> </span> <br/><br/> 
+					</div>			
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label class="col-lg-2 control-label" for="last-name">#{msg.EMAIL}<span class="require">*</span></label>
+                  <div class="col-lg-8">
+                    <input type="text" id="customerEmail" name="customerEmail" class="form-control" value="${contactDto.customerMail}" onblur="validateMail(this)"/>
+                    <div id="emailMessageDiv">
+					  <span id = "emailMessage" style="color:red !important"> </span> <br/><br/> 
+					  <span id = "notValidEmailMessage" style="color:red !important">
+					  		<h:outputLabel rendered="${emailError eq 1}" value="#{msg.NOT_VALID_EMAIL}" style="color:red"/>
+					  </span> <br/><br/> 
+					</div>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label class="col-lg-2 control-label" for="fax">#{msg.MESSAGE} <span class="require">*</span></label>
+                  <div class="col-lg-8">
+                  	<TEXTAREA rows="5" cols="25" id="message" name="message" class="form-control">${contactDto.message}</TEXTAREA>                    
+                    <div id="messageMessageDiv">
+					  <span id = "messageMessage" style="color:red !important"> </span> <br/><br/> 
+					</div>
+                  </div>
+                </div>                
+                
+                <div class="row">
+                  <div class="col-lg-8 col-md-offset-2 padding-left-0 padding-top-20">
+                    <button class="btn btn-primary" type="submit" id="save" onclick="validateMail(this.document.form1.customerEmail)">#{msg.SAVE}</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          </div>
+
+	</ui:define>
+</ui:composition>
+</html>

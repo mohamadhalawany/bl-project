@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,6 +20,7 @@ import com.bl.dto.ItemsDTO;
 import com.bl.service.CustomerReviewsService;
 import com.bl.service.ItemService;
 import com.bl.service.ItemSpecificationService;
+import com.bl.service.cms.ItemBrandService;
 
 
 
@@ -26,15 +28,17 @@ import com.bl.service.ItemSpecificationService;
 public class ItemsController {
 	
 	private String itemPage = "pages/item" ;
+	private String categoryPage = "pages/category" ;
+	private String searchResultPage = "pages/SearchResult" ;
 	
 	@Autowired
-	private ItemService service ;
-	
+	private ItemService service ;	
 	@Autowired
-	private ItemSpecificationService itemSpecificationService ;
-	
+	private ItemSpecificationService itemSpecificationService ;	
 	@Autowired
 	private CustomerReviewsService customerReviewsService ;
+	@Autowired
+	private ItemBrandService itemBrandService ;
 			
 	private List<CustomerReviewsDTO> reviewsList = new ArrayList<CustomerReviewsDTO>() ;
 	private List<ItemsDTO> relatedItems ;
@@ -48,7 +52,7 @@ public class ItemsController {
 		
 		Long id = Long.parseLong(request.getParameter("id") == null ? "0" : request.getParameter("id")) ;
 
-		ItemsDTO dto = service.findById(id) ;
+		ItemsDTO dto = service.itemDetails(id) ;
 		ItemSpecificationsDTO itemSpecificationsDTO = itemSpecificationService.findAllByItemId(id) ;
 		reviewsList = customerReviewsService.findAllByItemId(0 , id) ;
 		relatedItems = service.findAllByCategoryIdAndNotEqualId(id , dto.getCategoryId()) ;
@@ -118,28 +122,82 @@ public class ItemsController {
 	}
 	
 	
+	@RequestMapping("category")
+	public ModelAndView category(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView() ;
+		Long categoryId = Long.parseLong(request.getParameter("id")) ;
+		mv.addObject("itemsList" , service.findAllByCategoryId(categoryId)) ;
+		mv.setViewName(categoryPage) ;
+		return mv ;
+	}
 	
 	
+	
+	@RequestMapping("search")
+	public ModelAndView search(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView() ;
+		if(request.getParameter("itemName") != null && !request.getParameter("itemName").equals("")) {
+			List<ItemsDTO> items = service.findAllByItemName(request.getParameter("itemName")) ;
+			mv.addObject("itemsList" , items) ;
+			ItemsDTO item = new ItemsDTO() ;
+			item.setItemName(request.getParameter("itemName"));
+			mv.addObject("itemDTO" , item) ;
+			mv.setViewName(searchResultPage) ;
+		}else {
+			mv.setViewName("redirect: " + request.getHeader(HttpHeaders.REFERER)) ;
+		}		
+		return mv ;
+	}
 
+	
+	@RequestMapping("itemsBrand")
+	public ModelAndView itemsBrand(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView() ;
+		if(request.getParameter("id") != null && !request.getParameter("id").equals("")) {		
+			Integer brandId = Integer.parseInt(request.getParameter("id")) ;
+			List<ItemsDTO> itemBrandList = itemBrandService.findAllByBrandId(brandId) ;
+			mv.addObject("itemsList" , itemBrandList) ;
+			mv.setViewName(categoryPage) ;
+		}else {
+			mv.setViewName("redirect: " + request.getHeader(HttpHeaders.REFERER)) ;
+		}
+		return mv ;
+	}
+	
+	
+	@RequestMapping("sort")
+	public ModelAndView sort(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView() ;
+		int sortType = 0 ;
+		String itemName = "" ;
+		
+		if(request.getParameter("type") != null) {
+			sortType = Integer.parseInt(request.getParameter("type")) ;
+		}
+		
+		if(request.getParameter("itemName") != null) {
+			itemName = request.getParameter("itemName") ;
+		}
+		
+		List<ItemsDTO> items = service.findAllByItemName(itemName , sortType) ;
+		mv.addObject("itemsList" , items) ;
+		ItemsDTO item = new ItemsDTO() ;
+		item.setItemName(itemName) ;
+		mv.addObject("dto" , item) ;
+		mv.setViewName(searchResultPage) ;
+		return mv ;
+	}
 
 	public List<CustomerReviewsDTO> getReviewsList() {
 		return reviewsList;
 	}
-
-
-
 	public void setReviewsList(List<CustomerReviewsDTO> reviewsList) {
 		this.reviewsList = reviewsList;
 	}
-
-
-
+	
 	public List<ItemsDTO> getRelatedItems() {
 		return relatedItems;
 	}
-
-
-
 	public void setRelatedItems(List<ItemsDTO> relatedItems) {
 		this.relatedItems = relatedItems;
 	}

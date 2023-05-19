@@ -2,16 +2,20 @@ package com.bl.dao.impl;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.bl.dao.CountryGovernorateCityDistrictMapper;
+import com.bl.dao.EntityManagerHelper;
 import com.bl.dao.GeneralDAO;
 import com.bl.dao.GeneralMapper;
 import com.bl.dto.CountryGovernorateCityDistrictDTO;
 import com.bl.dto.GeneralDTO;
+import com.bl.entity.cms.SettingEntity;
 
 
 @Component
@@ -26,7 +30,7 @@ public class GeneralDAOImpl implements GeneralDAO {
 
 	@Override
 	public List<GeneralDTO> colorsList() {
-		String sql = "SELECT ID , COLOR_NAME_EN , COLOR_NAME_AR FROM , NULL AS ISO_NAME "
+		String sql = "SELECT ID , COLOR_NAME_EN , COLOR_NAME_AR , NULL AS ISO_NAME "
 				+ " FROM COLORS" ;
 		return temp.query(sql , new GeneralMapper()) ;
 	}
@@ -83,5 +87,30 @@ public class GeneralDAOImpl implements GeneralDAO {
 				+ "WHERE cu.ID = ? " ;
 		return temp.queryForObject(sql , new Object[] {id} , new GeneralMapper()) ;
 	}
+
+	
+	@Override
+	public List<GeneralDTO> currencyList() {
+		String sql = "SELECT cu.ID , cu.CURRENCY_NAME , cu.CURRENCY_NAME_AR , cu.INTERNATIONAL_CODE "
+				+ "FROM currency cu " ;
+		return temp.query(sql , new GeneralMapper()) ;
+	}
+
+	@Override
+	public Integer orderExpireDays() {
+		Integer days = 0 ;
+		String sql = "SELECT s FROM SettingEntity s where s.id = 4" ;
+		EntityManager em = EntityManagerHelper.open() ;
+		Query query = em.createQuery(sql) ;
+		List<SettingEntity> objs = query.getResultList() ;
+		if(objs != null && !objs.isEmpty()) {
+			for(SettingEntity entity : objs) {
+				days = entity.getExpireDays() ;
+			}
+		}
+		return days ;
+	}
+	
+	
 
 }

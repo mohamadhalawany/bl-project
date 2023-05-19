@@ -1,13 +1,19 @@
 package com.bl.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.bl.HelperUtils;
 import com.bl.dao.OrderRequestDAO;
+import com.bl.dto.CustomersDTO;
 import com.bl.dto.GeneralDTO;
 import com.bl.dto.OrderDTO;
 import com.bl.dto.OrderItemDTO;
@@ -19,6 +25,8 @@ import com.bl.entity.OrderStatusEntity;
 import com.bl.repository.OrderItemRepository;
 import com.bl.repository.OrderRepository;
 import com.bl.repository.OrderStatusRepository;
+import com.bl.service.CustomersService;
+import com.bl.service.GeneralService;
 import com.bl.service.OrderRequestService;
 
 @Service
@@ -36,9 +44,19 @@ public class OrderRequestServiceImpl implements OrderRequestService {
 	@Autowired
 	private OrderStatusRepository orderStatusRepository ;
 	
+	@Autowired
+	private CustomersService customersService ;
+	
+	@Autowired
+	private GeneralService generalService ;
+	
+	private Page< OrderEntity> orderPage ;
+	private List<OrderEntity> orderEntityList ;
+	
 	@Override
 	public List<OrderRequestDTO> customerOrdersCart(Long customerId , Integer orderStatus) {
-		List<OrderRequestDTO> list = dao.customerOrdersCart(customerId , orderStatus) ;		
+		Long maxOrderId = dao.maxOrderIdByCustomerIdAndOrderStatus(customerId , orderStatus) ;		
+		List<OrderRequestDTO> list = dao.customerOrdersList(customerId , orderStatus , maxOrderId) ;		
 		return list ;
 	}
 
@@ -84,7 +102,8 @@ public class OrderRequestServiceImpl implements OrderRequestService {
 	@Override
 	public Long saveOrderStatus(OrderStatusDTO dto) {
 		OrderStatusEntity entity = HelperUtils.convertDtoToEntity(dto, OrderStatusEntity.class) ;
-		Long id = orderStatusRepository.save(entity).getId() ;
+		entity = orderStatusRepository.save(entity) ;
+		Long id = entity.getId() ;
 		return id ;
 	}
 
@@ -162,11 +181,8 @@ public class OrderRequestServiceImpl implements OrderRequestService {
 
 
 	private Long generateOrderNumber() {
-		Long orderNumber = 0L ;
-		GeneralDTO dto = dao.generateOrderNumber() ;
-		if(dto != null) {
-			orderNumber = dto.getKey() ;
-		}
+		Long orderNumber = orderRepository.maxOrderNumber() + 1 ;
+		
 		return orderNumber ;
 	}
 
@@ -180,6 +196,149 @@ public class OrderRequestServiceImpl implements OrderRequestService {
 		}
 		return dto ;
 	}
+
+
+	@Override
+	public List<OrderDTO> findAllOrdersOrdered() {
+		List<OrderDTO> list = null ;
+		orderPage = orderRepository.newOrders(PageRequest.of(0 , 5)) ;
+		if(!orderPage.isEmpty()) {
+			orderEntityList = orderPage.getContent() ;
+			list = new ArrayList<OrderDTO>() ;
+			for(OrderEntity entity : orderEntityList) {
+				OrderDTO dto = HelperUtils.convertEntityToDto(entity , OrderDTO.class) ;
+				dto.setOrderNumberLong(dto.getOrderNumberLong() + "/" + (dto.getOrderDate().getYear() + 1900)) ;
+				CustomersDTO customer = customersService.findById(dto.getCustomerId()) ;
+				if(customer != null) {
+					dto.setCustomerFullName(customer.getFullName()) ;
+					dto.setCustomerType(customer.getCustomerType()) ;
+				}
+				
+				GeneralDTO currency = generalService.currencyById(dto.getCurrencyId()) ;
+				if(currency != null) {
+					dto.setInternationalCode(currency.getIsoName()) ;
+				}
+				
+				list.add(dto) ;
+			}
+		}
+		return list ;
+	}
+	
+
+	@Override
+	public List<OrderDTO> findAllOrdersOrderedNext() {
+		List<OrderDTO> list = null ;
+		if(orderPage.hasNext()) {
+			orderPage = orderRepository.newOrders(orderPage.nextPageable()) ;
+			if(!orderPage.isEmpty()) {
+				orderEntityList = orderPage.getContent() ;
+				list = new ArrayList<OrderDTO>() ;
+				for(OrderEntity entity : orderEntityList) {
+					OrderDTO dto = HelperUtils.convertEntityToDto(entity , OrderDTO.class) ;
+					dto.setOrderNumberLong(dto.getOrderNumberLong() + "/" + (dto.getOrderDate().getYear() + 1900)) ;
+					
+					CustomersDTO customer = customersService.findById(dto.getCustomerId()) ;
+					if(customer != null) {
+						dto.setCustomerFullName(customer.getFullName()) ;
+						dto.setCustomerType(customer.getCustomerType()) ;
+					}
+					
+					GeneralDTO currency = generalService.currencyById(dto.getCurrencyId()) ;
+					if(currency != null) {
+						dto.setInternationalCode(currency.getIsoName()) ;
+					}
+					list.add(dto) ;
+				}
+			}
+		}
+		return list ;
+	}
+	
+	
+	
+
+
+	@Override
+	public List<OrderDTO> findAllOrdersOrderedPrevious() {
+		List<OrderDTO> list = null ;
+		if(orderPage.hasPrevious()) {
+			orderPage = orderRepository.newOrders(orderPage.previousPageable()) ;
+			if(!orderPage.isEmpty()) {
+				orderEntityList = orderPage.getContent() ;
+				list = new ArrayList<OrderDTO>() ;
+				for(OrderEntity entity : orderEntityList) {
+					OrderDTO dto = HelperUtils.convertEntityToDto(entity , OrderDTO.class) ;
+					dto.setOrderNumberLong(dto.getOrderNumberLong() + "/" + (dto.getOrderDate().getYear() + 1900)) ;
+					
+					CustomersDTO customer = customersService.findById(dto.getCustomerId()) ;
+					if(customer != null) {
+						dto.setCustomerFullName(customer.getFullName()) ;
+						dto.setCustomerType(customer.getCustomerType()) ;
+					}
+					
+					GeneralDTO currency = generalService.currencyById(dto.getCurrencyId()) ;
+					if(currency != null) {
+						dto.setInternationalCode(currency.getIsoName()) ;
+					}
+					list.add(dto) ;
+				}
+			}
+		}
+		return list ;
+	}
+
+
+	@Override
+	public Map<String, Object> metaData() {
+		Map<String, Object> metaData = new HashMap<String, Object>() ;
+		if(orderPage != null) {
+		    metaData.put("currentPage", orderPage.getNumber() + 1);
+		    metaData.put("total", orderPage.getTotalElements());
+		    metaData.put("totalPages", orderPage.getTotalPages());
+		    metaData.put("isFirst", orderPage.isFirst());
+		     metaData.put("isLast", orderPage.isLast());
+		}		
+		return metaData;
+	}
+
+	
+
+	@Override
+	public OrderRequestDTO findOrderById(Long id) {
+		OrderRequestDTO dto = dao.findOrderRequestById(id) ;
+		
+		return dto ;
+	}
+
+
+	@Override
+	public List<OrderRequestDTO> search(OrderRequestDTO dto) {
+		List<OrderRequestDTO> list = dao.search(dto) ;
+		return list ;
+	}
+
+
+	public Page<OrderEntity> getOrderPage() {
+		return orderPage;
+	}
+
+
+	public void setOrderPage(Page<OrderEntity> orderPage) {
+		this.orderPage = orderPage;
+	}
+
+
+	public List<OrderEntity> getOrderEntityList() {
+		return orderEntityList;
+	}
+
+
+	public void setOrderEntityList(List<OrderEntity> orderEntityList) {
+		this.orderEntityList = orderEntityList;
+	}
+
+
 	
 	
 }

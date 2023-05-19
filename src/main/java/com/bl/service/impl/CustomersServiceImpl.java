@@ -31,22 +31,22 @@ import com.bl.service.OrderService;
 public class CustomersServiceImpl implements CustomersService {
 
 	@Autowired
-	private CustomersRepository repo ;
-	
+	private CustomersRepository repo ;	
 	@Autowired
-	private GeneralService generalService ;
-	
+	private GeneralService generalService ;	
 	@Autowired
-	private OrderRequestService orderRequestService ;
-	
+	private OrderRequestService orderRequestService ;	
 	@Autowired
-	private OrderService orderService ;
-	
+	private OrderService orderService ;	
 	@Autowired
 	private AddressService addressService ;
 	
+	
 	private Page<CustomersEntity> page ;
 	private List<CustomersEntity> entityList ;
+	
+	private Page<CustomersEntity> blockedPage ;
+	private List<CustomersEntity> blockedEntityList ;
 	
 	
 	
@@ -59,7 +59,9 @@ public class CustomersServiceImpl implements CustomersService {
 		
 		if(entity != null) { 
 			dto = HelperUtils.convertEntityToDto(entity , CustomersDTO.class) ;
-			List<CountryGovernorateCityDistrictDTO> governorateIdAndCountryIdList = generalService.findGovernorateIdAndCountryIdByCityDistrictId(dto.getCityDistrictId()) ;
+			List<CountryGovernorateCityDistrictDTO> governorateIdAndCountryIdList = 
+					generalService.findGovernorateIdAndCountryIdByCityDistrictId(dto.getCityDistrictId()) ;
+			
 			for(CountryGovernorateCityDistrictDTO cgcd : governorateIdAndCountryIdList) {
 				dto.setCountryId(cgcd.getCountryId()) ;
 				dto.setGovernorateId(cgcd.getGovernorateId()) ;
@@ -100,7 +102,7 @@ public class CustomersServiceImpl implements CustomersService {
 
 	@Override
 	public Long saveOrder(OrderDTO order, OrderItemDTO orderItem, OrderStatusDTO orderStatus) {
-		OrderDTO orderDto = orderService.findByCustomerIdAndOrderStatusId(order.getCustomerId() , DomainValues.OrderStatus.ADD_TO_CART) ;	//validate order cart
+		OrderDTO orderDto = orderService.findByCustomerIdAndOrderStatusId(order.getCustomerId() , DomainValues.OrderStatus.ADD_TO_CART) ;	
 		Long orderId = 0L ;
 		if(orderDto != null) {									//save order
 			orderId = orderDto.getId() ;
@@ -142,6 +144,21 @@ public class CustomersServiceImpl implements CustomersService {
 				}else {
 					dto.setCustomerTypeValue(HelperUtils.getValueFromBundle("COMPANY" , language));
 				}
+				
+				if(dto.getBlockReasonId() == DomainValues.BlockReason.CRIMINAL) {
+					dto.setBlockReasonValue(HelperUtils.getValueFromBundle("CRIMINAL" , language)) ;
+				}else if(dto.getBlockReasonId() == DomainValues.BlockReason.MORAL) {
+					dto.setBlockReasonValue(HelperUtils.getValueFromBundle("MORAL" , language)) ;
+				}else {
+					dto.setBlockReasonValue(HelperUtils.getValueFromBundle("LACK_COMMITMENT" , language)) ;
+				}
+				
+				if(dto.getRegisterMethod() == 1) {
+					dto.setRegisterMethodValue(HelperUtils.getValueFromBundle("CUSTOMER" , language));
+				}else {
+					dto.setRegisterMethodValue(HelperUtils.getValueFromBundle("EMPLOYEE" , language));
+				}
+				
 				AddressDTO cityDistrict = addressService.findCitiesDistrictById(dto.getCityDistrictId()) ;
 				dto.setCityDistrictNameAr(cityDistrict.getCitiesDistrictNameAr()) ;
 				dto.setCityDistrictNameEn(cityDistrict.getCitiesDistrictName()) ;
@@ -163,7 +180,7 @@ public class CustomersServiceImpl implements CustomersService {
 	
 
 	@Override
-	public List<CustomersDTO> next() {
+	public List<CustomersDTO> next(int language) {
 		List<CustomersDTO> list = null ;
 		
 		if(page.hasNext()) {
@@ -173,6 +190,39 @@ public class CustomersServiceImpl implements CustomersService {
 			
 			for(CustomersEntity entity : entityList) {
 				CustomersDTO dto = HelperUtils.convertEntityToDto(entity , CustomersDTO.class) ;
+				
+				if(dto.getCustomerType() == 1) {
+					dto.setCustomerTypeValue(HelperUtils.getValueFromBundle("PERSON" , language));
+				}else {
+					dto.setCustomerTypeValue(HelperUtils.getValueFromBundle("COMPANY" , language));
+				}
+				
+				if(dto.getBlockReasonId() == DomainValues.BlockReason.CRIMINAL) {
+					dto.setBlockReasonValue(HelperUtils.getValueFromBundle("CRIMINAL" , language)) ;
+				}else if(dto.getBlockReasonId() == DomainValues.BlockReason.MORAL) {
+					dto.setBlockReasonValue(HelperUtils.getValueFromBundle("MORAL" , language)) ;
+				}else {
+					dto.setBlockReasonValue(HelperUtils.getValueFromBundle("LACK_COMMITMENT" , language)) ;
+				}
+				
+				if(dto.getRegisterMethod() == 1) {
+					dto.setRegisterMethodValue(HelperUtils.getValueFromBundle("CUSTOMER" , language));
+				}else {
+					dto.setRegisterMethodValue(HelperUtils.getValueFromBundle("EMPLOYEE" , language));
+				}
+				
+				AddressDTO cityDistrict = addressService.findCitiesDistrictById(dto.getCityDistrictId()) ;
+				dto.setCityDistrictNameAr(cityDistrict.getCitiesDistrictNameAr()) ;
+				dto.setCityDistrictNameEn(cityDistrict.getCitiesDistrictName()) ;
+				
+				AddressDTO governorate = addressService.findGovernorateById(cityDistrict.getGovernorateId()) ;
+				dto.setGovernorateNameAr(governorate.getGovernorateNameAr()) ;
+				dto.setGovernorateNameEn(governorate.getGovernorateNameEn()) ;
+				
+				AddressDTO country = addressService.findCountryById(governorate.getCountryId()) ;
+				dto.setCountryNameAr(country.getCountryNameAr()) ;
+				dto.setCountryNameEn(country.getCountryName()) ;
+				
 				list.add(dto) ;
 			}
 		}
@@ -180,16 +230,49 @@ public class CustomersServiceImpl implements CustomersService {
 	}
 
 	@Override
-	public List<CustomersDTO> previous() {
+	public List<CustomersDTO> previous(int language) {
 		List<CustomersDTO> list = null ;
 		
-		if(page.hasNext()) {
+		if(page.hasPrevious()) {
 			list = new ArrayList<CustomersDTO>() ;
 			page = repo.findAll(page.previousPageable()) ;
 			entityList = page.getContent() ;
 			
 			for(CustomersEntity entity : entityList) {
 				CustomersDTO dto = HelperUtils.convertEntityToDto(entity , CustomersDTO.class) ;
+				
+				if(dto.getCustomerType() == 1) {
+					dto.setCustomerTypeValue(HelperUtils.getValueFromBundle("PERSON" , language));
+				}else {
+					dto.setCustomerTypeValue(HelperUtils.getValueFromBundle("COMPANY" , language));
+				}
+				
+				if(dto.getBlockReasonId() == DomainValues.BlockReason.CRIMINAL) {
+					dto.setBlockReasonValue(HelperUtils.getValueFromBundle("CRIMINAL" , language)) ;
+				}else if(dto.getBlockReasonId() == DomainValues.BlockReason.MORAL) {
+					dto.setBlockReasonValue(HelperUtils.getValueFromBundle("MORAL" , language)) ;
+				}else {
+					dto.setBlockReasonValue(HelperUtils.getValueFromBundle("LACK_COMMITMENT" , language)) ;
+				}
+				
+				if(dto.getRegisterMethod() == 1) {
+					dto.setRegisterMethodValue(HelperUtils.getValueFromBundle("CUSTOMER" , language));
+				}else {
+					dto.setRegisterMethodValue(HelperUtils.getValueFromBundle("EMPLOYEE" , language));
+				}
+				
+				AddressDTO cityDistrict = addressService.findCitiesDistrictById(dto.getCityDistrictId()) ;
+				dto.setCityDistrictNameAr(cityDistrict.getCitiesDistrictNameAr()) ;
+				dto.setCityDistrictNameEn(cityDistrict.getCitiesDistrictName()) ;
+				
+				AddressDTO governorate = addressService.findGovernorateById(cityDistrict.getGovernorateId()) ;
+				dto.setGovernorateNameAr(governorate.getGovernorateNameAr()) ;
+				dto.setGovernorateNameEn(governorate.getGovernorateNameEn()) ;
+				
+				AddressDTO country = addressService.findCountryById(governorate.getCountryId()) ;
+				dto.setCountryNameAr(country.getCountryNameAr()) ;
+				dto.setCountryNameEn(country.getCountryName()) ;
+				
 				list.add(dto) ;
 			}
 		}
@@ -224,11 +307,27 @@ public class CustomersServiceImpl implements CustomersService {
 			
 			for(CustomersEntity entity : entityList) {				
 				CustomersDTO customer = HelperUtils.convertEntityToDto(entity , CustomersDTO.class) ;
+				
 				if(customer.getCustomerType() == 1) {
 					customer.setCustomerTypeValue(HelperUtils.getValueFromBundle("PERSON" , language));
 				}else {
 					customer.setCustomerTypeValue(HelperUtils.getValueFromBundle("COMPANY" , language));
 				}
+				
+				if(customer.getBlockReasonId() == DomainValues.BlockReason.CRIMINAL) {
+					customer.setBlockReasonValue(HelperUtils.getValueFromBundle("CRIMINAL" , language)) ;
+				}else if(customer.getBlockReasonId() == DomainValues.BlockReason.MORAL) {
+					customer.setBlockReasonValue(HelperUtils.getValueFromBundle("MORAL" , language)) ;
+				}else {
+					customer.setBlockReasonValue(HelperUtils.getValueFromBundle("LACK_COMMITMENT" , language)) ;
+				}
+				
+				if(customer.getRegisterMethod() == 1) {
+					customer.setRegisterMethodValue(HelperUtils.getValueFromBundle("CUSTOMER" , language));
+				}else {
+					customer.setRegisterMethodValue(HelperUtils.getValueFromBundle("EMPLOYEE" , language));
+				}
+				
 				AddressDTO cityDistrict = addressService.findCitiesDistrictById(customer.getCityDistrictId()) ;
 				customer.setCityDistrictNameAr(cityDistrict.getCitiesDistrictNameAr()) ;
 				customer.setCityDistrictNameEn(cityDistrict.getCitiesDistrictName()) ;
@@ -249,6 +348,173 @@ public class CustomersServiceImpl implements CustomersService {
 	
 	
 	
+	
+	@Override
+	public List<CustomersDTO> blocked(int language) {
+		List<CustomersDTO> list = null ;
+		blockedPage = repo.blockedCustomer(PageRequest.of(0 , 5)) ;
+		if(blockedPage != null) {
+			blockedEntityList = blockedPage.getContent() ;
+			list = new ArrayList<CustomersDTO>() ;
+			for(CustomersEntity entity : blockedEntityList) {
+				CustomersDTO customer = HelperUtils.convertEntityToDto(entity, CustomersDTO.class) ;
+				
+				if(customer.getCustomerType() == 1) {
+					customer.setCustomerTypeValue(HelperUtils.getValueFromBundle("PERSON" , language));					
+				}else {
+					customer.setCustomerTypeValue(HelperUtils.getValueFromBundle("COMPANY" , language));
+				}
+				
+				if(customer.getBlockReasonId() == DomainValues.BlockReason.CRIMINAL) {
+					customer.setBlockReasonValue(HelperUtils.getValueFromBundle("CRIMINAL" , language)) ;
+				}else if(customer.getBlockReasonId() == DomainValues.BlockReason.MORAL) {
+					customer.setBlockReasonValue(HelperUtils.getValueFromBundle("MORAL" , language)) ;
+				}else {
+					customer.setBlockReasonValue(HelperUtils.getValueFromBundle("LACK_COMMITMENT" , language)) ;
+				}
+				
+				if(customer.getRegisterMethod() == 1) {
+					customer.setRegisterMethodValue(HelperUtils.getValueFromBundle("CUSTOMER" , language));
+				}else {
+					customer.setRegisterMethodValue(HelperUtils.getValueFromBundle("EMPLOYEE" , language));
+				}
+				System.err.println(customer.getRegisterMethodValue() + " ==================");
+				AddressDTO cityDistrict = addressService.findCitiesDistrictById(customer.getCityDistrictId()) ;
+				customer.setCityDistrictNameAr(cityDistrict.getCitiesDistrictNameAr()) ;
+				customer.setCityDistrictNameEn(cityDistrict.getCitiesDistrictName()) ;
+				
+				AddressDTO governorate = addressService.findGovernorateById(cityDistrict.getGovernorateId()) ;
+				customer.setGovernorateNameAr(governorate.getGovernorateNameAr()) ;
+				customer.setGovernorateNameEn(governorate.getGovernorateNameEn()) ;
+				
+				AddressDTO country = addressService.findCountryById(governorate.getCountryId()) ;
+				customer.setCountryNameAr(country.getCountryNameAr()) ;
+				customer.setCountryNameEn(country.getCountryName()) ;
+				
+				list.add(customer) ;
+			}
+		}
+		return list ;
+	}
+	
+	
+
+	@Override
+	public List<CustomersDTO> nextBlocked(int language) {
+		List<CustomersDTO> list = null ;
+		
+		if(blockedPage.hasNext()) {
+			list = new ArrayList<CustomersDTO>() ;
+			blockedPage = repo.blockedCustomer(blockedPage.nextPageable()) ;			
+			blockedEntityList = blockedPage.getContent() ;
+			for(CustomersEntity entity : blockedEntityList) {
+				CustomersDTO customer = HelperUtils.convertEntityToDto(entity , CustomersDTO.class) ;
+				
+				if(customer.getCustomerType() == 1) {
+					customer.setCustomerTypeValue(HelperUtils.getValueFromBundle("PERSON" , language));
+				}else {
+					customer.setCustomerTypeValue(HelperUtils.getValueFromBundle("COMPANY" , language));
+				}
+				
+				if(customer.getBlockReasonId() == DomainValues.BlockReason.CRIMINAL) {
+					customer.setBlockReasonValue(HelperUtils.getValueFromBundle("CRIMINAL" , language)) ;
+				}else if(customer.getBlockReasonId() == DomainValues.BlockReason.MORAL) {
+					customer.setBlockReasonValue(HelperUtils.getValueFromBundle("MORAL" , language)) ;
+				}else {
+					customer.setBlockReasonValue(HelperUtils.getValueFromBundle("LACK_COMMITMENT" , language)) ;
+				}
+				
+				if(customer.getRegisterMethod() == 1) {
+					customer.setRegisterMethodValue(HelperUtils.getValueFromBundle("CUSTOMER" , language));
+				}else {
+					customer.setRegisterMethodValue(HelperUtils.getValueFromBundle("EMPLOYEE" , language));
+				}
+				
+				AddressDTO cityDistrict = addressService.findCitiesDistrictById(customer.getCityDistrictId()) ;
+				customer.setCityDistrictNameAr(cityDistrict.getCitiesDistrictNameAr()) ;
+				customer.setCityDistrictNameEn(cityDistrict.getCitiesDistrictName()) ;
+				
+				AddressDTO governorate = addressService.findGovernorateById(cityDistrict.getGovernorateId()) ;
+				customer.setGovernorateNameAr(governorate.getGovernorateNameAr()) ;
+				customer.setGovernorateNameEn(governorate.getGovernorateNameEn()) ;
+				
+				AddressDTO country = addressService.findCountryById(governorate.getCountryId()) ;
+				customer.setCountryNameAr(country.getCountryNameAr()) ;
+				customer.setCountryNameEn(country.getCountryName()) ;
+				
+				list.add(customer) ;
+			}
+		}
+		return list ;
+	}
+
+	@Override
+	public List<CustomersDTO> previousBlocked(int language) {
+		List<CustomersDTO> list = null ;
+		
+		if(blockedPage.hasPrevious()) {
+			list = new ArrayList<CustomersDTO>() ;
+			blockedPage = repo.blockedCustomer(blockedPage.previousPageable()) ;			
+			blockedEntityList = blockedPage.getContent() ;
+			for(CustomersEntity entity : blockedEntityList) {
+				CustomersDTO customer = HelperUtils.convertEntityToDto(entity , CustomersDTO.class) ;
+				
+				if(customer.getCustomerType() == 1) {
+					customer.setCustomerTypeValue(HelperUtils.getValueFromBundle("PERSON" , language));
+				}else {
+					customer.setCustomerTypeValue(HelperUtils.getValueFromBundle("COMPANY" , language));
+				}
+				
+				if(customer.getBlockReasonId() == DomainValues.BlockReason.CRIMINAL) {
+					customer.setBlockReasonValue(HelperUtils.getValueFromBundle("CRIMINAL" , language)) ;
+				}else if(customer.getBlockReasonId() == DomainValues.BlockReason.MORAL) {
+					customer.setBlockReasonValue(HelperUtils.getValueFromBundle("MORAL" , language)) ;
+				}else {
+					customer.setBlockReasonValue(HelperUtils.getValueFromBundle("LACK_COMMITMENT" , language)) ;
+				}
+				
+				if(customer.getRegisterMethod() == 1) {
+					customer.setRegisterMethodValue(HelperUtils.getValueFromBundle("CUSTOMER" , language));
+				}else {
+					customer.setRegisterMethodValue(HelperUtils.getValueFromBundle("EMPLOYEE" , language));
+				}
+				
+				AddressDTO cityDistrict = addressService.findCitiesDistrictById(customer.getCityDistrictId()) ;
+				customer.setCityDistrictNameAr(cityDistrict.getCitiesDistrictNameAr()) ;
+				customer.setCityDistrictNameEn(cityDistrict.getCitiesDistrictName()) ;
+				
+				AddressDTO governorate = addressService.findGovernorateById(cityDistrict.getGovernorateId()) ;
+				customer.setGovernorateNameAr(governorate.getGovernorateNameAr()) ;
+				customer.setGovernorateNameEn(governorate.getGovernorateNameEn()) ;
+				
+				AddressDTO country = addressService.findCountryById(governorate.getCountryId()) ;
+				customer.setCountryNameAr(country.getCountryNameAr()) ;
+				customer.setCountryNameEn(country.getCountryName()) ;
+				
+				list.add(customer) ;
+			}
+		}
+		return list ;
+	}
+	
+	
+
+	@Override
+	public Map<String, Object> metaDataBlocked() {
+		Map<String, Object> metaData = new HashMap<String, Object>() ;
+		if(blockedPage != null) {
+		    metaData.put("currentPage", blockedPage.getNumber() + 1);
+		    metaData.put("total", blockedPage.getTotalElements());
+		    metaData.put("totalPages", blockedPage.getTotalPages());
+		    metaData.put("isFirst", blockedPage.isFirst());
+		     metaData.put("isLast", blockedPage.isLast());
+		}		
+		return metaData;
+	}
+	
+	
+	
+	
 
 	public Page<CustomersEntity> getPage() {
 		return page;
@@ -265,9 +531,21 @@ public class CustomersServiceImpl implements CustomersService {
 	public void setEntityList(List<CustomersEntity> entityList) {
 		this.entityList = entityList;
 	}
-	
-	
-	
-	
+
+	public AddressService getAddressService() {
+		return addressService;
+	}
+
+	public void setAddressService(AddressService addressService) {
+		this.addressService = addressService;
+	}
+
+	public List<CustomersEntity> getBlockedEntityList() {
+		return blockedEntityList;
+	}
+
+	public void setBlockedEntityList(List<CustomersEntity> blockedEntityList) {
+		this.blockedEntityList = blockedEntityList;
+	}
 
 }

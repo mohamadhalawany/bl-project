@@ -21,7 +21,7 @@
                   <p class="card-description">
                       <h:outputLabel value="#{msg.SAVE_MSG}" rendered="#{param['saved'] eq 1}" style="color: red;"/>
                       <h:outputLabel value="#{msg.EXIST_CUSTOMER}" rendered="#{param['count'] eq 1}" style="color: red;"/>
-                    </p>
+                  </p>
                     
                   <form class="form-sample" action="save" method="post" onsubmit ="return validateCustomerForm()">
                     
@@ -108,7 +108,8 @@
                           <div class="col-sm-9">
                             <h:selectOneMenu class="form_customer" id="countryId" onchange="govs()" value="${dto.countryId}">
 			                      <f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
-			                      <f:selectItems value="${countryList}" var="cnt" itemLabel="#{sessionScope.language eq null ? cnt.valueEn : cnt.valueAr}" itemValue="${cnt.key}"/>
+			                      <f:selectItems value="${countryList}" var="cnt" itemLabel="#{sessionScope.language eq null ? cnt.valueEn : cnt.valueAr}" 
+			                      						itemValue="${cnt.key}"/>
 		                    </h:selectOneMenu>
                           </div>
                         </div>
@@ -122,7 +123,8 @@
                           <div class="col-sm-9">
                             <h:selectOneMenu class="form_customer"  id="governorateId" onchange="cityDist()" value="${governorateId}">
 			                      <f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
-			                      <f:selectItems value="${governorateList}" var="gov" itemLabel="#{sessionScope.language eq null ? gov.valueEn : gov.valueAr}" itemValue="#{gov.key}"/>
+			                      <f:selectItems value="${governorateList}" var="gov" itemLabel="#{sessionScope.language eq null ? gov.valueEn : gov.valueAr}" 
+			                      						itemValue="#{gov.key}"/>
 		                    </h:selectOneMenu>
                           </div>
                         </div>
@@ -134,7 +136,8 @@
                           <div class="col-sm-9">
                             <h:selectOneMenu class="form_customer" id="cityDistrictId" value="${dto.cityDistrictId}" required="true">
 		                  		<f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
-		                  		<f:selectItems value="${cityDistrictList}" var="cd" itemValue="#{cd.key}" itemLabel="#{sessionScope.language eq null ? cd.valueEn : cd.valueAr}"/>
+		                  		<f:selectItems value="${cityDistrictList}" var="cd" itemValue="#{cd.key}" 
+		                  							  itemLabel="#{sessionScope.language eq null ? cd.valueEn : cd.valueAr}"/>
 		                  	</h:selectOneMenu>
                           </div>
                         </div>
@@ -147,7 +150,6 @@
                           <label class="col-sm-3 col-form-label">#{msg.ADDRESS}</label>
                           <div class="col-lg-8">
                           	<TEXTAREA rows="5" cols="25" class="form_textarea" id="address" name="address"/>
-                            <!-- <h:inputTextarea cols="25" rows="5" class="form_customer"/> -->
                           </div>
                         </div>
                       </div>

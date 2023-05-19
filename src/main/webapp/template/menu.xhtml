@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:c="http://www.springframework.org/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:sf="http://www.springframework.org/tags/form"
 	xmlns:fmt="http://java.sun.com/jstl/fmt">
 	
@@ -18,131 +18,59 @@
 	          <ul>
 	          
 	          <li class="dropdown dropdown-megamenu">
-	              <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">#{msg.SHOP} </a>
+	              <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">#{menuBean.menu.menuName}</a>
 	              <ul class="dropdown-menu">
 	                <li>
 	                  <div class="header-navigation-content">
 	                    <div class="row">
+	                    
+	                    <c:forEach items="#{menuBean.mainCategoryList}" var="var">		
 	                      <div class="col-md-4 header-navigation-col">
-	                        <h4>Footwear</h4>
-	                        <ul>
-	                          <li><a href="shop-product-list.html">Astro Trainers</a></li>
-	                          <li><a href="shop-product-list.html">Basketball Shoes</a></li>
-	                          <li><a href="shop-product-list.html">Boots</a></li>
-	                          <li><a href="shop-product-list.html">Canvas Shoes</a></li>
-	                          <li><a href="shop-product-list.html">Football Boots</a></li>
-	                          <li><a href="shop-product-list.html">Golf Shoes</a></li>
-	                          <li><a href="shop-product-list.html">Hi Tops</a></li>
-	                          <li><a href="shop-product-list.html">Indoor and Court Trainers</a></li>
-	                        </ul>
+	                        <h4>#{var.categoryName}</h4>
+	                        
+	                        <c:forEach items="#{var.subCategoryList}" var="sub">		
+		                        <ul>
+		                          <li><a href="category?id=#{sub.id}&amp;name=#{sub.categoryName}">#{sub.categoryName}</a></li>		                          
+		                        </ul>
+	                        </c:forEach>
 	                      </div>
-	                      <div class="col-md-4 header-navigation-col">
-	                        <h4>Clothing</h4>
-	                        <ul>
-	                          <li><a href="shop-product-list.html">Base Layer</a></li>
-	                          <li><a href="shop-product-list.html">Character</a></li>
-	                          <li><a href="shop-product-list.html">Chinos</a></li>
-	                          <li><a href="shop-product-list.html">Combats</a></li>
-	                          <li><a href="shop-product-list.html">Cricket Clothing</a></li>
-	                          <li><a href="shop-product-list.html">Fleeces</a></li>
-	                          <li><a href="shop-product-list.html">Gilets</a></li>
-	                          <li><a href="shop-product-list.html">Golf Tops</a></li>
-	                        </ul>
-	                      </div>
-	                      <div class="col-md-4 header-navigation-col">
-	                        <h4>Accessories</h4>
-	                        <ul>
-	                          <li><a href="shop-product-list.html">Belts</a></li>
-	                          <li><a href="shop-product-list.html">Caps</a></li>
-	                          <li><a href="shop-product-list.html">Gloves, Hats and Scarves</a></li>
-	                        </ul>
-	
-	                        <h4>Clearance</h4>
-	                        <ul>
-	                          <li><a href="shop-product-list.html">Jackets</a></li>
-	                          <li><a href="shop-product-list.html">Bottoms</a></li>
-	                        </ul>
-	                      </div>
-	                      <div class="col-md-12 nav-brands">
-	                        <ul>
-	                          <li><a href="shop-product-list.html"><img title="esprit" alt="esprit" src="resources/assets/pages/img/brands/esprit.jpg"/></a></li>
-	                          <li><a href="shop-product-list.html"><img title="gap" alt="gap" src="resources/assets/pages/img/brands/gap.jpg"/></a></li>
-	                          <li><a href="shop-product-list.html"><img title="next" alt="next" src="resources/assets/pages/img/brands/next.jpg"/></a></li>
-	                          <li><a href="shop-product-list.html"><img title="puma" alt="puma" src="resources/assets/pages/img/brands/puma.jpg"/></a></li>
-	                          <li><a href="shop-product-list.html"><img title="zara" alt="zara" src="resources/assets/pages/img/brands/zara.jpg"/></a></li>
-	                        </ul>
-	                      </div>
+	                    </c:forEach>
+	                    
 	                    </div>
 	                  </div>
 	                </li>
 	              </ul>
 	            </li>
 	            
-	            <li class="dropdown">
-	              <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">#{msg.RIGS_RACKS}</a>                
+	            
+				<c:forEach items="#{menuBean.list}" var="var">				
+	            <li class="dropdown" >
+	              <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;"
+	              	   style="font-family: tahoma !important; font-size: large !important;">#{var.menuName}</a>                
 	              <!-- BEGIN DROPDOWN MENU -->
 	              <ul class="dropdown-menu">
-	                <li><a href="shop-product-list.html">#{msg.GYM_RIGS}</a></li>
-	                <li><a href="shop-product-list.html">#{msg.SQUAT_RACKS}</a></li>
-	                <li><a href="shop-product-list.html">#{msg.POWER_RACKS}</a></li>
-	                <li><a href="shop-product-list.html">#{msg.FOLDING_SQUAT_RACKS}</a></li>
-	                <li><a href="shop-product-list.html">#{msg.SQUAT_STANDS}</a></li>
-	                <li><a href="shop-product-list.html">#{msg.ATTACHMENTS}</a></li>
+	              
+	              <c:forEach items="#{var.categoryList}" var="sub">
+	                <li><a href="category?id=#{sub.id}&amp;name=#{sub.categoryName}">#{sub.categoryName}</a></li>
+	              </c:forEach>
 	              </ul>
 	              <!-- END DROPDOWN MENU -->
 	            </li>
-	                        
-	            <li class="dropdown100 nav-catalogue">
-	              <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">#{msg.SEASON_SAVINGS}</a>
-	            </li>
-	            
-	            <li class="dropdown">
-	              <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">#{msg.EQUIPMENT}</a>                
-	              <ul class="dropdown-menu">
-	                <li><a href="#">#{msg.BARS_PLATES}</a></li>
-	                <li><a href="#">#{msg.DUMBBELLS_KETTLEBELLS}</a></li>
-	                <li><a href="#">#{msg.WEIGHT_BENCHES}</a></li>
-	                <li><a href="#">#{msg.STRENGTH_TRAINING}</a></li>                
-	              </ul>
-	            </li>
+				</c:forEach>
 	            
 	            
 	            <li class="dropdown">
-	              <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">#{msg.CONDITIONING}</a>                
-	              <ul class="dropdown-menu">
-	                <li><a href="#">#{msg.ROWERS}</a></li>
-	                <li><a href="#">#{msg.SKI_TRAINERS}</a></li>
-	                <li><a href="#">#{msg.BIKES}</a></li>
-	                <li><a href="#">#{msg.TREADMILLS}</a></li>
-	                <li><a href="#">HIIT</a></li>
-	              </ul>
+	            	<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
+	            		<FONT face="tahoma" size="1">#{msg.BRANDS}</FONT>
+	            	</a>                
+	              <!-- BEGIN DROPDOWN MENU -->
+	                <ul class="dropdown-menu">
+	                	<li><a href="#"></a></li>
+	                	<c:forEach items="#{menuBean.brandsList}" var="var">
+	                		<li><a href="itemsBrand?id=#{var.id}&amp;name=#{var.brandName}">#{var.brandName}</a></li>
+	                	</c:forEach>
+	                </ul>
 	            </li>
-	            
-	            
-	            
-	            <li class="dropdown">
-	              <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">#{msg.ACCESSORIES}</a>                
-	              <ul class="dropdown-menu">
-	                <li><a href="#">#{msg.BODYWEIGHT_GYMNASTICS}</a></li>
-	                <li><a href="#">#{msg.MOBILITY_RECOVERY}</a></li>
-	                <li><a href="#">#{msg.GYM_ESSENTIALS}</a></li>
-	              </ul>
-	            </li>
-	            
-	            
-	            <li class="dropdown">
-	              <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">#{msg.APPAREL_FOOTWEAR}</a>                
-	              <ul class="dropdown-menu">
-	                <li><a href="#">#{msg.HOODIES_JUMPERS}</a></li>
-	                <li><a href="#">#{msg.T_SHIRTS}</a></li>
-	                <li><a href="#">#{msg.SHORTS}</a></li>
-	                <li><a href="#">#{msg.JOGGERS_LEGGINGS}</a></li>
-	                <li><a href="#">#{msg.FOOTWEAR}</a></li>
-	                <li><a href="#">#{msg.ACCESSORIES}</a></li>
-	              </ul>
-	            </li>
-	
-	            
 	          </ul>
 	        </div>
 	        <!-- END NAVIGATION MENU-->

@@ -325,7 +325,7 @@
   content: '\e061'; /* '' */
 } 
 .typcn-document-text:before { 
-  content: '\e062'; /* '' */
+  content: '\e062'; /* 'xx' */
 } 
 .typcn-document:before { 
   content: '\e063'; /* '' */

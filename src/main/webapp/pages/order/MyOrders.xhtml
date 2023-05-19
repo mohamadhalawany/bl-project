@@ -62,18 +62,26 @@
 			                    		<th class="goods-page-ref-no" style="text-align: center !important; color: #fb4e1c !important;">#{msg.ITEM_NAME}</th>
 			                    		<th class="goods-page-ref-no" style="text-align: center !important; color: #fb4e1c !important;">#{msg.ITEM_PRICE}</th>
 			                    		<th class="goods-page-ref-no" style="text-align: center !important; color: #fb4e1c !important;">#{msg.QUANTITY}</th>
+			                    		<th class="goods-page-ref-no" style="text-align: center !important; color: #fb4e1c !important;">#{msg.TOTAL}</th>
 			                    		<c:forEach items="#{ord.items}" var="item" varStatus="vsi">
 			                    		<tr>
 				                    		<td>#{item.itemName}</td>
 				                    		<td>#{item.itemPrice}</td>
 				                    		<td>#{item.quantity}</td>
+				                    		<td>#{item.quantity * item.itemPrice}</td>
 			                    		</tr>
 			                    	</c:forEach>
+			                    	<tr>
+			                    		<td></td>
+			                    		<td></td>
+			                    		<td></td>
+			                    		<td><h:outputLabel class="goods-page-ref-no" style="text-align: center !important; color: #fb4e1c !important;">#{ord.totalPrice}</h:outputLabel> </td>
+			                    	</tr>
 			                    	</TABLE>
 			                    </td>
 			                    
 			                    <td class="goods-page-description" style="text-align: center !important;">
-			                      <h3><strong>#{ord.orderNumber}</strong></h3>
+			                      <h3><strong>#{ord.orderNumberLong}</strong></h3>
 			                    </td>
 			                    
 			                    <td class="goods-page-ref-no" style="text-align: center !important;">
@@ -82,6 +90,7 @@
 			                    
 			                    <td class="goods-page-quantity" style="text-align: center !important;">			                      
 			                      	  <h:selectOneMenu value="#{ord.orderStatusId}" disabled="true">
+			                      	  	<f:selectItem itemValue="1" itemLabel="#{msg.ADD_TO_CART}"/>
 			                      	  	<f:selectItem itemValue="2" itemLabel="#{msg.ORDERED}"/>
 			                      	  	<f:selectItem itemValue="3" itemLabel="#{msg.ACCEPTED}"/>	
 			                      	  	<f:selectItem itemValue="4" itemLabel="#{msg.IN_THE_WAY}"/>	
@@ -100,7 +109,9 @@
 			                    </td>
 			                    
 			                    <td>
-			                    	<a class="btnc btnc-primary" id="myOrders" name="myOrders" href="tracking?id=#{ord.id}">#{msg.TRACKING}</a>
+			                    	<h:panelGroup rendered="#{ord.orderStatusId eq 1 or ord.orderStatusId eq 2 or ord.orderStatusId eq 4}">
+			                    		<a class="btnc btnc-primary" id="myOrders" name="myOrders" href="tracking?id=#{ord.id}">#{msg.TRACKING}</a>
+			                    	</h:panelGroup>			                    	
 			                    </td>
 			                    
 			                  </tr>
@@ -108,10 +119,10 @@
 			                  
 			                </table>
 			                
-			                
+			                	<a class="btn btn-default" href="home">Continue shopping <i class="fa fa-shopping-cart"></i></a>
 			                </div>
 			
-			                <div class="shopping-total">
+			                <!-- <div class="shopping-total">
 			                  <ul>
 			                    <li>
 			                      <em>Sub total</em>
@@ -126,10 +137,12 @@
 			                      <strong class="price"><span>$</span>50.00</strong>
 			                    </li>
 			                  </ul>
-			                </div>
+			                </div> -->
+			                
+			                 
 			              </div>
-			              <button class="btn btn-default" type="submit">Continue shopping <i class="fa fa-shopping-cart"></i></button>
-			              <button class="btn btn-primary" type="submit">Checkout <i class="fa fa-check"></i></button>
+			              
+			             
 			            </div>
 			            </h:panelGroup>
 			            

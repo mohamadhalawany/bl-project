@@ -12,24 +12,20 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class LoginController {
 
-//    @Autowired
-//    private LoginService service ;
-//    
-//    @Autowired
-//    private EmployeeService emplService ;
-//    
-//    private UserData ud ;
-
-	@RequestMapping(value = "doLogin", method = RequestMethod.POST)
+	@RequestMapping(value = "login", method = RequestMethod.POST)
 	public ModelAndView doLogin(@RequestParam("userName") String userName , @RequestParam("password") String password , HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView() ;
 		HttpSession session = request.getSession() ;
-		if(userName.equals("moh") || userName == "moh") {
+		if(userName == "moh") {
+			System.err.println(userName + " ==================== ");
 			session.setAttribute("user" , 100);
-		}else {
+			mv.setViewName("home") ;
+		}else if(userName.equals("moh")){
+			System.err.println(userName + " eeeeeeeeqqqqqqqqquuuuuuuuuuuaaaaaaaallllllllllllllsssssssssssss");
 			session.setAttribute("user" , null);
+			mv.setViewName("login") ;
 		}
-		mv.setViewName("home") ;
+		
 //	UserData user = service.doLoginService(userName, password) == null ? null : service.doLoginService(userName, password) ;
 
 //	if(user != null) {
@@ -48,10 +44,19 @@ public class LoginController {
 		return mv;
 	}
 
-	@RequestMapping(value = "login", method = RequestMethod.GET)
-	public ModelAndView goLogin() {
-		ModelAndView mv = new ModelAndView("login");
-
+	@RequestMapping(value = "aao/login", method = RequestMethod.GET)
+	public ModelAndView goLogin(@RequestParam("userName") String userName , @RequestParam("password") String password , HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView() ;
+		HttpSession session = request.getSession() ;
+		if(userName == "moh") {
+			System.err.println(userName + " ==================== ");
+			session.setAttribute("user" , 100);
+			mv.setViewName("home") ;
+		}else if(userName.equals("moh")){
+			System.err.println(userName + " eeeeeeeeqqqqqqqqquuuuuuuuuuuaaaaaaaallllllllllllllsssssssssssss");
+			session.setAttribute("user" , null);
+			mv.setViewName("login") ;
+		}
 		return mv;
 	}
 

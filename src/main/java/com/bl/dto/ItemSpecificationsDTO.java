@@ -10,8 +10,8 @@ public class ItemSpecificationsDTO {
 	private Integer colorId;
 	private Integer createdBy;
 	private Date createdDate;
-	private String depth;
-	private String height;
+	private Double depth;
+	private Double height;
 	private String included;
 	private Long itemId;
 	private String manufacturingTime;
@@ -19,7 +19,7 @@ public class ItemSpecificationsDTO {
 	private Integer updatedBy;
 	private Date updatedDate;
 	private String warranty;
-	private String width;
+	private Double width;
 	
 	private String colorNameEn , colorNameAr ;
 	
@@ -48,16 +48,16 @@ public class ItemSpecificationsDTO {
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
-	public String getDepth() {
+	public Double getDepth() {
 		return depth;
 	}
-	public void setDepth(String depth) {
+	public void setDepth(Double depth) {
 		this.depth = depth;
 	}
-	public String getHeight() {
+	public Double getHeight() {
 		return height;
 	}
-	public void setHeight(String height) {
+	public void setHeight(Double height) {
 		this.height = height;
 	}
 	public String getIncluded() {
@@ -102,10 +102,10 @@ public class ItemSpecificationsDTO {
 	public void setWarranty(String warranty) {
 		this.warranty = warranty;
 	}
-	public String getWidth() {
+	public Double getWidth() {
 		return width;
 	}
-	public void setWidth(String width) {
+	public void setWidth(Double width) {
 		this.width = width;
 	}
 	public String getColorNameEn() {

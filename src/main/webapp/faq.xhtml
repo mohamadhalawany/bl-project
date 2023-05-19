@@ -1,0 +1,455 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<f:view locale="ar">
+	<ui:composition template="/template/template.xhtml">
+		<ui:define name="title">#{msg.FAQ}</ui:define>
+			<ui:define name="content">
+			
+			 <div class="main">
+	      		<div class="container">
+					<!-- BEGIN SIDEBAR & CONTENT -->
+			        <div class="row margin-bottom-40">
+			        
+			          <!-- BEGIN SIDEBAR -->
+			          <div class="sidebar col-md-3 col-sm-3">
+			            <ul class="list-group margin-bottom-25 sidebar-menu">
+			              <li class="list-group-item clearfix"><a href="customerAccount"><i class="fa fa-angle-right"></i>#{msg.LOGIN_REGISTER}</a></li>
+			              <li class="list-group-item clearfix"><a href="contact"><i class="fa fa-angle-right"></i> #{msg.CONTACT}</a></li>
+			              <li class="list-group-item clearfix"><a href="aboutUs"><i class="fa fa-angle-right"></i> #{msg.ABOUT_US}</a></li>
+			              <li class="list-group-item clearfix"><a href="termsCondition"><i class="fa fa-angle-right"></i> #{msg.TERMS_CONDITIONS}</a></li>			   
+			              <li><i class="fa fa-angle-right"></i> <a href="career"> #{msg.CAREERS}</a></li>	           
+			            </ul>
+			          </div>
+			          <!-- END SIDEBAR -->
+			          
+			          <div class="col-md-9 col-sm-9">
+			            <h1>#{msg.FAQ_LONG}</h1>
+			            <div class="faq-page">
+			            	
+			            	<h:panelGroup rendered="${1 lt size || 1 eq size}">
+	                            <div class="panel panel-default">
+	                               <div class="panel-heading">
+	                                  <h4 class="panel-title">
+	                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_1">
+	                                     1 . ${list.get(0).question}
+	                                     </a>
+	                                  </h4>
+	                               </div>
+	                               <div id="accordion1_1" class="panel-collapse collapse  in">
+	                                  <div class="panel-body">
+	                                     ${list.get(0).answer}
+	                                  </div>
+	                               </div>
+	                            </div>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup rendered="${2 lt size || 2 eq size}">
+                            <div class="panel panel-danger">
+                               <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_2">
+                                     2. ${list.get(1).question}
+                                     </a>
+                                  </h4>
+                               </div>
+                               <div id="accordion1_2" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                     ${list.get(1).answer}
+                                  </div>
+                               </div>
+                            </div>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup rendered="${3 lt size || 3 eq size}">
+                            <div class="panel panel-warning">
+                               <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_3">
+                                     3. ${list.get(2).question}
+                                     </a>
+                                  </h4>
+                               </div>
+                               <div id="accordion1_3" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                     ${list.get(2).answer}
+                                  </div>
+                               </div>
+                            </div>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup rendered="${4 lt size || 4 eq size}">
+                            <div class="panel panel-info">
+                               <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_4">
+                                     4. ${list.get(3).question}
+                                     </a>
+                                  </h4>
+                               </div>
+                               <div id="accordion1_4" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                     ${list.get(3).answer}
+                                  </div>
+                               </div>
+                            </div>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup rendered="${5 lt size || 5 eq size}">
+                            <div class="panel panel-default">
+                               <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_5">
+                                     5. ${list.get(4).question}
+                                     </a>
+                                  </h4>
+                               </div>
+                               <div id="accordion1_5" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                  	${list.get(4).answer}
+                                  </div>
+                               </div>
+                            </div>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup rendered="${6 lt size || 6 eq size}">
+                            <div class="panel panel-danger">
+                               <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_6">
+                                     6. ${list.get(5).question}
+                                     </a>
+                                  </h4>
+                               </div>
+                               <div id="accordion1_6" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                  	${list.get(5).answer}
+                                  </div>
+                               </div>
+                            </div>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup rendered="${7 lt size || 7 eq size}">
+                            <div class="panel panel-warning">
+                               <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_7">
+                                     7. ${list.get(6).question}
+                                     </a>
+                                  </h4>
+                               </div>
+                               <div id="accordion1_7" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                  	${list.get(6).answer}
+                                  </div>
+                               </div>
+                            </div>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup rendered="${8 lt size || 8 eq size}">
+                            <div class="panel panel-info">
+                               <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_8">
+                                     8. ${list.get(7).question}
+                                     </a>
+                                  </h4>
+                               </div>
+                               <div id="accordion1_8" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                  	${list.get(7).answer}
+                                  </div>
+                               </div>
+                            </div>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup rendered="${9 lt size || 9 eq size}">
+                            <div class="panel panel-default">
+                               <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_9">
+                                     9. ${list.get(8).question}
+                                     </a>
+                                  </h4>
+                               </div>
+                               <div id="accordion1_9" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                  	${list.get(8).answer}
+                                  </div>
+                               </div>
+                            </div>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup rendered="${10 lt size || 10 eq size}">
+                            <div class="panel panel-danger">
+                               <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_10">
+                                     10. ${list.get(9).question}
+                                     </a>
+                                  </h4>
+                               </div>
+                               <div id="accordion1_10" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                  	${list.get(9).answer}
+                                  </div>
+                               </div>
+                            </div>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup rendered="${11 lt size || 11 eq size}">
+                            <div class="panel panel-warnning">
+                               <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_11">
+                                     11. ${list.get(10).question}
+                                     </a>
+                                  </h4>
+                               </div>
+                               <div id="accordion1_11" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                  	${list.get(10).answer}
+                                  </div>
+                               </div>
+                            </div>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup rendered="${12 lt size || 12eq size}">
+                            <div class="panel panel-info">
+                               <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_12">
+                                     12. ${list.get(11).question}
+                                     </a>
+                                  </h4>
+                               </div>
+                               <div id="accordion1_12" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                  	${list.get(11).answer}
+                                  </div>
+                               </div>
+                            </div>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup rendered="${13 lt size || 13 eq size}">
+                            <div class="panel panel-default">
+                               <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_13">
+                                     13. ${list.get(12).question}
+                                     </a>
+                                  </h4>
+                               </div>
+                               <div id="accordion1_13" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                  	${list.get(12).answer}
+                                  </div>
+                               </div>
+                            </div>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup rendered="${14 lt size || 14 eq size}">
+	                            <div class="panel panel-danger">
+	                               <div class="panel-heading">
+	                                  <h4 class="panel-title">
+	                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_14">
+	                                     14 . ${list.get(13).question}
+	                                     </a>
+	                                  </h4>
+	                               </div>
+	                               <div id="accordion1_14" class="panel-collapse collapse  in">
+	                                  <div class="panel-body">
+	                                     ${list.get(13).answer}
+	                                  </div>
+	                               </div>
+	                            </div>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup rendered="${15 lt size || 15 eq size}">
+                            <div class="panel panel-warnning">
+                               <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_15">
+                                     15. ${list.get(14).question}
+                                     </a>
+                                  </h4>
+                               </div>
+                               <div id="accordion1_15" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                     ${list.get(14).answer}
+                                  </div>
+                               </div>
+                            </div>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup rendered="${16 lt size || 16 eq size}">
+                            <div class="panel panel-info">
+                               <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_16">
+                                     16. ${list.get(15).question}
+                                     </a>
+                                  </h4>
+                               </div>
+                               <div id="accordion1_16" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                     ${list.get(15).answer}
+                                  </div>
+                               </div>
+                            </div>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup rendered="${17 lt size || 17 eq size}">
+                            <div class="panel panel-default">
+                               <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_17">
+                                     17. ${list.get(16).question}
+                                     </a>
+                                  </h4>
+                               </div>
+                               <div id="accordion1_17" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                     ${list.get(16).answer}
+                                  </div>
+                               </div>
+                            </div>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup rendered="${18 lt size || 18 eq size}">
+                            <div class="panel panel-danger">
+                               <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_18">
+                                     18. ${list.get(17).question}
+                                     </a>
+                                  </h4>
+                               </div>
+                               <div id="accordion1_18" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                  	${list.get(17).answer}
+                                  </div>
+                               </div>
+                            </div>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup rendered="${19 lt size || 19 eq size}">
+                            <div class="panel panel-warnning">
+                               <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_19">
+                                     19. ${list.get(18).question}
+                                     </a>
+                                  </h4>
+                               </div>
+                               <div id="accordion1_19" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                  	${list.get(18).answer}
+                                  </div>
+                               </div>
+                            </div>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup rendered="${20 lt size || 20 eq size}">
+                            <div class="panel panel-info">
+                               <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_20">
+                                     20. ${list.get(19).question}
+                                     </a>
+                                  </h4>
+                               </div>
+                               <div id="accordion1_20" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                  	${list.get(19).answer}
+                                  </div>
+                               </div>
+                            </div>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup rendered="${21 lt size || 21 eq size}">
+                            <div class="panel panel-default">
+                               <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_21">
+                                     21. ${list.get(20).question}
+                                     </a>
+                                  </h4>
+                               </div>
+                               <div id="accordion1_21" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                  	${list.get(20).answer}
+                                  </div>
+                               </div>
+                            </div>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup rendered="${21 lt size || 21 eq size}">
+                            <div class="panel panel-danger">
+                               <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_21">
+                                     21. ${list.get(20).question}
+                                     </a>
+                                  </h4>
+                               </div>
+                               <div id="accordion1_21" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                  	${list.get(20).answer}
+                                  </div>
+                               </div>
+                            </div>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup rendered="${22 lt size || 22 eq size}">
+                            <div class="panel panel-warnning">
+                               <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_22">
+                                     22. ${list.get(21).question}
+                                     </a>
+                                  </h4>
+                               </div>
+                               <div id="accordion1_22" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                  	${list.get(21).answer}
+                                  </div>
+                               </div>
+                            </div>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup rendered="${23 lt size || 23 eq size}">
+                            <div class="panel panel-info">
+                               <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_23">
+                                     23. ${list.get(22).question}
+                                     </a>
+                                  </h4>
+                               </div>
+                               <div id="accordion1_23" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                  	${list.get(22).answer}
+                                  </div>
+                               </div>
+                            </div>
+                            </h:panelGroup>
+                            
+                            
+		            </div>
+		          </div>
+          <!-- END CONTENT -->
+			      </div>    
+	      		</div>
+			</div>		
+	 	</ui:define>
+	</ui:composition>
+</f:view>
+</html>

@@ -11,52 +11,18 @@
 <body>
 
 <!-- BEGIN TOP BAR -->
+<div class="header">
+	    <!-- <div class="pre-header" style="width: 100% !important;"> -->
 	    <div class="pre-header">
 	        <div class="container">
 	        
-	        	<div class="top-cart-block">
-	          <div class="top-cart-info">
-	            <a href="javascript:void(0);" class="top-cart-info-count">#{sessionScope.orderRequestListSize} #{msg.ITEMS}</a>
-	            <a href="javascript:void(0);" class="top-cart-info-value">#{sessionScope.totalPrice} 
-	            <h:outputLabel rendered="#{sessionScope.language eq null || sessionScope.language eq 'En'}" value="#{sessionScope.currencyName}"/>	
-	            <h:outputLabel rendered="#{sessionScope.language eq 'Ar'}" value="#{sessionScope.currencyNameAr}"/>
-	            </a>
-	          </div>
-	          <i class="fa fa-shopping-cart"></i>
-	          
-	          <h:panelGroup rendered="#{sessionScope.orderRequestListSize ne '0'}">              
-	          <div class="top-cart-content-wrapper">
-	            <div class="top-cart-content">
-	              <ul class="scroller" style="height: 250px;">
-	              	<h:panelGroup rendered="#{sessionScope.orderRequestList ne null}">
-		              <c:forEach items="#{sessionScope.orderRequestList}" var="oi" varStatus="vs">
-			                <li>
-			                  <a href="shop-item.html"><img src="UPLOADS/ITEM_LOGO/${oi.itemLogo}" alt="Rolex Classic Watch" width="37" height="34"/></a>
-			                  <span class="cart-content-count">#{vs.count}</span>
-			                  <strong><a href="#">#{oi.itemName}</a></strong>
-			                  <em>#{oi.itemPrice}</em>
-			                  <a href="javascript:void(0);" style="color:fuchsia ;">#{oi.quantity} &nbsp; #{msg.PIECES}</a>
-			                </li>
-		                </c:forEach>
-		          	</h:panelGroup>      
-	              </ul>
-	              <div>
-	              	<form action="order" method="get">
-	                	<button  class="btn btn-default" id="cart" name="cart">#{msg.VIEW_CART}<i class="fa fa-shopping-cart"></i></button>
-	                	<button class="btn btn-primary" id="checkout" name="checkout">#{msg.CHECKOUT}<i class="fa fa-check"></i></button>
-	                	<button class="btn btn-primary" id="myOrders" name="myOrders">#{msg.MY_ORDERS}</button>
-	                </form>
-	              </div>
-	            </div>
-	          </div>     
-	          </h:panelGroup>       
-	        </div>
+	      	
 	        
 	            <div class="row">
 	                <!-- BEGIN TOP BAR LEFT PART -->
 	                <div class="col-md-6 col-sm-6 additional-shop-info">
 	                    <ul class="list-unstyled list-inline">
-	                        <li><i class="fa fa-phone"></i><span> #{sessionScope.company.phone} #{msg.AND} #{sessionScope.company.mobile}</span></li>
+	                        <li><i class="fa fa-phone"></i><span> #{menuBean.company.phone} #{msg.AND} #{menuBean.company.mobile}</span></li>
 	                        
 	                        <!-- BEGIN LANGS -->
 	                        <li class="langs-block">
@@ -89,6 +55,9 @@
 	                       	  <h:panelGroup rendered="#{sessionScope.customer ne null}">
 	                       	  	  <a href="logoutCustomer">#{msg.LOGOUT}</a>
 	                       	  </h:panelGroup>
+	                       	  <h:panelGroup rendered="#{sessionScope.customer eq null}">
+	                       	  	  <a href="logoutCustomer">#{msg.LOGIN}</a>
+	                       	  </h:panelGroup>
 	                       </li>
 	                        
 	                    </ul>
@@ -103,7 +72,7 @@
 	                        <li><a href="myOrders">#{msg.MY_ORDERS}</a></li>	                      
 	                       <li>
 	                       	  <h:panelGroup rendered="#{sessionScope.customer eq null}">
-		                       	  <a href="customerAccount">#{msg.LOGIN}</a>		                       	  		                       	  
+		                       	  <a href="#">#{msg.LOGIN}</a>		                       	  		                       	  
 	                       	  </h:panelGroup>
 	                       </li>
 	                       <li>
@@ -111,34 +80,143 @@
 	                       	      <a href="register">#{msg.REGISTER}</a>		
 	                       	  </h:panelGroup>	
 	                       </li>
-	                       
+	                     
 	                    </ul>
-	                    
-	                    
-	                    
 	                </div>
 	                <!-- END TOP BAR MENU -->
+	                
+	                
+	                <!-- BEGIN CART -->
+    	
+	            <!-- END TOP SEARCH -->
 	            </div>
+	            
 	        </div>        
 	    </div>
-	    <!-- END TOP BAR -->
-    	
-    	
-    	<!-- BEGIN CART -->
-    	<!-- <div class="header">
-	      <div class="container"> -->
-	      <a class="site-logo" href="home">
-	        	<img src="resources/assets/corporate/img/logos/logo-shop-red.png" alt="Metronic Shop UI"/>
-	        </a>
+	    
 	        
+	   <div class="header">
+	      <div class="container">
+	      <a class="site-logo" href="home">
+	       	<img src="UPLOADS/LOGO/#{menuBean.company.logo}" alt="#{menuBean.company.slogan}"/><br/>
+	      </a>
+	      
+	      <a href="javascript:void(0);" class="mobi-toggler"><i class="fa fa-bars"></i></a>
+	      
+	      
+	        <!-- START CART  -->
+	        <div class="top-cart-block">
+	          <div class="top-cart-info">
+	            <a href="javascript:void(0);" class="top-cart-info-count">#{menuBean.orderRequestList.size()} #{msg.ITEMS}</a>
+	            <a href="javascript:void(0);" class="top-cart-info-value">#{menuBean.orderRequestList.get(0).totalPrice} #{menuBean.orderRequestList.get(0).internationalCode}
+	            <h:outputLabel rendered="#{sessionScope.language eq null || sessionScope.language eq 'En'}" value="#{sessionScope.currencyName}"/>	
+	            <h:outputLabel rendered="#{sessionScope.language eq 'Ar'}" value="#{sessionScope.currencyNameAr}"/>
+	            </a>
+	          </div>
+	          <i class="fa fa-shopping-cart"></i>
+	          
+	          <h:panelGroup rendered="#{menuBean.orderRequestList ne null}">              
+	          <div class="top-cart-content-wrapper">
+	            <div class="top-cart-content">
+	              <ul class="scroller" style="height: 250px;">
+	              	<h:panelGroup rendered="#{menuBean.orderRequestList.size() ne 0}">
+		              <c:forEach items="#{menuBean.orderRequestList}" var="oi" varStatus="vs">
+			                <li>
+			                  <a href="shop-item.html"><img src="UPLOADS/ITEMS_LOGO/${oi.itemLogo}" alt="Rolex Classic Watch" width="37" height="34"/></a>
+			                  <span class="cart-content-count">#{vs.count}</span>
+			                  <strong><a href="#">#{oi.itemName}</a></strong>
+			                  <em>#{oi.itemPrice} #{oi.internationalCode}</em><br/>
+			                  <a href="javascript:void(0);" style="color:fuchsia ;"> #{msg.PIECES} #{oi.quantity}</a>
+			                </li>
+		                </c:forEach>
+		          	</h:panelGroup>      
+	              </ul>
+	              <div>
+	              	<form action="order" method="get">
+	              		<input type="hidden" value="#{menuBean.orderRequestList.get(0).orderId}" id="orderId" name="orderId"/>
+	                	<!-- <button  class="btn btn-default" id="cart" name="cart">#{msg.VIEW_CART}<i class="fa fa-shopping-cart"></i></button> -->
+	                	<CENTER>
+	                		<button class="btn btn-primary" id="checkout" name="checkout">#{msg.VIEW_CART}<i class="fa fa-check"></i></button>
+	                		<button class="btn btn-primary" id="myOrders" name="myOrders">#{msg.MY_ORDERS}</button>
+	                	</CENTER>
+	                </form>
+	              </div>
+	            </div>
+	          </div>     
+	          </h:panelGroup>       
+	        </div>   
+	        <!--END CART -->
+    
 	        <!-- BEGIN TOP SEARCH -->
+	            
+	            
+	            <div class="header-navigation">
+	          <ul>
+	          
+	          <!-- <li class="dropdown dropdown-megamenu">
+	              <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
+	              	<FONT face="tahoma" size="1.5">#{menuBean.menu.menuName}</FONT></a>
+	              <ul class="dropdown-menu">
+	                <li>
+	                  <div class="header-navigation-content">
+	                    <div class="row">
+	                    
+	                    <c:forEach items="#{menuBean.mainCategoryList}" var="var">		
+	                      <div class="col-md-4 header-navigation-col" style="font-family: tahoma !important; font-size: 1.5;">
+	                        <h4>#{var.categoryName}</h4>
+	                        
+	                        <c:forEach items="#{var.subCategoryList}" var="sub">		
+		                        <ul>
+		                          <li><a href="category?id=#{sub.id}&amp;name=#{sub.categoryName}">#{sub.categoryName}</a></li>		                          
+		                        </ul>
+	                        </c:forEach>
+	                      </div>
+	                    </c:forEach>
+	                    
+	                    </div>
+	                  </div>
+	                </li>
+	              </ul>
+	            </li> -->
+	            
+	            
+				<c:forEach items="#{menuBean.list}" var="var">				
+	            <li class="dropdown" >
+	              <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
+	              		<FONT face="tahome" size="2.5">#{var.menuName}</FONT></a>                
+	              <!-- BEGIN DROPDOWN MENU -->
+	              <ul class="dropdown-menu">
+	              
+	              <c:forEach items="#{var.categoryList}" var="sub">
+	                <li class="dropdown-submenu">
+	                	<a href="category?id=#{sub.id}&amp;name=#{sub.categoryName}">#{sub.categoryName}</a>
+	                </li>
+	              </c:forEach>
+	              </ul>
+	              <!-- END DROPDOWN MENU -->
+	            </li>
+				</c:forEach>
+	            
+	            
+	            <li class="dropdown">
+	            	<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
+	            		<FONT face="tahome" size="1.5">#{msg.BRANDS}</FONT></a>                
+	              <!-- BEGIN DROPDOWN MENU -->
+	                <ul class="dropdown-menu">
+	                	<li><a href="#"></a></li>
+	                	<c:forEach items="#{menuBean.brandsList}" var="var">
+	                		<li><a href="itemsBrand?id=#{var.id}&amp;name=#{var.brandName}">#{var.brandName}</a></li>
+	                	</c:forEach>
+	                </ul>
+	            </li>
+	            
 	            <li class="menu-search">
 	              <span class="sep"></span>
-	              <!-- <i class="fa fa-search search-btn"></i> -->
+	              <i class="fa fa-search search-btn"></i>
 	              <div class="search-box">
-	                <form action="#">
+	                <form action="search">
 	                  <div class="input-group">
-	                    <input type="text" placeholder="Search" class="form-control"/>
+	                    <input type="text" placeholder="#{msg.SEARCH_ANYTHING}" class="form-control" name="itemName" value="#{itemDTO.itemName}"/>
 	                    <span class="input-group-btn">
 	                      <button class="btn btn-primary" type="submit">#{msg.SEARCH}</button>
 	                    </span>
@@ -146,13 +224,19 @@
 	                </form>
 	              </div> 
 	            </li>
-	            <!-- END TOP SEARCH -->
+	          </ul>
+	        </div>
+	            
+	             </div>
+	            </div>
+	   <!--  </div> -->
+	    
 	        
-	        
-	      <!--  </div>
-	     </div>    -->
-	        <!--END CART -->
-    
+	</div>    
+	    <!-- END TOP BAR -->
+    	
+    	
+    	
     
 </body>
 </html>

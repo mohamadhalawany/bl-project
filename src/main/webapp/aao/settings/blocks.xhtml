@@ -1,0 +1,293 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+
+<ui:composition template="/template/cms_template.xhtml">
+	<ui:define name="title">#{msg.MAIN_PAGE_BLOCKS}</ui:define>
+	<ui:define name="content">
+	
+            
+            <div class="col-lg-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                	
+                  <h4 class="card-title">#{msg.MAIN_PAGE_BLOCKS}</h4><FONT color="red" size="2pt"> #{msg.START_BLOCK}</FONT>
+                  <br/>
+                  
+                  <div class="col-lg-12 grid-margin stretch-card">
+		              <div class="card">
+		                <div class="card-body">
+		                
+		                	<h2 class="card-title">#{msg.BLOCK_ONE}</h2>
+		                	
+                  			<form class="form-sample" action="saveBlockOne" method="post" enctype="multipart/form-data">
+	                	
+				              <h:outputLabel value="#{msg.SAVE_MSG}" rendered="${savedOne eq '1'}" style="color: red;"/>
+			                  <h:outputLabel value="#{msg.ERROR_LOGO_EXTENSION}" rendered="#{extensionErrorOne eq 1}" style="color: red;"/>
+			                  <h:outputLabel value="#{msg.ERROR_LOGO_SIZE}" rendered="#{sizeErrorOne eq 1}" style="color: red;"/>
+			                  <h:outputLabel value="#{msg.REQUIRED_PICTURE}" rendered="#{fileErrorOne eq 1}" style="color: red;"/>
+			                	
+			                    <div class="row">
+			                      <div class="col-md-6">
+			                        <div class="form-group row">
+			                          <label class="col-sm-3 col-form-label">#{msg.BLOCK_ONE}</label>
+			                          <div class="col-sm-9">
+			                            <input type="text" id="blockOneDesc" name="blockOneDesc" class="form_customer" value="${dto.blockOneDesc}"/>
+			                          </div>
+			                        </div>
+			                      </div>
+			                     
+			                      <div class="col-md-6">
+			                        <div class="form-group row">
+			                          <label class="col-sm-3 col-form-label">#{msg.BLOCK_ONE} #{msg.UPLOAD}</label>
+			                          <div class="col-sm-9">
+			                            <input type="file" id="blockOnePic" name="blockOnePic" class="form_customer"/>
+			                          </div>
+			                        </div>
+			                      </div>
+			                    </div>  
+			                
+			                <button type="submit" class="btn btn-primary mr-2" name="save">#{msg.SAVE}</button>
+		                   <button type="submit" class="btn btn-light" name="cancel">#{msg.CANCEL}</button>
+		                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+		                    <img alt="" src="../UPLOADS/MAIN_PAGE/${dto.blockOnePic}" height="50" width="50"/>
+			          	</form>
+	                 
+	               	</div>
+	               </div>
+	              </div>  
+	               
+	               
+	               <div class="col-lg-12 grid-margin stretch-card">
+		              <div class="card">
+		                <div class="card-body">
+		                
+		                	<h2 class="card-title">#{msg.BLOCK_TWO}</h2>
+		                	
+                  			<form class="form-sample" action="saveBlocksTwo" method="post" enctype="multipart/form-data">
+	                	
+				              <h:outputLabel value="#{msg.SAVE_MSG}" rendered="${savedTwo eq '1'}" style="color: red;"/>
+			                  <h:outputLabel value="#{msg.ERROR_LOGO_EXTENSION}" rendered="#{extensionErrorTwo eq 1}" style="color: red;"/>
+			                  <h:outputLabel value="#{msg.ERROR_LOGO_SIZE}" rendered="#{sizeErrorTwo eq 1}" style="color: red;"/>
+			                  <h:outputLabel value="#{msg.REQUIRED_PICTURE}" rendered="#{fileErrorTwo eq 1}" style="color: red;"/>
+			                
+			                <div class="row">	
+			                    <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.BLOCK_TWO}</label>
+	                          <div class="col-sm-9">
+	                            <input type="text" id="blockTwoDesc" name="blockTwoDesc" class="form_customer" value="${dto.blockTwoDesc}"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                     
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.BLOCK_TWO} #{msg.UPLOAD}</label>
+	                          <div class="col-sm-9">
+	                            <input type="file" id="blockTwoPic" name="blockTwoPic" class="form_customer"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    
+			               <button type="submit" class="btn btn-primary mr-2" name="save">#{msg.SAVE}</button>
+		                   <button type="submit" class="btn btn-light" name="cancel">#{msg.CANCEL}</button>
+		                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+		                    <img alt="" src="../UPLOADS/MAIN_PAGE/${dto.blockTwoPic}" height="50" width="50"/>
+			          	</form>
+	                 
+	               	</div>
+	               </div>
+	              </div>  
+	                
+	               
+	               <div class="col-lg-12 grid-margin stretch-card">
+		              <div class="card">
+		                <div class="card-body">
+		                
+		                	<h2 class="card-title">#{msg.BLOCK_THREE}</h2>
+		                	
+                  			<form class="form-sample" action="saveBlocksThree" method="post" enctype="multipart/form-data">
+	                	
+				              <h:outputLabel value="#{msg.SAVE_MSG}" rendered="${savedThree eq '1'}" style="color: red;"/>
+			                  <h:outputLabel value="#{msg.ERROR_LOGO_EXTENSION}" rendered="#{extensionErrorThree eq 1}" style="color: red;"/>
+			                  <h:outputLabel value="#{msg.ERROR_LOGO_SIZE}" rendered="#{sizeErrorThree eq 1}" style="color: red;"/>
+			                  <h:outputLabel value="#{msg.REQUIRED_PICTURE}" rendered="#{fileErrorThree eq 1}" style="color: red;"/>
+			                
+			                <div class="row">
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.BLOCK_THREE}</label>
+	                          <div class="col-sm-9">
+	                            <input type="text" id="blockThreeDesc" name="blockThreeDesc" class="form_customer" value="${dto.blockThreeDesc}"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                     
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.BLOCK_THREE} #{msg.UPLOAD}</label>
+	                          <div class="col-sm-9">
+	                            <input type="file" id="blockThreePic" name="blockThreePic" class="form_customer"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    
+			               <button type="submit" class="btn btn-primary mr-2" name="save">#{msg.SAVE}</button>
+		                   <button type="submit" class="btn btn-light" name="cancel">#{msg.CANCEL}</button>
+		                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+		                    <img alt="" src="../UPLOADS/MAIN_PAGE/${dto.blockThreePic}" height="50" width="50"/>
+			          	</form>
+	                 
+	               	</div>
+	               </div>
+	              </div>  
+	              
+	              
+	              <div class="col-lg-12 grid-margin stretch-card">
+		              <div class="card">
+		                <div class="card-body">
+		                
+		                	<h2 class="card-title">#{msg.BLOCK_FOUR}</h2>
+		                	
+                  			<form class="form-sample" action="saveBlocksFour" method="post" enctype="multipart/form-data">
+	                	
+				              <h:outputLabel value="#{msg.SAVE_MSG}" rendered="${savedFour eq '1'}" style="color: red;"/>
+			                  <h:outputLabel value="#{msg.ERROR_LOGO_EXTENSION}" rendered="#{extensionErrorFour eq 1}" style="color: red;"/>
+			                  <h:outputLabel value="#{msg.ERROR_LOGO_SIZE}" rendered="#{sizeErrorFour eq 1}" style="color: red;"/>
+			                  <h:outputLabel value="#{msg.REQUIRED_PICTURE}" rendered="#{fileErrorFour eq 1}" style="color: red;"/>
+			                
+			                <div class="row">
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.BLOCK_FOUR}</label>
+	                          <div class="col-sm-9">
+	                            <input type="text" id="blockFourDesc" name="blockFourDesc" class="form_customer"  value="${dto.blockFourDesc}"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                     
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.BLOCK_FOUR} #{msg.UPLOAD}</label>
+	                          <div class="col-sm-9">
+	                            <input type="file" id="blockFourPic" name="blockFourPic" class="form_customer"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    
+			               <button type="submit" class="btn btn-primary mr-2" name="save">#{msg.SAVE}</button>
+		                   <button type="submit" class="btn btn-light" name="cancel">#{msg.CANCEL}</button>
+		                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+		                    <img alt="" src="../UPLOADS/MAIN_PAGE/${dto.blockFourPic}" height="50" width="50"/>
+			          	</form>
+	                 
+	               	</div>
+	               </div>
+	              </div>
+	              
+	              <div class="col-lg-12 grid-margin stretch-card">
+		              <div class="card">
+		                <div class="card-body">
+		                
+		                	<h2 class="card-title">#{msg.BLOCK_FIVE}</h2>
+		                	
+                  			<form class="form-sample" action="saveBlocksFive" method="post" enctype="multipart/form-data">
+	                	
+				              <h:outputLabel value="#{msg.SAVE_MSG}" rendered="${savedFive eq '1'}" style="color: red;"/>
+			                  <h:outputLabel value="#{msg.ERROR_LOGO_EXTENSION}" rendered="#{extensionErrorFive eq 1}" style="color: red;"/>
+			                  <h:outputLabel value="#{msg.ERROR_LOGO_SIZE}" rendered="#{sizeErrorFive eq 1}" style="color: red;"/>
+			                  <h:outputLabel value="#{msg.REQUIRED_PICTURE}" rendered="#{fileErrorFive eq 1}" style="color: red;"/>
+			                
+			                <div class="row">
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.BLOCK_FIVE}</label>
+	                          <div class="col-sm-9">
+	                            <input type="text" id="blockFiveDesc" name="blockFiveDesc" class="form_customer" value="${dto.blockFiveDesc}"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                     
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.BLOCK_FIVE} #{msg.UPLOAD}</label>
+	                          <div class="col-sm-9">
+	                            <input type="file" id="blockFivePic" name="blockFivePic" class="form_customer"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    
+			               <button type="submit" class="btn btn-primary mr-2" name="save">#{msg.SAVE}</button>
+		                   <button type="submit" class="btn btn-light" name="cancel">#{msg.CANCEL}</button>
+		                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+		                    <img alt="" src="../UPLOADS/MAIN_PAGE/${dto.blockFivePic}" height="50" width="50"/>
+			          	</form>
+	                 
+	               	</div>
+	               </div>
+	              </div>
+	              
+	              <div class="col-lg-12 grid-margin stretch-card">
+		              <div class="card">
+		                <div class="card-body">
+		                
+		                	<h2 class="card-title">#{msg.BLOCK_SIX}</h2>
+		                	
+                  			<form class="form-sample" action="saveBlocksSix" method="post" enctype="multipart/form-data">
+	                	
+				              <h:outputLabel value="#{msg.SAVE_MSG}" rendered="${savedSix eq '1'}" style="color: red;"/>
+			                  <h:outputLabel value="#{msg.ERROR_LOGO_EXTENSION}" rendered="#{extensionErrorSix eq 1}" style="color: red;"/>
+			                  <h:outputLabel value="#{msg.ERROR_LOGO_SIZE}" rendered="#{sizeErrorSix eq 1}" style="color: red;"/>
+			                  <h:outputLabel value="#{msg.REQUIRED_PICTURE}" rendered="#{fileErrorSix eq 1}" style="color: red;"/>
+			                
+			                <div class="row">
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.BLOCK_SIX}</label>
+	                          <div class="col-sm-9">
+	                            <input type="text" id="blockSixDesc" name="blockSixDesc" class="form_customer" value="${dto.blockSixDesc}"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                     
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.BLOCK_SIX} #{msg.UPLOAD}</label>
+	                          <div class="col-sm-9">
+	                            <input type="file" id="blockSixPic" name="blockSixPic" class="form_customer"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    
+			               <button type="submit" class="btn btn-primary mr-2" name="save">#{msg.SAVE}</button>
+		                   <button type="submit" class="btn btn-light" name="cancel">#{msg.CANCEL}</button>
+		                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+		                    <img alt="" src="../UPLOADS/MAIN_PAGE/${dto.blockSixPic}" height="50" width="50"/>
+			          	</form>
+	                 
+	               	</div>
+	               </div>
+	              </div>
+	              
+	               
+	                  
+                </div>
+              </div>
+            </div>
+
+	</ui:define>
+</ui:composition>
+</html>

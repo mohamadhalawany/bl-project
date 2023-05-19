@@ -31,10 +31,10 @@ public class ItemSpecificationsEntity implements Serializable {
 	private Date createdDate;
 	
 	@Column(name="depth")
-	private String depth;
+	private Double depth;
 	
 	@Column(name="height")
-	private String height;
+	private Double height;
 
 	@Column(name="included")
 	private String included;
@@ -59,7 +59,7 @@ public class ItemSpecificationsEntity implements Serializable {
 	private String warranty;
 
 	@Column(name="width")
-	private String width;
+	private Double width;
 
 	
 
@@ -95,19 +95,19 @@ public class ItemSpecificationsEntity implements Serializable {
 		this.createdDate = createdDate;
 	}
 
-	public String getDepth() {
+	public Double getDepth() {
 		return this.depth;
 	}
 
-	public void setDepth(String depth) {
+	public void setDepth(Double depth) {
 		this.depth = depth;
 	}
 
-	public String getHeight() {
+	public Double getHeight() {
 		return this.height;
 	}
 
-	public void setHeight(String height) {
+	public void setHeight(Double height) {
 		this.height = height;
 	}
 
@@ -167,11 +167,11 @@ public class ItemSpecificationsEntity implements Serializable {
 		this.warranty = warranty;
 	}
 
-	public String getWidth() {
+	public Double getWidth() {
 		return this.width;
 	}
 
-	public void setWidth(String width) {
+	public void setWidth(Double width) {
 		this.width = width;
 	}
 

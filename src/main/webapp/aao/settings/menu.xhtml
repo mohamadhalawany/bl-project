@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+
+<ui:composition template="/template/cms_template.xhtml">
+	<ui:define name="title">#{msg.MAIN_MENU}</ui:define>
+	<ui:define name="content">
+	
+            
+            <div class="col-lg-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                	
+                  <h4 class="card-title">#{msg.MAIN_MENU}</h4>
+                  	
+				  <h:outputLabel value="#{msg.SAVE_MSG}" rendered="${saved eq '1'}" style="color: red;"/>
+				  
+                  <a href="createMenu" class="btn btn-primary mr-2">#{msg.CREATE}</a>
+                                       		
+                  <div class="table-responsive pt-3">                                    
+                    <table class="table table-bordered table-hover table-striped">
+                      <thead style="background-color: #666666; color: yellow;">
+                        <tr style="border-color: gray !important; ">
+                          <th style="align-content: center!important;">#</th>
+                          <th style="align-content: center!important;">#{msg.MENU_NAME}</th>
+                          <th style="align-content: center!important;">#{msg.LINKS}</th>
+                          <th>#{msg.LAST_UPDATED}</th>
+                          <th>#{msg.ACTIVE_INACTIVE}</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      
+                      <c:forEach items="${mainMenuList}" var="var" varStatus="vs">
+                        <tr>
+                          <td style="align-content: center !important; width: 10% !important;">#{vs.count}</td>
+                          
+                          <td style="width: 40% !important;">
+	                          	<form class="form-sample" action="saveMenu" method="post">
+		                          	<INPUT type="hidden" value="#{var.id}" name="id" id="id"/>
+		                          	<input value="#{var.menuName}" name="menuName" id="menuName" onblur="submit()" style="width: 100% !important;  height: 100% !important"/>
+	                          	</form> 
+                          </td>
+                          
+                          <td style="align-content: center !important; width: 10% !important;"><a href="links?menuId=#{var.id}">#{msg.LINKS}</a></td>
+                                                                             
+                          <td style="align-content: center !important; width: 10% !important;">#{var.updatedDateString}</td>
+                          
+                          <td style="width: 10% !important;">
+                          	<h:panelGroup rendered="#{var.isActive eq '0'}"><font color="red"> #{msg.INACTIVE}</font></h:panelGroup>
+                            <h:panelGroup rendered="#{var.isActive eq '1'}">#{msg.ACTIVE}</h:panelGroup>
+                          </td>
+                          
+                          <td style="width: 35% !important;">
+                          	<h:panelGroup rendered="#{var.isActive eq '0'}">
+                            	<a href="actMenu?id=#{var.id}&amp;flag=1" title="#{msg.MENU_INACTIVE_MSG}"><label class="badge badge-success" style="width: 100%;">#{msg.ACTIVE}</label></a>
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{var.isActive eq '1'}">
+                            	<a href="actMenu?id=#{var.id}&amp;flag=0" title="#{msg.MENU_ACTIVE_MSG}"><label class="badge badge-danger" style="width: 100%;">#{msg.INACTIVE}</label></a>
+                            </h:panelGroup>
+                          </td>
+                                                  
+                        </tr>        
+                        </c:forEach>
+                                        
+                      </tbody>
+                    </table>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+
+	</ui:define>
+</ui:composition>
+</html>

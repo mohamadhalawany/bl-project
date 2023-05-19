@@ -7,11 +7,15 @@ import com.bl.dto.GeneralDTO;
 
 public interface GeneralService {
 	
-	public List<GeneralDTO> colorsList() ;
-	public GeneralDTO colorNameById(Integer id) ;
+	public List<GeneralDTO> colorsList() ;	
 	public List<GeneralDTO> countryList() ;
 	public List<GeneralDTO> governorateList(Integer countryId) ;
 	public List<GeneralDTO> cityDistrictList(Integer governorateId) ;
+	public List<GeneralDTO> currencyList() ;
 	public List<CountryGovernorateCityDistrictDTO> findGovernorateIdAndCountryIdByCityDistrictId(Integer cityDistrictId) ;
+	
 	public GeneralDTO currencyById(Integer id) ;
+	public GeneralDTO colorNameById(Integer id) ;
+	
+	public Integer orderExpireDays() ;
 }

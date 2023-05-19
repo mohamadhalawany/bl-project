@@ -15,11 +15,7 @@
 			
 			<div class="main">
       <div class="container">
-        <!-- <ul class="breadcrumb">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="">Store</a></li>
-            <li class="active">Cool green dress with red bell</li>
-        </ul> -->
+      
         <!-- BEGIN SIDEBAR & CONTENT -->
         <div class="row margin-bottom-40">
           <!-- BEGIN SIDEBAR -->
@@ -32,25 +28,30 @@
               <div class="row">
                 <div class="col-md-6 col-sm-6">
                   <div class="product-main-image">
-                  	<h:graphicImage url="UPLOADS/ITEM_LOGO/${dto.itemLogo}"  height="180" width="180" class="img-responsive"/>
+                  	<h:graphicImage url="UPLOADS/ITEMS_LOGO/${dto.itemLogo}"  height="180" width="180" class="img-responsive"/>
                   </div>
-                  <!-- <div class="product-other-images">
-                    <a href="resources/assets/pages/img/products/model3.jpg" class="fancybox-button" rel="photos-lib"><img alt="Berry Lace Dress" src="assets/pages/img/products/model3.jpg"/></a>
-                    <a href="resources/assets/pages/img/products/model4.jpg" class="fancybox-button" rel="photos-lib"><img alt="Berry Lace Dress" src="assets/pages/img/products/model4.jpg"/></a>
-                    <a href="resources/assets/pages/img/products/model5.jpg" class="fancybox-button" rel="photos-lib"><img alt="Berry Lace Dress" src="assets/pages/img/products/model5.jpg"/></a>
-                  </div> -->
                 </div>
                 
                 <FORM action="addToCart">
-                	<INPUT type="hidden" value="${dto.itemPrice}" id="itemPrice" name="itemPrice"/>
+                	<h:panelGroup rendered="${dto.offerValidity eq 1}">
+                		<INPUT type="hidden" value="${dto.itemPriceOffer}" id="itemPriceOffer" name="itemPriceOffer"/>
+                	</h:panelGroup>
+                	<h:panelGroup rendered="${dto.offerValidity ne 1}">
+                		<INPUT type="hidden" value="${dto.itemPrice}" id="itemPrice" name="itemPrice"/>
+                	</h:panelGroup>
+                	
                 	<INPUT type="hidden" value="${dto.id}" id="itemId" name="itemId"/>
                 	<INPUT type="hidden" value="${dto.currencyId}" id="currencyId" name="currencyId"/><br/>
 	                <div class="col-md-6 col-sm-6">
-	                  <h1>${dto.itemName}</h1>
+	                  <h4>${dto.itemName}</h4>
 	                  <div class="price-availability-block clearfix">
 	                    <div class="price">
-	                      <strong><span></span>${dto.itemPrice} ${dto.internationalCode}</strong>
-	                      <em>#{sessionScope.language eq null ? dto.currencyName : dto.currencyNameAr}<span></span></em>
+	                      <strong><span></span>
+	                      	<h:panelGroup rendered="${dto.offerValidity eq 1}"> <s>${dto.itemPrice}</s> &nbsp; ${dto.itemPriceOffer}</h:panelGroup>  
+	                      	<h:panelGroup rendered="${dto.offerValidity ne 1}">${dto.itemPrice}</h:panelGroup>  
+	                      	${dto.internationalCode}
+	                      </strong>
+	                      <em>#{(sessionScope.language eq 'En' or sessionScope.language eq null) ? dto.currencyName : dto.currencyNameAr}<span></span></em>
 	                    </div>
 	                    
 	                  </div>
@@ -61,10 +62,11 @@
 	                  <div class="product-page-cart">
 	                    <div class="product-quantity">
 	                         #{msg.QUANTITY}
-	                        <input id="quantity" type="text" value="#{param['quantity'] eq null ? '1' : param['quantity']}" readonly="readonly" class="form-control input-sm" name="quantity"/>
+	                        <input id="quantity" type="text" value="#{param['quantity'] eq null ? '1' : param['quantity']}" readonly="readonly" class="form-control input-sm" 
+	                        			name="quantity"/>
 	                    </div>
 	                    <button class="btn btn-primary" type="submit">#{msg.ADD_TO_CART}</button> 
-	                    <H3><h:outputLabel value="#{msg.SAVE_MSG}" rendered="${saved eq '1'}" style="color:red"/></H3>
+	                    <H4><h:outputLabel value="#{msg.SAVE_MSG}" rendered="#{param['saved'] eq '1'}" style="color:red"/></H4>
 	                  </div>
                   
                 </div>
@@ -73,14 +75,14 @@
                 <div class="product-page-content">
                   <ul id="myTab" class="nav nav-tabs"><!-- CLASS ACTIVE WHEN CLICKS ON THE LINK -->
                     <li><a href="#Description" data-toggle="tab" class="active">#{msg.OVERVIEW}</a></li>
-                    <li><a href="#Information" data-toggle="tab" class="active">#{msg.SPECIFICATION}</a></li>
-                    <li><a href="#installationGuide" data-toggle="tab" class="active">#{msg.INISTALLATION_GUIDE}</a></li>
-                    <li><a href="#shipping" data-toggle="tab" class="active">#{msg.SHIPPING}</a></li>
-                    <li><a href="#Reviews" data-toggle="tab" class="active">#{msg.REVIEWS} (${countReviews})</a></li>
+                    <li><a href="#Information" data-toggle="tab">#{msg.SPECIFICATION}</a></li>
+                    <li><a href="#installationGuide" data-toggle="tab">#{msg.INISTALLATION_GUIDE}</a></li>
+                    <li><a href="#shipping" data-toggle="tab">#{msg.SHIPPING}</a></li>
+                    <li><a href="#Reviews" data-toggle="tab">#{msg.REVIEWS} (${countReviews})</a></li>
                   </ul>
                   
                   <!-- TABS -->
-                  <div id="myTabContent" class="tab-content">
+                  <div id="myTabContent" class="tab-content active">
                     
                     <!-- OVERVIEW TAB -->
                     <div class="tab-pane fade" id="Description">
@@ -168,7 +170,7 @@
 
                       <!-- BEGIN FORM-->
                       <form action="saveReview" class="reviews-form" role="form">
-                      	<INPUT type="text" value="#{param['id']}" name="id"/>
+                      	<INPUT type="hidden" value="#{param['id']}" name="id"/>
                       	<h:outputText style="color: red; font-size: 16px;" value="#{msg.REQUIRED_REVIEW_DATA}" rendered="#{param['requiredReviewData'] eq '1'}"/>
                       	<h:outputText style="color: red; font-size: 16px;" value="#{msg.SAVE_MSG}" rendered="#{param['savedReview'] eq '1'}"/>
                         <h2>#{msg.WRITE_REVIEW}</h2>

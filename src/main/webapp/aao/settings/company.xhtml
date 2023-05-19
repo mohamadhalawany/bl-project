@@ -1,0 +1,255 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+
+<ui:composition template="/template/cms_template.xhtml">
+	<ui:define name="title">#{msg.COMPANY_INFO}</ui:define>
+	<ui:define name="content">
+	
+            
+            <div class="col-lg-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                <h4 class="card-title">#{msg.COMPANY_INFO}</h4>
+                	  
+	                  <form class="form-sample" action="saveCompanyInfo" method="post" enctype="multipart/form-data">
+	            
+	                  	<h:outputLabel value="#{msg.SAVE_MSG}" rendered="#{param['saved'] eq '1'}" style="color: red;"/>
+	                    <INPUT type="hidden" id="id" name="id" value="${dto.id}"/>                    
+	                    
+	                    <div class="row">
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.COMPANY_NAME}</label>
+	                          <div class="col-sm-9">
+	                            <input type="text" id="companyName" name="companyName" class="form_customer" value="${dto.companyName}" style="width: 200px !important;"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                     
+	                      <div class="col-md-6">
+	                        <div class="form-group row">	               
+	                        	<label class="col-sm-3 col-form-label">#{msg.ABOUT_US}</label>           
+	                          	<div class="col-sm-9">
+	                          		<input type="text" disabled="disabled" class="form_customer" value="${dto.aboutUs}" style="width: 200px !important;"/>
+	                          		<a href="about_us?id=${dto.id}">more</a>
+	                          </div>
+	                        </div>
+	                      </div>
+	                    </div>  
+	                    
+	                    
+	                    <div class="row">
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.LOGO}</label>
+	                          <div class="col-sm-9">
+	                          	<input type="hidden" id="logo" name="logo" class="form_customer" value="${dto.logo}"/>
+	                            <input type="file" id="fileLogo" name="fileLogo" class="form_customer"/>	                          	
+	                          </div>
+	                        </div>
+	                      </div>
+	                     
+	                      <div class="col-md-6">
+	                        <div class="form-group row">	               
+	                        	<label class="col-sm-3 col-form-label"></label>           
+	                          	<div class="col-sm-9">
+	                          		<img alt="" src="../UPLOADS/LOGO/${dto.logo}" height="50" width="150"/>	
+	                          </div>
+	                        </div>
+	                      </div>
+	                    </div>  
+	                    
+	                    
+	                    <div class="row">
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.BROWSER_TITLE_ICON}</label>
+	                          <div class="col-sm-9">
+	                          	<input type="text" id="browserTitleIcon" name="browserTitleIcon" class="form_customer" value="${dto.browserTitleIcon}"/>
+	                            <input type="file" id="browserTitleIconFile" name="browserTitleIconFile" class="form_customer"/>	        
+	                            <span id = "recommendedSize" style="color:red; font-size: x-small ;">
+	                            	#{RECOMMENDED_SIZE}&nbsp;#{msg.WIDTH}&nbsp; = 59 px &nbsp; #{msg.AND} &nbsp; #{msg.HEIGHT} = 31 px
+	                            </span> <br/><br/>                   	
+	                          </div>
+	                        </div>
+	                      </div>
+	                     
+	                      <div class="col-md-6">
+	                        <div class="form-group row">	               
+	                        	<label class="col-sm-3 col-form-label"></label>           
+	                          	<div class="col-sm-9">
+	                          		<img src="../UPLOADS/LOGO/${dto.browserTitleIcon}"  height="31" width="59"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                    </div>  
+	                    
+	                    <div class="row">
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">Slogan</label>
+	                          <div class="col-sm-9">
+	                            <input type="text" id="slogan" name="slogan" class="form_customer" value="${dto.slogan}"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                     
+	                      <div class="col-md-6">
+	                        <div class="form-group row">	               
+	                        	<label class="col-sm-3 col-form-label">#{msg.EMAIL}</label>           
+	                          	<div class="col-sm-9">
+	                          		<input type="text" id="email" name="email" class="form_customer" value="${dto.email}"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                    </div>  
+	                    
+	                    <div class="row">
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.PHONE}</label>
+	                          <div class="col-sm-9">
+	                            <input type="text" id="phone" name="phone" class="form_customer" value="${dto.phone}"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                     
+	                      <div class="col-md-6">
+	                        <div class="form-group row">	               
+	                        	<label class="col-sm-3 col-form-label">#{msg.MOBILE}</label>           
+	                          	<div class="col-sm-9">
+	                          		<input type="text" id="mobile" name="mobile" class="form_customer" value="${dto.mobile}"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                    </div>  
+	                    
+	                    <div class="row">
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.COUNTRY}</label>
+	                          <div class="col-sm-9">
+	                            <h:selectOneMenu class="form_customer" id="countryId" onchange="govs_com()" value="${dto.countryId}">
+				                      <f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
+				                      <f:selectItems value="${countryList}" var="cnt" itemLabel="#{cnt.valueEn}"
+				                      						itemValue="${cnt.key}"/>
+		                    	</h:selectOneMenu>
+	                          </div>
+	                        </div>
+	                      </div>
+	                     
+	                      <div class="col-md-6">
+	                        <div class="form-group row">	               
+	                        	<label class="col-sm-3 col-form-label">#{msg.GOVERNERATE}</label>           
+	                          	<div class="col-sm-9">
+	                          		<h:selectOneMenu class="form_customer"  id="governorateId" onchange="city_Dist()" value="${governorateId}">
+				                      <f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
+				                      <f:selectItems value="${governorateList}" var="gov" itemLabel="#{gov.valueEn}" 
+			                      						itemValue="#{gov.key}"/>
+		                    		</h:selectOneMenu>
+	                          </div>
+	                        </div>
+	                      </div>
+	                    </div> 
+	                    
+	                    <div class="row">
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.CITY_DISTRICT}</label>
+	                          <div class="col-sm-9">
+	                            <h:selectOneMenu class="form_customer" id="cityId" value="${dto.cityId}">
+			                  		<f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
+			                  		<f:selectItems value="${cityDistrictList}" var="cd" itemValue="#{cd.key}" 
+			                  							  itemLabel="#{cd.valueEn}"/>
+			                  	</h:selectOneMenu>
+	                          </div>
+	                        </div>
+	                      </div>
+	                     
+	                      <div class="col-md-6">
+	                        <div class="form-group row">	               
+	                        	<label class="col-sm-3 col-form-label">#{msg.ADDRESS}</label>           
+	                          	<div class="col-sm-9">
+	                          		<input type="text" id="address" name="address" class="form_customer" value="${dto.address}"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                    </div> 
+	                    
+	                    <div class="row">
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.FACEBOOK}</label>
+	                          <div class="col-sm-9">
+	                            <input type="text" id="facebookAccount" name="facebookAccount" class="form_customer" value="${dto.facebookAccount}"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                     
+	                      <div class="col-md-6">
+	                        <div class="form-group row">	               
+	                        	<label class="col-sm-3 col-form-label">#{msg.TWITTER}</label>           
+	                          	<div class="col-sm-9">
+	                          		<input type="text" id="twitterAccount" name="twitterAccount" class="form_customer" value="${dto.twitterAccount}"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    
+	                    <div class="row">
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.GOOGLEPLUS}</label>
+	                          <div class="col-sm-9">
+	                            <input type="text" id="googleplusAccount" name="googleplusAccount" class="form_customer" value="${dto.googleplusAccount}"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                     
+	                      <div class="col-md-6">
+	                        <div class="form-group row">	               
+	                        	<label class="col-sm-3 col-form-label">#{msg.LINKEDIN}</label>           
+	                          	<div class="col-sm-9">
+	                          		<input type="text" id="linkedinAccount" name="linkedinAccount" class="form_customer" value="${dto.linkedinAccount}"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    
+	                    <div class="row">
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.YOUTUBE}</label>
+	                          <div class="col-sm-9">
+	                            <input type="text" id="youtubeAccount" name="youtubeAccount" class="form_customer" value="${dto.youtubeAccount}"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                     
+	                      <div class="col-md-6">
+	                        <div class="form-group row">	               
+	                        	<label class="col-sm-3 col-form-label">#{msg.VIMEO}</label>           
+	                          	<div class="col-sm-9">
+	                          		<input type="text" id="vimeoAccount" name="vimeoAccount" class="form_customer" value="${dto.vimeoAccount}"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    
+	                    <button type="submit" class="btn btn-primary mr-2" name="save">#{msg.SAVE}</button>
+	                  </form>                  
+                </div>
+              </div>
+            </div>
+
+	</ui:define>
+</ui:composition>
+</html>

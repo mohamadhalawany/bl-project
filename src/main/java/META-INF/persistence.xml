@@ -21,6 +21,23 @@
 		<class>com.bl.entity.CountryEntity</class>
 		<class>com.bl.entity.CurrencyEntity</class> 
 		<class>com.bl.entity.GovernorateEntity</class>
+		<class>com.bl.entity.cms.SettingEntity</class>
+		<class>com.bl.entity.cms.BrandEntity</class>
+		<class>com.bl.entity.cms.ItemBrandEntity</class>
+		<class>com.bl.entity.cms.ProductTypeEntity</class>
+		<class>com.bl.entity.cms.ItemProductTypeEntity</class>
+		<class>com.bl.entity.cms.ItemOffersEntity</class>
+		<class>com.bl.entity.cms.OffersEntity</class>
+		<class>com.bl.entity.cms.MainPageBlockEntity</class>
+		<class>com.bl.entity.cms.MainMenuEntity</class>
+		<class>com.bl.entity.cms.CompanyInfoEntity</class>
+		<class>com.bl.entity.cms.FaqEntity</class>
+		<class>com.bl.entity.cms.ContactFormEntity</class>
+		<class>com.bl.entity.cms.CompanyTermsConditionEntity</class>
+		<class>com.bl.entity.cms.CareerEntity</class>
+		<class>com.bl.entity.CareerApplicantEntity</class>
+		<class>com.bl.entity.cms.MenusCategoryEntity</class>
+		<class>com.bl.entity.cms.SliderEntity</class> 
 		 
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/stock"/>

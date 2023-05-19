@@ -1,0 +1,189 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui/"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+
+<ui:composition template="/template/cms_template.xhtml">
+	<ui:define name="title">
+		<h:panelGroup rendered="#{param['mode'] eq '1'}">#{msg.NEW_SLIDE}</h:panelGroup>
+		<h:panelGroup rendered="#{param['mode'] eq '0'}">#{msg.UPDATE_SLIDE}</h:panelGroup>
+	</ui:define>
+	<ui:define name="content">
+	
+			<div class="col-12 grid-margin">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">
+                  	<h:panelGroup rendered="#{param['mode'] eq '1'}">#{msg.NEW_SLIDE}</h:panelGroup>
+					<h:panelGroup rendered="#{param['mode'] eq '0'}">#{msg.UPDATE_SLIDE}</h:panelGroup>
+                  </h4>
+                  
+                  <p class="card-description">
+                      <h:outputLabel value="#{msg.SAVE_MSG}" rendered="#{param['saved'] eq 1}" style="color: red;"/>
+                      <h:outputLabel value="#{msg.PICTURE_SIZE_ERROR}" rendered="#{PictureSizeError eq 1}" style="color: red;"/>
+                      <h:outputLabel value="#{msg.PICTURE_EXTENSION_ERROR}" rendered="#{PictureExtensionError eq 1}" style="color: red;"/>
+                  </p>
+                    
+                  <form class="form-sample" action="save-slider" method="post" enctype="multipart/form-data">
+                    <INPUT type="hidden" id="mode" name="mode" value="#{param['mode']}"/>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.SLIDE_FIRST_LINE}</label>
+                          <div class="col-sm-9">
+                            <input type="text" id="firstLine" name="firstLine" class="form_customer" value="${dto.firstLine}"/>
+                          </div>
+                        </div>
+                      </div>
+                     
+                      <div class="col-md-6">
+                        <div class="form-group row">                          
+                        	<label class="col-sm-3 col-form-label">#{msg.SLIDE_SECOND_LINE}</label>
+                          <div class="col-sm-9">          
+                          	<input type="text" id="secondLine" name="secondLine" class="form_customer" value="${dto.secondLine}"/>                 
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                    	<div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.SLIDE_THIRD_LINE}</label>
+                          <div class="col-sm-9">
+                            <input type="text" id="thirdLine" name="thirdLine" class="form_customer" value="${dto.thirdLine}"/>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.HAS_ITEM}</label>
+                          <div class="col-sm-9">
+                            <h:selectOneMenu class="form_customer"  id="hasItem" onchange="showItems()" value="${hasItem}">
+				            	<f:selectItem itemValue="0" itemLabel="#{msg.NO}"/>
+				            	<f:selectItem itemValue="1" itemLabel="#{msg.YES}"/>
+				            </h:selectOneMenu>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                   
+                   
+                   <h:panelGroup rendered="${hasItem ne null}">
+                   	<div class="row">
+                    	<div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.CATEGORY}</label>
+                          <div class="col-sm-9">
+                            <h:selectOneMenu class="form_customer"  id="categoryId" value="${dto.categoryId}" onchange="hideShowCategoryItemBlock()">
+				            	<f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
+				                <f:selectItems value="${categoriesList}" var="cat" itemLabel="#{cat.categoryName}" itemValue="#{cat.id}"/>
+				            </h:selectOneMenu>
+                          </div>
+                        </div>
+                      </div>
+                     
+                      <div class="col-md-6"> 
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.ITEM}</label>                     
+                          <div class="col-sm-9">       
+                          	<h:selectOneMenu class="form_customer"  id="itemId" value="${dto.itemId}" onchange="itemDetail()">
+				            	<f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
+				                <f:selectItems value="${itemsList}" var="it" itemLabel="#{it.itemName}" itemValue="#{it.id}"/>
+				            </h:selectOneMenu>                  
+                          </div>
+                        </div>
+                      </div>
+                    </div>     
+                   </h:panelGroup>
+                   
+                   
+                   <div class="row">
+                    	<div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.UPLOAD}</label>
+                          <div class="col-sm-9">
+                            <input type="file" id="uploadPic" name="uploadPic" class="form_customer" value="${dto.uploadPic}"/>
+                          </div>
+                        </div>
+                      </div>
+                     
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.ITEM_IMAGE}</label>                     
+                          <div class="col-sm-9" style="color: # ;">      
+                          	<IMG alt="" src="../UPLOADS/LOGO/${itemLogo}" height="50" width="50"/> 
+                          </div>
+                        </div>
+                      </div>
+                    </div> 
+                    
+                   
+                    <div class="row">
+                    	<div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.ITEM_PRICE}</label>
+                          <div class="col-sm-9">
+                          	<input type="text" id="itemPrice" name="itemPrice" value="${dto.itemPrice}" class="form_customer"/>
+                          	${dto.currencyNameEn}
+                          </div>
+                        </div>
+                      </div>
+                     
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.SHOW_ITEM_PRICE}</label>                     
+                          <div class="col-sm-9">      
+                          	<h:selectOneMenu class="form_customer"  id="showPrice">
+				            	<f:selectItem itemValue="1" itemLabel="#{msg.YES}"/>
+				            	<f:selectItem itemValue="0" itemLabel="#{msg.NO}"/>
+				            </h:selectOneMenu>                     
+                          </div>
+                        </div>
+                      </div>
+                    </div>     
+                    
+                    
+                    
+                    <div class="row">
+                    	<div class="col-md-6">
+                        <div class="form-group row">
+                          #{msg.SHOW_MORE_DETAILS}
+                          <div class="col-sm-9">
+                            <h:selectOneMenu class="form_customer"  id="showMoreDetails">
+				            	<f:selectItem itemValue="1" itemLabel="#{msg.YES}"/>
+				            	<f:selectItem itemValue="0" itemLabel="#{msg.NO}"/>
+				            </h:selectOneMenu>
+                          </div>
+                        </div>
+                      </div>
+                     
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.DESCRIPTION}</label>          
+                          <div class="col-sm-9">    
+                          	<TEXTAREA rows="5" cols="25" id="description" name="description" class="form_textarea">
+                            	${dto.description}
+                            </TEXTAREA>                         	              
+                          </div>
+                        </div>
+                      </div>
+                    </div> 
+                    
+                    <button type="submit" class="btn btn-primary mr-2" name="save">#{msg.SAVE}</button>
+                    
+                  </form>
+                </div>
+              </div>
+            </div>
+
+	</ui:define>
+</ui:composition>
+</html>

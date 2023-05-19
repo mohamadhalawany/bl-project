@@ -63,6 +63,12 @@ public class CustomersEntity implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(name="UPDATED_DATE")
 	private Date updatedDate;
+	
+	@Column(name="BLOCK_REASON_ID")
+	private Integer blockReasonId ;
+	
+	@Column(name="REGISTER_METHOD")
+	private Integer registerMethod ;
 
 
 	
@@ -184,6 +190,26 @@ public class CustomersEntity implements Serializable {
 
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
+	}
+
+	public Integer getBlockReasonId() {
+		return blockReasonId;
+	}
+
+	public void setBlockReasonId(Integer blockReasonId) {
+		this.blockReasonId = blockReasonId;
+	}
+
+	public Integer getRegisterMethod() {
+		return registerMethod;
+	}
+
+	public void setRegisterMethod(Integer registerMethod) {
+		this.registerMethod = registerMethod;
+	}
+
+	public void setCustomerType(Integer customerType) {
+		this.customerType = customerType;
 	}
 
 }

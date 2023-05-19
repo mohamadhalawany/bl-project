@@ -1,0 +1,463 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+
+<ui:composition template="/template/cms_template.xhtml">
+	<ui:define name="title">#{msg.EDIT_ITEMS}</ui:define>
+	<ui:define name="content">
+	
+			<div class="col-12 grid-margin">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">#{msg.EDIT_ITEMS}</h4>
+                  
+                  <p class="card-description">
+                     <h:outputLabel value="#{msg.SAVE_MSG}" rendered="${saved eq 1}" style="color: red;"/>
+                     <h:outputLabel value="#{msg.ERROR_LOGO_EXTENSION}" rendered="${extensionError eq 1}" style="color: red;"/>
+                     <h:outputLabel value="#{msg.ERROR_LOGO_SIZE}" rendered="${sizeError eq 1}" style="color: red;"/>
+                  </p>
+                    
+                  <form class="form-sample" action="saveItems" method="post" enctype="multipart/form-data" onsubmit ="return validateItemForm()">
+                    
+                    <INPUT type="hidden" name="id" id="id" value="${dto.id}"/>
+                    
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.ITEM_NAME}<font color="red">*</font> </label>
+                          <div class="col-sm-9">
+                            <input type="text" id="itemName" name="itemName" class="form_customer" value="${dto.itemName}"/>
+                            <span id = "itemNameMessage" style="color:red"> </span> <br/><br/> 
+                          </div>
+                        </div>
+                      </div>
+                     
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.ITEM_CODE} <font color="red">*</font></label>
+                          <div class="col-sm-9">
+                            <input type="text" id="itemCode" name="itemCode" class="form_customer" value="${dto.itemCode}"/>
+                            <span id = "itemCodeMessage" style="color:red"> </span> <br/><br/> 
+                          </div>
+                        </div>
+                      </div>
+                    </div>                    
+                    
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.MAIN_CATEGORY}<font color="red">*</font></label>
+                          <div class="col-sm-9">
+                            <h:selectOneMenu class="form_customer" id="parentCategoryId" value="${dto.parentCategoryId}" onchange="categoryByParentEdit()">
+			                      <f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
+			                      <f:selectItems value="${mainCategoryList}" var="var" itemLabel="#{var.categoryName}" itemValue="#{var.id}"/>
+		                    </h:selectOneMenu>
+		                    <span id = "parentCategoryIdMessage" style="color:red"> </span> <br/><br/> 
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.CATEGORY_NAME}<font color="red">*</font></label>
+                          <div class="col-sm-9">                            
+                             <h:selectOneMenu class="form_customer" id="categoryId" value="${dto.categoryId}">
+			                      <f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
+			                      <f:selectItems value="${categories}" var="var" itemLabel="#{var.categoryName}" itemValue="#{var.id}"/>
+		                    </h:selectOneMenu>
+		                    <span id = "categoryIdMessage" style="color:red"> </span> <br/><br/> 
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.ITEM_PRICE} <font color="red">*</font></label>
+                          <div class="col-sm-9">
+                            <input type="text" id="itemPrice" name="itemPrice" class="form_customer" value="${dto.itemPrice}"/>
+                            <span id = "itemPriceMessage" style="color:red"> </span> 
+                            <h:panelGroup rendered="${itemPriceZeroError eq '1'}">
+                            	<span id = "itemPriceMessage" style="color:red">#{msg.ZERO_PRICE}</span> 
+                            </h:panelGroup>
+                          </div>
+                          </div>
+                        </div>
+                                           
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.CURRENCY} <font color="red">*</font></label>
+                          <div class="col-sm-9">
+                            <h:selectOneMenu class="form_customer" id="currencyId" value="${dto.currencyId}">
+			                      <f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
+			                      <f:selectItems value="${currencyList}" var="var" itemLabel="#{sessionScope.language eq 'En' ? var.valueEn : var.valueAr}" itemValue="${var.key}"/>
+		                    </h:selectOneMenu>
+		                    <span id = "currencyIdMessage" style="color:red"> </span> <br/><br/> 
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.PRICE_AFTER_OFFER}</label>
+                          <div class="col-sm-9">
+                            <input type="text" id="itemPriceOffer" name="itemPriceOffer" class="form_customer" value="${dto.itemPriceOffer}" disabled="disabled"/>        
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.SHOW}</label>
+                          <div class="col-sm-9">
+                          	<h:selectOneMenu class="form_customer" id="isHidden" value="${dto.isHidden}">
+			                      <f:selectItem itemValue="0" itemLabel="#{msg.SHOW}"/>
+			                      <f:selectItem itemValue="1" itemLabel="#{msg.HIDDEN}"/>
+		                    </h:selectOneMenu>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.DESCRIPTION}</label>
+                          <div class="col-sm-9">
+                            <textarea  id="description" name="description" class="form_customer" value="${dto.description}" cols="25" rows="5"></textarea>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.ITEM_IMAGE}</label>
+                          <div class="col-sm-9">
+                          	<input type="hidden" id="itemLogo" name="itemLogo" class="form_customer" value="${dto.itemLogo}"/>
+                            <input type="file" name="fileItemLogo" id="fileItemLogo"/>
+                            <img alt="" src="../UPLOADS/ITEMS_LOGO/${dto.itemLogo}" height="50" width="50"/>
+                            <span id = "itemLogoMessage" style="color:red"> </span> <br/><br/>  
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                                        
+                    <button type="submit" class="btn btn-primary mr-2" name="save">#{msg.SAVE}</button>
+                    <a href="resetSaveItems" class="btn btn-light">#{msg.RESET}</a>
+                    
+                  </form>
+                </div>
+                
+                <div class="col-lg-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">
+                  
+                  <h:panelGroup rendered="#{param['tab'] ne '1'}">
+                  	<a href="showtabs?tab=1&amp;id=#{param['id']}" class="btn btn-light">#{msg.SPECIFICATION}</a>
+                  </h:panelGroup>
+                  <h:panelGroup rendered="#{param['tab'] eq '1'}">
+                  	<a href="showtabs?tab=1&amp;id=#{param['id']}" class="btn btn-dark">#{msg.SPECIFICATION}</a>
+                  </h:panelGroup>
+                  	
+                  	<h:panelGroup rendered="#{param['tab'] ne '2'}">
+                  		<a href="showtabs?tab=2&amp;id=#{param['id']}" class="btn btn-light">#{msg.TYPES}</a>
+                  	</h:panelGroup>
+                  	<h:panelGroup rendered="#{param['tab'] eq '2'}">
+                  		<a href="showtabs?tab=2&amp;id=#{param['id']}" class="btn btn-dark">#{msg.TYPES}</a>
+                  	</h:panelGroup>
+                  	
+                  	<h:panelGroup rendered="#{param['tab'] ne '3'}">
+                  		<a href="showtabs?tab=3&amp;id=#{param['id']}" class="btn btn-light">#{msg.BRANDS}</a>
+                  	</h:panelGroup>
+                  	<h:panelGroup rendered="#{param['tab'] eq '3'}">
+                  		<a href="showtabs?tab=3&amp;id=#{param['id']}" class="btn btn-dark">#{msg.BRANDS}</a>
+                  	</h:panelGroup>
+                  	
+                  	<h:panelGroup rendered="#{param['tab'] ne '4'}">
+                  		<a href="showtabs?tab=4&amp;id=#{param['id']}" class="btn btn-light">#{msg.OFFERS}</a>
+                  	</h:panelGroup>
+                  	<h:panelGroup rendered="#{param['tab'] eq '4'}">
+                  		<a href="showtabs?tab=4&amp;id=#{param['id']}" class="btn btn-dark">#{msg.OFFERS}</a>
+                  	</h:panelGroup>
+                  	
+                  </h4>
+                  
+                  <h:panelGroup rendered="#{param['tab'] eq '1'}">
+                  
+                  <h4 class="card-title">#{msg.SPECIFICATION}</h4>
+                  
+	                  <form action="saveItemSpec" method="post" onsubmit="return validateItemSpecsForm()">
+	                  
+	                  	<h:outputLabel value="#{msg.SAVE_MSG}" rendered="#{param['savedSpec'] eq '1'}" style="color: red;"/>
+	                  	<input type="hidden" id="itemSpecId" name="itemSpecId" value="${itemSpec.id}"/>
+	                  	<input type="hidden" id="itemId" name="itemId" value="#{param['id']}"/>
+	                  	                  	
+	                  	<div class="row">
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.COLOR}</label>
+	                          <div class="col-sm-9">
+	                            <h:selectOneMenu class="form_customer" id="colorId" value="${itemSpec.colorId}">
+				                      <f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
+				                      <f:selectItems value="${colorList}" var="var" itemLabel="#{sessionScope.language eq 'En' ? var.valueEn : var.valueAr}" itemValue="${var.key}"/>
+			                    </h:selectOneMenu>
+	                          </div>
+	                        </div>
+	                      </div>
+	                      
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.DEPTH}</label>
+	                          <div class="col-sm-9">
+	                            <input type="text" id="depth" name="depth" class="form_customer" value="${itemSpec.depth}"/>
+	                            <span id = "depthMessage" style="color:red"> </span> <br/><br/> 
+	                          </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    
+	                    <div class="row">
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.WIDTH}</label>
+	                          <div class="col-sm-9">
+	                            <input type="text" id="width" name="width" class="form_customer" value="${itemSpec.width}"/>
+	                            <span id = "widthMessage" style="color:red"> </span> <br/><br/> 
+	                          </div>
+	                        </div>
+	                      </div>
+	                      
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.HEIGHT}</label>
+	                          <div class="col-sm-9">
+	                            <input type="text" id="height" name="height" class="form_customer" value="${itemSpec.height}"/>
+	                            <span id = "heightMessage" style="color:red"> </span> <br/><br/> 
+	                          </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    
+	                    <div class="row">
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.MANUFACTURING_TIME}</label>
+	                          <div class="col-sm-9">
+	                          	<input type="date" class="form_customer datepicker" id="manufacturingTime" name="manufacturingTime"  value="${itemSpec.manufacturingTime}"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                      
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.INCLUDED}</label>
+	                          <div class="col-sm-9">
+	                            <input type="text" id="included" name="included" class="form_customer" value="${itemSpec.included}"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    
+	                    
+	                    <div class="row">
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.MATERIAL}</label>
+	                          <div class="col-sm-9">
+	                          	<input type="text" class="form_customer datepicker" id="material" name="material"  value="${itemSpec.material}"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                      
+	                      <div class="col-md-6">
+	                        <div class="form-group row">
+	                          <label class="col-sm-3 col-form-label">#{msg.WARRANTY}</label>
+	                          <div class="col-sm-9">
+	                            <input type="text" id="warranty" name="warranty" class="form_customer" value="${itemSpec.warranty}"/>
+	                          </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    
+	                    <button type="submit" class="btn btn-primary mr-2" name="save">#{msg.SAVE}</button>
+	                    <a href="resetSaveItemSpec" class="btn btn-light">#{msg.RESET}</a>
+	                    
+	                  </form>
+                  </h:panelGroup>	
+                  
+                  
+                  <h:panelGroup rendered="#{param['tab'] eq '2' or tab eq '2'}">
+                  	<h4 class="card-title">#{msg.TYPES}</h4>
+                  	
+                  	<a href="createItemType?item=#{sessionScope.item}&amp;tab=2" class="btn btn-primary mr-2">#{msg.CREATE}</a>
+                    <a href="resetSaveItems" class="btn btn-light">#{msg.CANCEL}</a>
+                    <br/><br/>
+                    
+                    <h:outputLabel value="#{msg.DELETED_TYPE}" rendered="${delete eq 0}" style="color: red;"/>
+                    <h:outputLabel value="#{msg.SAVE_MSG}" rendered="${saved eq 1}" style="color: red;"/>
+                    <h:outputLabel value="#{msg.SAVE_TYPE_ITEM_ERROR}" rendered="${saved eq 0}" style="color: red;"/>
+                    
+                    <br/><br/>
+                    
+                  	<table class="table table-bordered table-hover table-striped">
+                      <thead style="background-color: #666666; color: yellow;">
+                        <tr style="border-color: gray !important; ">
+                          <th style="align-content: center!important;width: 10% !important;">#</th>
+                          <th style="align-content: center!important; width: 60% !important;">#{msg.TYPES}</th>
+                          <th style="width: 10% !important;">#{msg.DELETE}</th>
+                        </tr> 
+                  	  </thead>
+                  	  
+                  	  <c:forEach items="${itemProductList}" var="var" varStatus="vs">
+                        <tr data-toggle="collapse" data-target="#td1#{vs.count}" style="background-color: {vs.count % 2 == 1 ? #c7cad6 : white !important;}">
+                         
+                          <td style="align-content: center !important;width: 10% !important;">#{vs.count}</td>
+                         
+                          <td style="width: 60% !important;">
+                          
+	                          	<form action="saveItemProductType">
+		                          	<INPUT type="hidden" value="#{var.id}" name="id" id="id"/>
+		                          	<INPUT type="hidden" value="#{var.itemId}" name="item" id="item"/>
+		                          	<INPUT type="hidden" value="2" name="tab" id="tab"/>
+		                          	<h:selectOneMenu class="form_customer" id="productTypeId" value="${var.productTypeId}" onchange="submit()">
+				                      <f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
+				                      <f:selectItems value="${productTypeList}" var="type" itemLabel="#{type.productType}" itemValue="${type.id}"/>
+			                    </h:selectOneMenu>
+	                          	</form> 
+                          </td>
+                          
+                          <td style="width: 10% !important;">
+                          	<h:panelGroup rendered="#{var.id ne  null}">
+                            	<a href="deleteItemType?id=#{var.id}&amp;tab=2"><IMG alt="" src="../resources/cms/images/delete.png" style="height: 25px !important;"/></a>
+                            </h:panelGroup>
+                          </td>
+                       </tr>
+                      </c:forEach>  
+                          
+                  	</table>  	
+                  </h:panelGroup>	
+                  
+                  
+                  <h:panelGroup rendered="#{param['tab'] eq '3'}">
+                  	<h4 class="card-title">#{msg.BRANDS}</h4>
+                  	
+                  	<a href="createItemBrand?item=#{sessionScope.item}&amp;tab=3" class="btn btn-primary mr-2">#{msg.CREATE}</a>
+                    <a href="resetSaveItems" class="btn btn-light">#{msg.CANCEL}</a>
+                    
+                    <br/><br/>
+                    
+                    <h:outputLabel value="#{msg.SAVE_MSG}" rendered="${saved eq 1}" style="color: red;"/>
+                    <h:outputLabel value="#{msg.SAVE_BRAND_ITEM_ERROR}" rendered="${saved eq 0}" style="color: red;"/>
+                    <h:outputLabel value="#{msg.DELETED_BRAND}" rendered="${delete eq 0}" style="color: red;"/>
+                    
+                    <br/><br/>
+                    
+                    <table class="table table-bordered table-hover table-striped">
+                      <thead style="background-color: #666666; color: yellow;">
+                        <tr style="border-color: gray !important; ">
+                          <th style="align-content: center!important;width: 10% !important;">#</th>
+                          <th style="align-content: center!important; width: 60% !important;">#{msg.BRAND}</th>
+                          <th style="width: 10% !important;">#{msg.DELETE}</th>
+                        </tr> 
+                  	  </thead>
+                  	  
+                  	  <c:forEach items="${itemBrandList}" var="var" varStatus="vs">
+                        <tr data-toggle="collapse" data-target="#td1#{vs.count}" style="background-color: {vs.count % 2 == 1 ? #c7cad6 : white !important;}">
+                         
+                          <td style="align-content: center !important;width: 10% !important;">#{vs.count}</td>
+                         
+                          <td style="width: 60% !important;">
+                          
+	                          	<form action="saveItemBrand">
+		                          	<INPUT type="hidden" value="#{var.id}" name="id" id="id"/>
+		                          	<INPUT type="hidden" value="#{var.itemId}" name="item" id="item"/>
+		                          	<INPUT type="hidden" value="3" name="tab" id="tab"/>
+		                          	<h:selectOneMenu class="form_customer" id="brandId" value="${var.brandId}" onchange="submit()">
+				                      <f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
+				                      <f:selectItems value="${brandList}" var="br" itemLabel="#{br.brandName}" itemValue="#{br.id}"/>
+			                    	</h:selectOneMenu>
+	                          	</form> 
+                          </td>
+                          
+                          <td style="width: 10% !important;">
+                          	<h:panelGroup rendered="#{var.id ne  null}">
+                            	<a href="deleteItemBrand?id=#{var.id}&amp;tab=3"><IMG alt="" src="../resources/cms/images/delete.png" style="height: 25px !important;"/></a>
+                            </h:panelGroup>
+                          </td>
+                       </tr>
+                      </c:forEach>  
+                          
+                  	</table>
+                    
+                  </h:panelGroup>
+                  
+                  
+                  <h:panelGroup rendered="#{param['tab'] eq '4'}">
+                  	<h4 class="card-title">#{msg.OFFERS}</h4>
+                  	
+                  	<a href="createItemOffer?item=#{sessionScope.item}&amp;tab=4" class="btn btn-primary mr-2">#{msg.ADD_OFFER}</a>
+                    
+                    <br/><br/>
+                    
+                    <h:outputLabel value="#{msg.SAVE_MSG}" rendered="${saved eq 1}" style="color: red;"/>
+                    <h:outputLabel value="#{msg.NO_OFFER_AVAILABLE}" rendered="#{param['noOffers'] eq 1}" style="color: red;"/>
+                    <h:outputLabel value="#{msg.OFFER_DELETED}" rendered="${delete eq 0}" style="color: red;"/>
+                    <h:outputLabel value="#{msg.ITEM_OFFER_COUNT_ERROR}" rendered="#{param['itemOffersCountError'] eq '1'}" style="color: red;"/>
+                                        
+                    <br/><br/>
+                    
+                    <table class="table table-bordered table-hover table-striped">
+                      <thead style="background-color: #666666; color: yellow;">
+                        <tr style="border-color: gray !important; ">
+                          <th style="align-content: center!important;width: 5% !important;">#</th>
+                          <th style="align-content: center!important; width: 40% !important;">#{msg.OFFER_NAME}</th>
+                          <th style="align-content: center!important; width: 22% !important;">#{msg.OFFER_VALUE}</th>
+                          <th style="align-content: center!important; width: 23% !important;">#{msg.VALID_TO}</th>
+                          <th style="width: 10% !important;">#{msg.DELETE}</th>
+                        </tr> 
+                  	  </thead>
+                  	  
+                  	  <c:forEach items="${itemOffersList}" var="var" varStatus="vs">
+                        <tr data-toggle="collapse" data-target="#td1#{vs.count}" style="background-color: {vs.count % 2 == 1 ? #c7cad6 : white !important;}">
+                         
+                          <td style="align-content: center !important;width: 5% !important;">#{vs.count}</td>
+                         
+                          <td style="width: 40% !important;">#{var.offerName}</td>
+                          <td style="width: 22% !important;">#{var.offerValue} #{var.isPercent eq '1' ? '%' : ''}</td>
+                          <td style="width: 23% !important;">#{var.expireDate}</td>
+                          
+                          <td style="width: 10% !important;">
+                          	<h:panelGroup rendered="#{var.id ne  null}">
+                            	<a href="deleteItemOffers?id=#{var.id}&amp;tab=4"><IMG alt="" src="../resources/cms/images/delete.png" style="height: 25px !important;"/></a>
+                            </h:panelGroup>
+                          </td>
+                       </tr>
+                      </c:forEach>  
+                          
+                  	</table>
+                    
+                  </h:panelGroup>
+                </div>
+                
+              </div>
+            </div>
+              </div>
+            </div>
+
+	</ui:define>
+</ui:composition>
+</html>

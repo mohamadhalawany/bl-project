@@ -10,7 +10,9 @@ public class OrderItemDTO {
 	private Integer quantity ;
 	private Double tax;
 	
-	private String itemName ;
+	private String itemName , itemCode , itemLogo , categoryName ;
+	
+	private Long count ;
 	
 	public Long getId() {
 		return id;
@@ -54,5 +56,28 @@ public class OrderItemDTO {
 	public void setItemName(String itemName) {
 		this.itemName = itemName;
 	}
-
+	public String getItemCode() {
+		return itemCode;
+	}
+	public void setItemCode(String itemCode) {
+		this.itemCode = itemCode;
+	}
+	public String getCategoryName() {
+		return categoryName;
+	}
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+	public String getItemLogo() {
+		return itemLogo;
+	}
+	public void setItemLogo(String itemLogo) {
+		this.itemLogo = itemLogo;
+	}
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
 }

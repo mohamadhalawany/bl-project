@@ -19,11 +19,12 @@ import com.bl.dto.CustomersDTO;
 import com.bl.dto.GeneralDTO;
 import com.bl.dto.OrderDTO;
 import com.bl.dto.OrderItemDTO;
-import com.bl.dto.OrderRequestDTO;
 import com.bl.dto.OrderStatusDTO;
+import com.bl.dto.cms.ContactFormDTO;
 import com.bl.service.CustomersService;
 import com.bl.service.GeneralService;
 import com.bl.service.OrderService;
+import com.bl.service.cms.ContactFormService;
 
 
 
@@ -32,16 +33,16 @@ public class CustomersController extends BaseController{
 
 	private String loginPage = "pages/customer/login" ;
 	private String accountPage = "pages/customer/account" ;
+	private String contactFormPage = "contact_form" ;
 	
 	@Autowired
-	private CustomersService service ;
-	 
+	private CustomersService service ;	 
 	@Autowired
-	private GeneralService generalService ;
-	
+	private GeneralService generalService ;	
 	@Autowired
 	private OrderService orderService ;
-
+	@Autowired
+	private ContactFormService contactFormService ;
 
 	
 	@RequestMapping(value = "customerLogin" , method = RequestMethod.POST)
@@ -68,14 +69,10 @@ public class CustomersController extends BaseController{
 		return mv ;
 	}
 	
-	
-	
-	
 	@RequestMapping("customerAccount")
 	public ModelAndView loginCustomer(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView() ;
 		HttpSession session = request.getSession() ;
-		session.setAttribute("company" , new CompanyProfile());
 		
 		if(session.getAttribute("customer") == null) {			
 			mv.setViewName(loginPage) ;
@@ -86,6 +83,9 @@ public class CustomersController extends BaseController{
 				List<GeneralDTO> governorateList = generalService.governorateList(dto.getCountryId()) ;
 				List<GeneralDTO> cityDistrictList = generalService.cityDistrictList(dto.getGovernorateId()) ;
 				
+				session.setAttribute("customerLoginForm" , 1) ;
+				session.setAttribute("customerLoginFaildMsg" , null) ;
+				
 				mv.addObject("dto" , dto) ;
 				mv.addObject("governorateList" , governorateList) ;
 				mv.addObject("cityDistrictList" , cityDistrictList) ;
@@ -94,22 +94,17 @@ public class CustomersController extends BaseController{
 		}		
 		return mv ;
 	}
-	
-	
-	
+		
 	@RequestMapping("register")
 	public ModelAndView register(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView() ;
 		HttpSession session = request.getSession() ;
 		session.setAttribute("company" , new CompanyProfile());
-		mv.addObject("dto" , new CustomersDTO()) ;
+		mv.addObject("customer" , new CustomersDTO()) ;
 		init(mv) ;
 		mv.setViewName(accountPage) ;	
 		return mv ;
 	}
-	
-	
-	
 	
 	@RequestMapping("govs")
 	public ModelAndView govs(HttpServletRequest request) {
@@ -127,20 +122,16 @@ public class CustomersController extends BaseController{
 			if(session.getAttribute("customer") == null) {
 				CustomersDTO dto = new CustomersDTO() ;
 				dto.setCountryId(countryId);
-				mv.addObject("dto" , dto) ;				
+				mv.addObject("customer" , dto) ;				
 			}else {
 				CustomersDTO dto = (CustomersDTO) session.getAttribute("customer") ;
 				dto.setCountryId(countryId);
-				mv.addObject("dto" , dto) ;	
+				mv.addObject("customer" , dto) ;	
 			}
 		}
 		mv.setViewName(accountPage) ;
 		return mv ;
 	}
-	
-	
-	
-	
 	
 	@RequestMapping("cityDist")
 	public ModelAndView cityDist(HttpServletRequest request) {
@@ -160,18 +151,17 @@ public class CustomersController extends BaseController{
 				CustomersDTO dto = new CustomersDTO() ;
 				dto.setCountryId(countryId);
 				dto.setGovernorateId(governorateId) ;
-				mv.addObject("dto" , dto) ;				
+				mv.addObject("customer" , dto) ;				
 			}else {
 				CustomersDTO dto = (CustomersDTO) session.getAttribute("customer") ;
 				dto.setCountryId(countryId);
 				dto.setGovernorateId(governorateId) ;
-				mv.addObject("dto" , dto) ;	
+				mv.addObject("customer" , dto) ;	
 			}
 		}
 		mv.setViewName(accountPage) ;
 		return mv ;
 	}
-	
 	
 	@RequestMapping("logoutCustomer")
 	public ModelAndView logout(HttpServletRequest request) {
@@ -189,9 +179,6 @@ public class CustomersController extends BaseController{
 		mv.setViewName("redirect: home") ;
 		return mv ;
 	}
-	
-	
-	
 	
 	@RequestMapping(value =  "reg" , method = RequestMethod.POST)
 	public ModelAndView reg(HttpServletRequest request) {
@@ -225,26 +212,23 @@ public class CustomersController extends BaseController{
 			mv.addObject("count" , 1) ;
 		}else {
 			if(session.getAttribute("customer") == null) {			
-				dto.setUpdatedBy(0) ;
-				dto.setUpdatedDate(new Date());
+				dto.setCreatedBy(0);
+				dto.setCreatedDate(new Date());	
 				service.save(dto) ;
 				mv.addObject("saved" , 1) ;
 			}else {
-				CustomersDTO loggedId = (CustomersDTO) session.getAttribute("customer") ;
-				dto.setCreatedBy(0);
-				dto.setCreatedDate(new Date());			
+				CustomersDTO loggedId = (CustomersDTO) session.getAttribute("customer") ;						
+				dto.setUpdatedBy(0) ;
+				dto.setUpdatedDate(new Date());
 				dto.setId(loggedId.getId()) ;			
 				service.save(dto) ;
 				mv.addObject("saved" , 1) ;
 			}
 		}
-		mv.addObject("dto" , dto) ;
+		mv.addObject("customer" , dto) ;
 		mv.setViewName(accountPage) ;
 		return mv ;
 	}
-	
-	
-	
 	
 	@RequestMapping("addToCart")
 	public ModelAndView addToCart(HttpServletRequest request) {
@@ -254,8 +238,15 @@ public class CustomersController extends BaseController{
 			mv.setViewName(loginPage) ;
 		}else {
 			CustomersDTO customersDTO = (CustomersDTO) session.getAttribute("customer") ;
-			Long customerId = customersDTO.getId() ; 
-			Double itemPrice = Double.parseDouble(request.getParameter("itemPrice").equals("") ? "0.0" : request.getParameter("itemPrice")) ;
+			Long customerId = customersDTO.getId() ; 			
+			Double itemPrice = null ;
+			
+			if(request.getParameter("itemPrice") != null && !request.getParameter("itemPrice").equals("")) {
+				itemPrice = Double.parseDouble(request.getParameter("itemPrice").equals("") ? "0.0" : request.getParameter("itemPrice")) ;
+			}else {
+				itemPrice = Double.parseDouble(request.getParameter("itemPriceOffer").equals("") ? "0.0" : request.getParameter("itemPriceOffer")) ;
+			}
+			
 			Long itemId = Long.parseLong(request.getParameter("itemId").equals("") ? "0" : request.getParameter("itemId")) ;
 			Integer quantity = Integer.parseInt(request.getParameter("quantity").equals("") ? "1" : request.getParameter("quantity")) ;
 			Integer currencyId = Integer.parseInt(request.getParameter("currencyId").equals("") ? "48" : request.getParameter("currencyId")) ;
@@ -282,10 +273,6 @@ public class CustomersController extends BaseController{
 			
 			Long orderNumber = service.saveOrder(orderDTO, orderItemDTO, orderStatusDTO) ;
 			
-			List<OrderRequestDTO> orderRequestList = customerOrders(customerId , DomainValues.OrderStatus.ADD_TO_CART , session) ;
-			session.setAttribute("orderRequestList" , orderRequestList);
-			session.setAttribute("orderRequestListSize" , orderRequestList.size()) ;
-			
 			mv.addObject("orderNumber" , orderNumber) ;
 			mv.addObject("quantity" , quantity) ;
 			mv.addObject("saved" , 1) ;
@@ -294,9 +281,43 @@ public class CustomersController extends BaseController{
 		return mv ;
 	}
 	
-	
-	
-	
+	@RequestMapping(value = "saveContactForm" , method = RequestMethod.POST)
+	public ModelAndView saveContactForm(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView() ;
+		ContactFormDTO dto = new ContactFormDTO() ;
+		
+		String customerMail = "" ;
+		String customerName = "" ;
+		String message = "" ;
+		
+		if(request.getParameter("customerEmail") != null && !request.getParameter("customerEmail").equals("")) {			
+			customerMail = request.getParameter("customerEmail") ;
+			if(!HelperUtils.validatEmail(customerMail)) {
+				mv.addObject("emailError" , 1) ;
+				dto.setCustomerMail(customerMail); 
+				dto.setCustomerName(request.getParameter("customerName"));
+				dto.setMessage(request.getParameter("message"));
+				mv.addObject("contactDto" , dto) ;
+				mv.setViewName(contactFormPage) ;
+				return mv ;
+			}
+			dto.setCustomerMail(customerMail) ;
+		}
+		if(request.getParameter("customerName") != null && !request.getParameter("customerName").equals("")) {
+			customerName = request.getParameter("customerName") ;
+			dto.setCustomerName(customerName) ;
+		}
+		if(request.getParameter("message") != null && !request.getParameter("message").equals("")) {
+			message = request.getParameter("message") ;
+			dto.setMessage(message) ;
+		}
+		
+		contactFormService.save(dto) ;
+		mv.addObject("contactDto" , dto) ;
+		mv.addObject("save" , 1) ;
+		mv.setViewName(contactFormPage) ;
+		return mv ;
+	}
 	
 	private void init(ModelAndView mv) {
 		mv.addObject("countryList" , generalService.countryList()) ;

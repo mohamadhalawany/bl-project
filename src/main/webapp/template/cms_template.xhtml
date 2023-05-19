@@ -12,25 +12,24 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-<title>Company Name | <ui:insert name="title" /></title>
+<title>#{menuBean.company.companyName} | <ui:insert name="title" /></title>
 
-<link rel="stylesheet" href="../resources/cms/vendors/typicons/typicons.css" />
-<link rel="stylesheet" href="../resources/cms/vendors/css/vendor.bundle.base.css" />
-<link rel="stylesheet" href="../resources/cms/css/vertical-layout-light/style.css" />
-<link rel="shortcut icon" href="../resources/cms/images/logo1.png" />
-
+	<link rel="stylesheet" href="../resources/cms/vendors/typicons/typicons.css" />
+	<link rel="stylesheet" href="../resources/cms/vendors/css/vendor.bundle.base.css" />
+	<link rel="stylesheet" href="../resources/cms/css/vertical-layout-light/style.css" />
+	<link rel="shortcut icon" href="../resources/cms/images/logo1.png" />
 
 <SCRIPT type="text/javascript">
-	/* function displayToday() {
-		const d = new Date();
-		var today = ("0" + d.getDate()).slice(-2) + "-"
-				+ ("0" + (d.getMonth() + 1)).slice(-2) + "-" + d.getFullYear()
-				+ " " + ("0" + d.getHours()).slice(-2) + ":"
-				+ ("0" + d.getMinutes()).slice(-2);
-		document.getElementById("todaya").innerHTML = today;
-	} */
+	$('.accordian-body').on('show.bs.collapse', function () {
+	    $(this).closest("table")
+	        .find(".collapse.in")
+	        .not(this)
+	        .collapse('toggle')
+	})
 	
-	
+	$('.datepicker').datepicker({
+	    format: 'dd/mm/yyyy'
+	});
 	
 	function validateUserForm(){
 		var fullName = document.getElementById("fullName").value; 
@@ -39,15 +38,15 @@
 		var confirmPassword = document.getElementById("confirmPassword").value; 
 				
 		if(fullName == "") {
-			document.getElementById("fullNameMessage").innerHTML = "**Fill the Full Name please!";  
+			document.getElementById("fullNameMessage").innerHTML = "**#{msg.REQUIRED_FULL_NAME}!";  
 		    document.getElementById("fullName").focus() ;
 		     return false;  
 		}else if(username == ""){
-			document.getElementById("usernameMessage").innerHTML = "**Fill the Username please!";  
+			document.getElementById("usernameMessage").innerHTML = "**#{msg.REQUIRED_USERNAME}!";  
 		    document.getElementById("username").focus() ;
 		     return false;
 		}else if(password == ""){
-			document.getElementById("passwordMessage").innerHTML = "**Fill the Password please!";  
+			document.getElementById("passwordMessage").innerHTML = "**#{msg.REQUIRED_PASSWORD}!";  
 		    document.getElementById("password").focus() ;
 		     return false;
 		}    
@@ -66,25 +65,44 @@
 	   		document.getElementById("emailMessage").innerHTML = "";  
 	       	 return true;
 	   	 }else {
-	       	document.getElementById("emailMessage").innerHTML = "**You have entered an invalid email address!";  
+	       	document.getElementById("emailMessage").innerHTML = "**#{msg.NOT_VALID_EMAIL}!";  
 		    document.getElementById("email").focus() ;
 	       	 return false;
 	   	 }
     }
 	
 	
-	function govs(){
+	function govs_com(){
    	 	 var id = document.getElementById("countryId").value ;
-		 document.location.href="/bl/aao/govs?countryId=" + id ; 
+		 document.location.href="/bl/aao/govs_com?countryId=" + id ; 
 		 document.getElementById("countryId").value = id ;
     }
     
-    function cityDist(){
+    function city_Dist(){
    	 	 var id = document.getElementById("governorateId").value ;
-		 document.location.href="/bl/aao/cityDist?governorateId=" + id ;
+		 document.location.href="/bl/aao/city_dist_com?governorateId=" + id ;
 		 document.getElementById("governorateId").value = id ;
     }
     
+    function govs(){
+  	 	 var id = document.getElementById("countryId").value ;
+		 document.location.href="/bl/aao/govs?countryId=" + id ; 
+		 document.getElementById("countryId").value = id ;
+   }
+   
+   function cityDist(){
+  	 	 var id = document.getElementById("governorateId").value ;
+		 document.location.href="/bl/aao/cityDist?governorateId=" + id ;
+		 document.getElementById("governorateId").value = id ;
+   }
+    
+    
+    
+    function parentCategory(){
+  	 	 var id = document.getElementById("categoryId").value ;
+		 document.location.href="/bl/aao/parentList?categoryid=" + id ;
+		 document.getElementById("categoryId").value = id ;
+   }
     
     
     
@@ -99,7 +117,13 @@
 		 document.location.href="/bl/aao/cityDistSearch?governorateId=" + id ;
 		 document.getElementById("governorateId").value = id ;
    }
-    
+   
+   function categoriesByMain(){
+ 	 	 var id = document.getElementById("parentCategoryId").value ;
+ 	 	 if(id != '0'){
+		 	document.location.href="/bl/aao/categoryByMain?parent=" + id ;
+   		 }
+  }
     
     function validateCustomerForm(){
 		var fullName = document.getElementById("fullName").value; 
@@ -108,25 +132,198 @@
 		var confirmPassword = document.getElementById("confirmPassword").value; 
 				
 		if(fullName == "") {
-			document.getElementById("fullNameMessage").innerHTML = "**Fill the Full Name please!";  
+			document.getElementById("fullNameMessage").innerHTML = "**#{msg.REQUIRED_FULL_NAME}!";  
 		    document.getElementById("fullName").focus() ;
 		     return false;  
 		}else if(email == ""){
-			document.getElementById("emailMessage").innerHTML = "**Fill the Email please!";  
+			document.getElementById("emailMessage").innerHTML = "**#{msg.REQUIRED_EMAIL}!";  
 		    document.getElementById("email").focus() ;
 		     return false;
 		}else if(password == ""){
-			document.getElementById("passwordMessage").innerHTML = "**Fill the Password please!";  
+			document.getElementById("passwordMessage").innerHTML = "**#{msg.REQUIRED_PASSWORD}!";  
 		    document.getElementById("password").focus() ;
 		     return false;
 		}    
 		
 		if(password != confirmPassword){
-			document.getElementById("confirmPasswordMessage").innerHTML = "**Password does not match!";  
+			document.getElementById("confirmPasswordMessage").innerHTML = "**#{msg.PASSWORD_MATCH}!";  
 		    document.getElementById("confirmPassword").focus() ;
 		     return false;
 		} 
 	}
+    
+    
+    function validateItemForm(){
+    	var itemName = document.getElementById("itemName").value; 
+		var itemCode = document.getElementById("itemCode").value; 		
+		var categoryId = document.getElementById("categoryId").value; 
+		var parentCategoryId = document.getElementById("parentCategoryId").value; 
+		var itemPrice = document.getElementById("itemPrice").value; 
+		var currencyId = document.getElementById("currencyId").value; 
+		var fileItemLogo = document.getElementById("fileItemLogo");
+		var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+		
+		if(itemName.trim() == ""){
+			document.getElementById("itemNameMessage").innerHTML = "**#{msg.REQUIRED_ITEM_NAME}!";
+			return false;
+		}
+		
+		if(itemCode.trim() == ""){
+			document.getElementById("itemCodeMessage").innerHTML = "**#{msg.REQUIRED_ITEM_CODE}!";
+			return false;
+		}
+		
+		if(parentCategoryId == "0"){
+			document.getElementById("parentCategoryIdMessage").innerHTML = "**#{msg.REQUIRED_MAIN_CATEGORY}!";
+			return false;
+		}
+		
+		if(categoryId == "0"){
+			document.getElementById("categoryIdMessage").innerHTML = "**#{msg.REQUIRED_CATEGORY}!";
+			return false;
+		}
+		
+		if(itemPrice.trim() == ""){
+			document.getElementById("itemPriceMessage").innerHTML = "**#{msg.REQUIRED_ITEM_PRICE}!";
+			return false;
+		}
+		
+		if(isNaN(itemPrice.trim())){
+			document.getElementById("itemPriceMessage").innerHTML = "**#{msg.REQUIRED_ITEM_PRICE_NUMBER}!";
+			return false;
+		}
+		
+		if(currencyId == "0"){
+			document.getElementById("currencyIdMessage").innerHTML = "**#{msg.REQUIRED_CURRENCY}!";
+			return false;
+		}
+    }
+    
+    
+    function validateItemSpecsForm(){
+    	var depth = document.getElementById("depth").value; 
+		var width = document.getElementById("width").value; 		
+		var height = document.getElementById("height").value; 
+		
+		if(isNaN(depth.trim())){
+			document.getElementById("depthMessage").innerHTML = "**#{msg.REQUIRED_DEPTH_NUMBER}!";
+			return false;
+		}
+		
+		if(isNaN(width.trim())){
+			document.getElementById("widthMessage").innerHTML = "**#{msg.REQUIRED_WIDTH_NUMBER}!";
+			return false;
+		}
+		
+		if(isNaN(height.trim())){
+			document.getElementById("heightMessage").innerHTML = "**#{msg.REQUIRED_HEIGHT_NUMBER}!";
+			return false;
+		}
+    }
+    
+    function validateOrderNumberAndOrderYear(){
+    	var orderNumber = document.getElementById("orderNumber").value;
+    	var orderYear = document.getElementById("orderYear").value; 
+    	
+    	if(isNaN(orderNumber.trim())){
+    		alert("**#{msg.ORDER_NUMBER_NOT_NUMBER}") ;
+    		document.getElementById("orderNumber").focus() ;
+			return false;
+		}
+		
+		if(isNaN(orderYear.trim())){
+			alert("**#{msg.ORDER_YEAR_NOT_NUMBER}") ;
+			return false;
+		}
+    }
+    
+    function validateOfferForm(){
+		var offerName = document.getElementById("offerName").value; 
+		var validFrom = document.getElementById("validFrom").value; 		
+		var validTo = document.getElementById("validTo").value; 
+		var offerValue = document.getElementById("offerValue").value; 
+				
+		if(offerName == "") {
+			document.getElementById("offerNameMessage").innerHTML = "**#{msg.REQUIRED_OFFER_NAME}!";  
+		    document.getElementById("offerName").focus() ;
+		     return false;  
+		}else if(validFrom == ""){
+			document.getElementById("validFromMessage").innerHTML = "**#{msg.REQUIRED_VALID_FROM}!";  
+		    document.getElementById("validFrom").focus() ;
+		     return false;
+		}else if(validTo == ""){
+			document.getElementById("validToMessage").innerHTML = "**#{msg.REQUIRED_VALID_TO}!";  
+		    document.getElementById("validTo").focus() ;
+		     return false;
+		}    
+		
+		if(offerValue == ""){
+			document.getElementById("offerValueMessage").innerHTML = "**#{msg.REQUIRED_OFFER_VALUE}!";  
+		    document.getElementById("offerValue").focus() ;
+		     return false;
+		}
+		
+		if(isNaN(offerValue.trim())){
+			document.getElementById("offerValueMessage").innerHTML = "**#{msg.OFFER_VALUE_NOT_NUMBER}!"; 
+    		document.getElementById("offerValue").focus() ;
+			return false;
+		}
+	}
+    
+    function validateExpireForm(){
+		var expireDays = document.getElementById("expireDays").value; 
+		
+		if(expireDays == ""){
+			document.getElementById("expireDaysMessage").innerHTML = "**#{msg.REQUIRED_EXPIRE_DAYS}";  
+		    document.getElementById("expireDays").focus() ;
+		     return false;
+		}
+		
+		if(isNaN(expireDays.trim())){
+			document.getElementById("expireDaysMessage").innerHTML = "**#{msg.EXPIRE_DAYS_NOT_NUMBER}"; 
+    		document.getElementById("expireDays").focus() ;
+			return false;
+		}
+    }
+    
+    function categoryByParent(){
+ 	 	 var id = document.getElementById("mainCategoryId").value ;
+		 document.location.href="/bl/aao/mainCategoryList?main=" + id ;
+    }
+    
+    function categoryByParentEdit(){
+	 	 var id = document.getElementById("parentCategoryId").value ;
+		 document.location.href="/bl/aao/categoryByParent?main=" + id + "&amp;id=#{param['id']}" ;
+   }
+    
+    
+    function validateMainMenuForm(){
+    	var parentId = document.getElementById("parentCategoryId").value ;
+    	if(parentId == '0'){
+    		document.getElementById("parentCategoryIdMessage").innerHTML = "**#{msg.REQUIRED_MAIN_CATEGORY}!";
+    		document.getElementById("parentCategoryId").focus() ;
+    		return false ;
+    	}
+    	return true ;
+    }
+    
+    
+    function showItems(){
+    	var hasItem = document.getElementById("hasItem").value ;
+    	document.location.href="/bl/aao/hide-item?hasItem=" + hasItem ;
+    }
+    
+    
+    function hideShowCategoryItemBlock(){
+    	var categoryId = document.getElementById("categoryId").value ;
+    	document.location.href="/bl/aao/show-item?categoryId=" + categoryId ;
+    }
+    
+    function itemDetail(){
+    	var itemId = document.getElementById("itemId").value ;
+    	document.location.href="/bl/aao/item-detail?id=" + itemId ;
+    }
+
 </SCRIPT>
 
 

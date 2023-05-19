@@ -117,12 +117,20 @@ public class OrdersController extends BaseController{
 	public ModelAndView checkout(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView() ;
 		HttpSession session = request.getSession() ;
-		if(session.getAttribute("customer") != null) {			
-			CustomersDTO dto = (CustomersDTO) session.getAttribute("customer") ;
-			List<OrderRequestDTO> list = customerOrders(dto.getId() , DomainValues.OrderStatus.ADD_TO_CART , session) ;
+		if(session.getAttribute(DomainValues.SessionKeys.CUSTOMER) != null) {			
+			Long orderId = null ;
+			if(request.getParameter("orderId") != null && !request.getParameter("orderId").equals("")) {
+				orderId = Long.parseLong(request.getParameter("orderId")) ;
+			}else {
+				orderId = 48L ;
+			}
+			
+			CustomersDTO dto = (CustomersDTO) session.getAttribute(DomainValues.SessionKeys.CUSTOMER) ;
+			List<OrderRequestDTO> list = service.customerOrdersCart(dto.getId() , DomainValues.OrderStatus.ADD_TO_CART) ;
+			OrderDTO orderDto = orderService.findById(orderId) ;
+			
+			mv.addObject("order" , orderDto) ;
 			mv.addObject("list" , list) ;
-			session.setAttribute("orderRequestListSize" , list.size());
-			session.getAttribute("orderNumber");
 			mv.addObject("orderNumber" , null) ;
 			mv.setViewName(checkout) ;
 		}else {
@@ -232,19 +240,13 @@ public class OrdersController extends BaseController{
 		if(session.getAttribute("customer") != null) {
 			CustomersDTO dto = (CustomersDTO) session.getAttribute("customer") ;
 			List<OrderDTO> list = orderService.myOrders(dto.getId()) ;
-			if(list != null) {
+			if(list != null && !list.isEmpty()) {
 				mv.addObject("list" , list) ;
-				session.setAttribute("orderRequestListSize" , list.size());
 			}
 			mv.addObject("orderNumber" , null) ;
 			mv.setViewName(myOrders) ;
 		}else {
 			mv.setViewName(loginPage) ;
-			session.setAttribute("orderRequestListSize" , 0);
-			session.setAttribute("orderRequestList" , null);
-			session.setAttribute("totalPrice" , 0);
-			session.setAttribute("currencyName" , null);
-			session.setAttribute("company" , new CompanyProfile());
 		}
 		
 		return mv ;
@@ -286,22 +288,24 @@ public class OrdersController extends BaseController{
 	public ModelAndView tracking(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView() ;
 		HttpSession session = request.getSession() ;
-		
-		if(request.getParameter("id") != null) {
-			Long orderId = Long.parseLong(request.getParameter("id")) ;
-			int language = 2 ;
-			if(session.getAttribute("language") != null) {
-				if(session.getAttribute("language") == "Ar") {
-					language = 1 ;
-					System.err.println("LANGUAGE ARABIC");
-				}else {
-					language = 2 ;
-					System.err.println("LANGUAGE ENGLISH");
+		if(session.getAttribute(DomainValues.SessionKeys.CUSTOMER) != null) {
+			if(request.getParameter("id") != null) {
+				Long orderId = Long.parseLong(request.getParameter("id")) ;
+				int language = 2 ;
+				if(session.getAttribute("language") != null) {
+					if(session.getAttribute("language") == "Ar") {
+						language = 1 ;
+					}else {
+						language = 2 ;
+					}
 				}
+				mv.addObject("list" , orderService.orderStatusList(orderId , language)) ;
+				mv.setViewName(track) ;
 			}
-			mv.addObject("list" , orderService.orderStatusList(orderId , language)) ;
+		}else {
+			mv.setViewName(loginPage) ;
 		}
-		mv.setViewName(track) ;
+		
 		return mv ;
 	}
 		

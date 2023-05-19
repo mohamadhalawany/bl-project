@@ -34,7 +34,8 @@ public class OrderItemEntity implements Serializable {
 	@Column(name = "TAX")
 	private Double tax;
 
-	
+	@Transient
+	private Long count ;
 
 	public Long getId() {
 		return this.id;
@@ -82,6 +83,14 @@ public class OrderItemEntity implements Serializable {
 
 	public void setTax(Double tax) {
 		this.tax = tax;
+	}
+
+	public Long getCount() {
+		return count;
+	}
+
+	public void setCount(Long count) {
+		this.count = count;
 	}
 
 }

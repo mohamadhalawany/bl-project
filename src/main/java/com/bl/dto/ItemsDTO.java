@@ -15,22 +15,31 @@ public class ItemsDTO implements Serializable{
     private String itemCode;
     private String itemLogo;
     private Double itemPrice;
+    private Double itemPriceOffer ;
     private String categoryName;
     private String categoryCode;
-    private Long createdBy ;
+    private Integer createdBy ;
     private String createdByEmployeeName;
     private Date createdDate;
     private String createdDateString;
-    private Long updatedBy ;
+    private Integer updatedBy ;
     private String updatedByEmployeeName;
     private Date updatedDate;
     private String updatedDateString;
     private String description ;
     private String overview ;
+    private Integer isHidden ;
+    private String extension ;
     
     private int mode ;
-    private String currencyName , currencyNameAr , internationalCode ;
+    private String currencyName , currencyNameAr , internationalCode , offerValidTo ;
+    private Integer offerValidity , isPercent , offerId ;
+    private Long parentCategoryId ;
+    private Double offerValue ;
+    private Date offerValidToDate ;
     
+    private Integer idInteger ;
+
     public Long getId() {
 	return id;
     }
@@ -103,19 +112,19 @@ public class ItemsDTO implements Serializable{
 	this.updatedByEmployeeName = updatedByEmployeeName;
     }
 
-    public Long getCreatedBy() {
+    public Integer getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Long createdBy) {
+    public void setCreatedBy(Integer createdBy) {
         this.createdBy = createdBy;
     }
 
-    public Long getUpdatedBy() {
+    public Integer getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(Long updatedBy) {
+    public void setUpdatedBy(Integer updatedBy) {
         this.updatedBy = updatedBy;
     }
 
@@ -214,6 +223,95 @@ public class ItemsDTO implements Serializable{
 	public void setInternationalCode(String internationalCode) {
 		this.internationalCode = internationalCode;
 	}
+
+	public Integer getIsHidden() {
+		return isHidden;
+	}
+
+	public void setIsHidden(Integer isHidden) {
+		this.isHidden = isHidden;
+	}
+
+	public String getExtension() {
+		return extension;
+	}
+
+	public void setExtension(String extension) {
+		this.extension = extension;
+	}
+
+	public Double getItemPriceOffer() {
+		return itemPriceOffer;
+	}
+
+	public void setItemPriceOffer(Double itemPriceOffer) {
+		this.itemPriceOffer = itemPriceOffer;
+	}
+
+	public Integer getOfferValidity() {
+		return offerValidity;
+	}
+
+	public void setOfferValidity(Integer offerValidity) {
+		this.offerValidity = offerValidity;
+	}
+
+	public Long getParentCategoryId() {
+		return parentCategoryId;
+	}
+
+	public void setParentCategoryId(Long parentCategoryId) {
+		this.parentCategoryId = parentCategoryId;
+	}
+
+	public Double getOfferValue() {
+		return offerValue;
+	}
+
+	public void setOfferValue(Double offerValue) {
+		this.offerValue = offerValue;
+	}
+
+	public Integer getIsPercent() {
+		return isPercent;
+	}
+
+	public void setIsPercent(Integer isPercent) {
+		this.isPercent = isPercent;
+	}
+
+	public String getOfferValidTo() {
+		return offerValidTo;
+	}
+
+	public void setOfferValidTo(String offerValidTo) {
+		this.offerValidTo = offerValidTo;
+	}
+
+	public Date getOfferValidToDate() {
+		return offerValidToDate;
+	}
+
+	public void setOfferValidToDate(Date offerValidToDate) {
+		this.offerValidToDate = offerValidToDate;
+	}
+
+	public Integer getOfferId() {
+		return offerId;
+	}
+
+	public void setOfferId(Integer offerId) {
+		this.offerId = offerId;
+	}
+
+	public Integer getIdInteger() {
+		return idInteger;
+	}
+
+	public void setIdInteger(Integer idInteger) {
+		this.idInteger = idInteger;
+	}
+
 
     
 }

@@ -98,7 +98,7 @@
                     
                     
                     <button type="submit" class="btn btn-primary mr-2" name="search">#{msg.SEARCH}</button>
-                    <button type="submit" class="btn btn-primary mr-2" name="reset">#{msg.RESET}</button>
+                    <button type="submit" class="btn btn-light" name="reset">#{msg.RESET}</button>
                     
                   </form>
                 </div>
@@ -107,9 +107,30 @@
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">#{msg.RESULT}</h4>
-                  <p class="card-description">
+                  
+				   <p class="card-description">
                     #{msg.FOUND} <code>${total} #{msg.CUSTOMERS}</code>
-                  </p>
+                    #{msg.PAGES} <code>${currentPage}</code> #{msg.OF} <code>${totalPages}</code> 
+                  	</p>
+                  	
+                  	<br/>
+                  	
+                  	<h:panelGroup rendered="${isFirst eq false}">
+                    	<a href="previousCustomer" class="previous">&laquo; #{msg.PREVIOUS}</a> 
+                    </h:panelGroup>
+                    <h:panelGroup rendered="${isFirst eq true}">
+                    	<a href="#" class="previous">#{msg.PREVIOUS}</a> 
+                    </h:panelGroup>
+                    
+                    <h:panelGroup rendered="${isLast eq false}">
+						<a href="nextCustomer" class="next" style="width: 120px !important;">#{msg.NEXT} &raquo;</a>
+					</h:panelGroup>
+					<h:panelGroup rendered="${isLast eq true}">
+						<a href="#" class="next" style="width: 120px !important;">#{msg.NEXT}</a>
+					</h:panelGroup>
+					
+					<br/>
+					
                   <div class="table-responsive pt-3">
                   
                     <table class="table table-bordered table-hover table-striped">
@@ -117,25 +138,22 @@
                         <tr style="border-color: gray !important; ">
                           <th style="align-content: center!important;">#</th>
                           <th style="align-content: center!important;">#{msg.FULL_NAME}</th>
-                          <th>#{msg.EMAIL}</th>
                           <th>#{msg.CUSTOMER_TYPE}</th>
                           <th>#{msg.CITY_DISTRICT}</th>
                           <th>#{msg.GOVERNERATE}</th>
                           <th>#{msg.COUNTRY}</th>                          
                           <th>#{msg.DELETE}</th>
-                          <th></th>
+                          <th>#{msg.BLOCKED}</th>
                         </tr>
                       </thead>
                       <tbody>
                       
                       <c:forEach items="${list}" var="var" varStatus="vs">
-                        <tr>
-                          <td style="align-content: center !important;">#{vs.count}</td>
+                        <tr data-toggle="collapse" data-target="#td1#{vs.count}" style="background-color: {vs.count % 2 == 1 ? #c7cad6 : white !important;}">
+                          <td style="align-content: center !important;"><a href="#tr#{vs.count}">#{vs.count}</a></td>
                           
                           <td>#{var.fullName}</td>
-                          
-                          <td>#{var.email}</td>
-                          
+                                                   
                           <td>#{var.customerTypeValue}</td>
                                                
                           <td>
@@ -147,44 +165,40 @@
                           <td>
                           	#{sessionScope.language eq 'En' ? var.countryNameEn : var.countryNameAr}
                           </td>
-                                                    
+                                         
                           <td>
                             <a href="delete?id=#{var.id}"><IMG alt="" src="../resources/cms/images/delete.png" style="height: 25px !important;"/></a>
                           </td>
                           
                           <td>
-                            <button class="more_btn" data-toggle="modal" data-target="#exampleModal" type="button">#{msg.MORE}</button>
+                            <a href="block?id=#{var.id}&amp;flag=1"><label class="badge badge-danger" style="width: 100%;">#{msg.BLOCKED}</label></a>
                           </td>
-                        
+                          
+                          
                         </tr>     
-                        
-                        <!-- Confirm Message -->
-												<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-												  <div class="modal-dialog" role="document">
-												    <div class="modal-content">
-												      <div class="modal-header">
-												        <h5 id="exampleModalLabel" style="color: olive; !important; font-size:large;">#{msg.MORE}</h5>
-												      </div>
-												      <div class="modal-body">
-												        <p style="color: red !important; font-size:large;">#{msg.ADDRESS} : #{var.address}</p>
-												      </div>
-												      
-												      <div class="modal-body">
-												        <p style="color: red !important; font-size:large;">#{msg.PHONE} : #{var.phone}</p>
-												      </div>
-												      
-												      <div class="modal-body">
-												        <p style="color: red !important; font-size:large;">#{msg.MOBILE} : #{var.mobile}</p>
-												      </div>
-												     
-												      <div class="modal-footer">
-												        <button type="button" class="btn btn-secondary" data-dismiss="modal">#{msg.CLOSE}</button>
-												      </div>
-												    </div>
-												  </div>
-												</div>
-										<!-- End Confirm Message -->		
-                    
+                		
+                		<tr id="td1#{vs.count}" class="collapse">
+				            <td colspan="4">#{msg.ADDRESS}
+				            	<div> #{var.address}</div> 
+				            </td>
+				            
+				            <td colspan="1">#{msg.PHONE}
+				            	<div>#{var.phone}</div> 
+				            </td>
+				            
+				            <td colspan="1">#{msg.MOBILE}
+				            	<div>#{var.mobile}</div> 
+				            </td>
+				            
+				            <td colspan="1">#{msg.REGISTER_METHOD}
+				            	<div>#{var.registerMethodValue}</div> 
+				            </td>
+				            
+				            <td colspan="1">#{msg.BLOCK_REASON}
+				            	<div>#{var.blockReasonValue}</div> 
+				            </td>
+				        </tr>
+                		                         
                         </c:forEach>
                                         
                       </tbody>
@@ -198,14 +212,14 @@
                   	<br/>
                   	
                   	<h:panelGroup rendered="${isFirst eq false}">
-                    	<a href="previous" class="previous">&laquo; Previous</a> 
+                    	<a href="previousCustomer" class="previous">&laquo; Previous</a> 
                     </h:panelGroup>
                     <h:panelGroup rendered="${isFirst eq true}">
                     	<a href="#" class="previous">Previous</a> 
                     </h:panelGroup>
                     
                     <h:panelGroup rendered="${isLast eq false}">
-						<a href="next" class="next" style="width: 120px !important;">Next &raquo;</a>
+						<a href="nextCustomer" class="next" style="width: 120px !important;">Next &raquo;</a>
 					</h:panelGroup>
 					<h:panelGroup rendered="${isLast eq true}">
 						<a href="#" class="next" style="width: 120px !important;">Next</a>
@@ -217,6 +231,7 @@
                     
                   </div>
                 </div>
+                
               </div>
             </div>
               </div>
